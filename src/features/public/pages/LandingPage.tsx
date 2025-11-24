@@ -45,11 +45,6 @@ export const LandingPage = () => {
                   Admin Girişi
                 </Button>
               </Link>
-              <Link to="/login">
-                <Button size="lg" variant="primary" className="bg-blue-500 border border-blue-300 text-white hover:bg-blue-600">
-                  Şoför Girişi
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
