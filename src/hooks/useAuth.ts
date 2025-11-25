@@ -15,14 +15,20 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginCredentials) => authService.login(credentials),
     onSuccess: (data) => {
-      // Extract token from cookie or response
-      const token = localStorage.getItem('auth_token') || 'cookie-based';
-      setAuth(data.data, token);
-      toast.success('Uğurla daxil oldunuz!');
-      navigate('/driver/dashboard');
+      // Backend stores token in httpOnly cookie automatically
+      const token = 'cookie-based';
+      
+      if (data.data) {
+        setAuth(data.data, token);
+        toast.success('Uğurla daxil oldunuz!');
+        navigate('/driver/dashboard');
+      } else {
+        toast.error('Giriş zamanı xəta baş verdi');
+      }
     },
-    onError: () => {
-      toast.error('Email və ya şifrə yanlışdır');
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data?.message || 'Email və ya şifrə yanlışdır';
+      toast.error(errorMessage);
     },
   });
 
@@ -30,13 +36,42 @@ export const useAuth = () => {
   const adminLoginMutation = useMutation({
     mutationFn: (credentials: LoginCredentials) => authService.adminLogin(credentials),
     onSuccess: (data) => {
-      const token = localStorage.getItem('auth_token') || 'cookie-based';
-      setAuth(data.data, token);
-      toast.success('Admin panelə xoş gəlmisiniz!');
-      navigate('/admin/dashboard');
+      // Backend stores token in httpOnly cookie automatically
+      // We use 'cookie-based' as token identifier since we can't access httpOnly cookies from JS
+      const token = 'cookie-based';
+      
+      // Store user data in localStorage for persistence
+      if (data.data) {
+        setAuth(data.data, token);
+        toast.success('Admin panelə xoş gəlmisiniz!');
+        navigate('/admin/dashboard');
+      } else {
+        toast.error('Giriş zamanı xəta baş verdi');
+      }
     },
-    onError: () => {
-      toast.error('Email və ya şifrə yanlışdır');
+    onError: (error: any) => {
+      // Get error message from backend response
+      console.error('Admin login error:', error);
+      console.error('Error response:', error?.response);
+      console.error('Error response data:', error?.response?.data);
+      
+      const errorMessage = 
+        error?.response?.data?.message || 
+        error?.message || 
+        'Email və ya şifrə yanlışdır.';
+      
+      // Check for database initialization error
+      if (errorMessage.includes('Database not initialized') || errorMessage.includes('migrations')) {
+        toast.error('Database hazır deyil. Zəhmət olmasa backend-də "npm run db:migrate" komutunu çalıştırın.', {
+          duration: 10000,
+        });
+      } else if (errorMessage.includes('Failed query') || errorMessage.includes('does not exist')) {
+        toast.error('Database cədvəlləri yoxdur. Zəhmət olmasa backend-də "npm run db:migrate" komutunu çalıştırın.', {
+          duration: 10000,
+        });
+      } else {
+        toast.error(errorMessage);
+      }
     },
   });
 

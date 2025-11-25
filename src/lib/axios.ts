@@ -15,10 +15,12 @@ export const axiosInstance = axios.create({
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Get token from localStorage
+    // Backend uses cookie-based auth, but we can also support Bearer token
+    // Token is stored in httpOnly cookie by backend, so we don't need to add it manually
+    // However, if token exists in localStorage (for backward compatibility), use it
     const token = localStorage.getItem('auth_token');
     
-    if (token && config.headers) {
+    if (token && config.headers && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -34,11 +36,12 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error: AxiosError<{ message?: string; error?: string }>) => {
+  (error: AxiosError<{ success?: boolean; message?: string; error?: string }>) => {
     // Handle common errors
     if (error.response) {
       const status = error.response.status;
-      const message = error.response.data?.message || error.response.data?.error || 'Bir xəta baş verdi';
+      const responseData = error.response.data as { success?: boolean; message?: string; error?: string };
+      const message = responseData?.message || responseData?.error || 'Bir xəta baş verdi';
 
       switch (status) {
         case 401:

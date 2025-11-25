@@ -1,7 +1,10 @@
 export const API_CONFIG = {
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001',
+  // In development, use proxy (empty string = relative URL)
+  // In production, use full URL
+  baseURL: import.meta.env.VITE_API_BASE_URL || 
+    (import.meta.env.DEV ? '' : 'http://localhost:3000'),
   timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || '30000', 10),
-  withCredentials: true, // For cookie-based auth
+  withCredentials: true, // For cookie-based auth (httpOnly cookies)
 };
 
 export const API_ENDPOINTS = {
@@ -12,6 +15,7 @@ export const API_ENDPOINTS = {
     adminLogin: '/api/auth/admin/login',
     logout: '/api/auth/logout',
     me: '/api/auth/me',
+    createAdmin: '/api/auth/create-admin',
     createDriver: '/api/auth/create-driver',
   },
   // Users
