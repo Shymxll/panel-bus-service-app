@@ -14,8 +14,10 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
+    // Note: project option is disabled to avoid Windows path issues with Turkish characters in folder names (GİTHUB)
+    // If you need type-aware linting, you can enable it but may need to use absolute paths or move project to ASCII-only path
+    // project: ['./tsconfig.json', './tsconfig.node.json'],
+    // tsconfigRootDir: __dirname,
   },
   plugins: ['react-refresh', '@typescript-eslint', 'react'],
   settings: {
