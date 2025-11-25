@@ -18,7 +18,9 @@ import {
   ChevronDown,
   ChevronUp,
   UserCheck,
-  UserX
+  UserX,
+  ToggleLeft,
+  ToggleRight
 } from 'lucide-react';
 import { useStudents } from '@/hooks/useStudents';
 import { StudentFormModal } from '../components/StudentFormModal';
@@ -27,7 +29,7 @@ import { StudentQrModal } from '../components/StudentQrModal';
 import type { Student } from '@/types';
 
 export const StudentManagement = () => {
-  const { students, isLoading, refetch, deleteStudent, isDeleting } = useStudents();
+  const { students, isLoading, refetch, deleteStudent, updateStudent, isDeleting, isUpdating } = useStudents();
   
   // State
   const [searchQuery, setSearchQuery] = useState('');
@@ -154,6 +156,13 @@ export const StudentManagement = () => {
   const handleCloseFormModal = () => {
     setIsFormModalOpen(false);
     setSelectedStudent(null);
+  };
+
+  const handleToggleStatus = (student: Student) => {
+    updateStudent({
+      id: student.id,
+      data: { isActive: !student.isActive }
+    });
   };
 
   const SortIcon = ({ field }: { field: keyof Student }) => {
@@ -416,13 +425,23 @@ export const StudentManagement = () => {
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          student.isActive 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}>
+                        <button
+                          onClick={() => handleToggleStatus(student)}
+                          disabled={isUpdating}
+                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed ${
+                            student.isActive 
+                              ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+                              : 'bg-red-100 text-red-800 hover:bg-red-200'
+                          }`}
+                          title={student.isActive ? 'Deaktiv etmək üçün klikləyin' : 'Aktiv etmək üçün klikləyin'}
+                        >
+                          {student.isActive ? (
+                            <ToggleRight className="h-3.5 w-3.5" />
+                          ) : (
+                            <ToggleLeft className="h-3.5 w-3.5" />
+                          )}
                           {student.isActive ? 'Aktiv' : 'Deaktiv'}
-                        </span>
+                        </button>
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-1">

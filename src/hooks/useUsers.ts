@@ -1,14 +1,20 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { userService } from '@/services/user.service';
+import { authService } from '@/services/auth.service';
 import { QUERY_KEYS } from '@/config/constants';
-import type { User } from '@/types';
+import type { User, RegisterData } from '@/types';
 
 export const useUsers = () => {
   const queryClient = useQueryClient();
 
   // Get all users
-  const { data: users = [], isLoading, error } = useQuery({
+  const {
+    data: users = [],
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: QUERY_KEYS.users.all,
     queryFn: () => userService.getAll(),
   });
@@ -29,6 +35,26 @@ export const useUsers = () => {
     },
   });
 
+  // Create driver mutation (uses auth endpoint for password hashing + role assignment)
+  const createDriverMutation = useMutation({
+    mutationFn: (data: RegisterData) =>
+      authService.createDriver({
+        ...data,
+        role: 'driver',
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.all });
+      toast.success('Şoför əlavə edildi');
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Şoför əlavə edilərkən xəta baş verdi';
+      toast.error(message);
+    },
+  });
+
   // Delete user mutation
   const deleteMutation = useMutation({
     mutationFn: (id: number) => userService.delete(id),
@@ -46,10 +72,13 @@ export const useUsers = () => {
     drivers,
     isLoading,
     error,
+    refetch,
     updateUser: updateMutation.mutate,
     deleteUser: deleteMutation.mutate,
+    createDriver: createDriverMutation.mutate,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
+    isCreatingDriver: createDriverMutation.isPending,
   };
 };
 
