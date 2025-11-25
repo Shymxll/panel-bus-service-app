@@ -53,28 +53,44 @@ export interface CreateBusData {
   isActive?: boolean;
 }
 
-// Student types
+// Student types (Backend schema ile uyumlu)
 export interface Student {
   id: number;
-  name: string;
-  studentNumber: string;
-  grade?: string;
-  parentName?: string;
-  parentPhone?: string;
-  address?: string;
-  qrCode?: string;
+  firstName: string;
+  lastName: string;
+  qrCode: string;
+  school: string;
+  grade: string;
+  parentName?: string | null;
+  parentPhone?: string | null;
+  address?: string | null;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreateStudentData {
-  name: string;
-  studentNumber: string;
+  firstName: string;
+  lastName: string;
+  qrCode: string;
+  school: string;
+  grade: string;
+  parentName?: string;
+  parentPhone?: string;
+  address?: string;
+  isActive?: boolean;
+}
+
+export interface UpdateStudentData {
+  firstName?: string;
+  lastName?: string;
+  qrCode?: string;
+  school?: string;
   grade?: string;
   parentName?: string;
   parentPhone?: string;
   address?: string;
+  isActive?: boolean;
 }
 
 // Route types
