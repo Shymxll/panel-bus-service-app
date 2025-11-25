@@ -29,19 +29,32 @@ export const QUERY_KEYS = {
     all: ['routes'] as const,
     detail: (id: number) => ['routes', id] as const,
   },
-  planning: {
-    all: ['planning'] as const,
-    detail: (id: number) => ['planning', id] as const,
-    byDate: (date: string) => ['planning', 'date', date] as const,
+  stops: {
+    all: ['stops'] as const,
+    detail: (id: number) => ['stops', id] as const,
   },
-  boarding: {
-    all: ['boarding'] as const,
-    byDate: (date: string) => ['boarding', 'date', date] as const,
+  trips: {
+    all: ['trips'] as const,
+    detail: (id: number) => ['trips', id] as const,
+    byRoute: (routeId: number) => ['trips', 'route', routeId] as const,
   },
-  reports: {
-    daily: (date: string) => ['reports', 'daily', date] as const,
-    summary: ['reports', 'summary'] as const,
-    studentHistory: (id: number) => ['reports', 'student', id] as const,
+  dailyPlans: {
+    all: ['dailyPlans'] as const,
+    detail: (id: number) => ['dailyPlans', id] as const,
+    byDate: (date: string) => ['dailyPlans', 'date', date] as const,
+    byStudent: (studentId: number) => ['dailyPlans', 'student', studentId] as const,
+  },
+  boardingRecords: {
+    all: ['boardingRecords'] as const,
+    detail: (id: number) => ['boardingRecords', id] as const,
+    byDate: (date: string) => ['boardingRecords', 'date', date] as const,
+    byStudent: (studentId: number) => ['boardingRecords', 'student', studentId] as const,
+  },
+  disembarkingRecords: {
+    all: ['disembarkingRecords'] as const,
+    detail: (id: number) => ['disembarkingRecords', id] as const,
+    byDate: (date: string) => ['disembarkingRecords', 'date', date] as const,
+    byStudent: (studentId: number) => ['disembarkingRecords', 'student', studentId] as const,
   },
 } as const;
 

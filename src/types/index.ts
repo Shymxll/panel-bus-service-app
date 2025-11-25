@@ -171,52 +171,151 @@ export interface UpdateRouteStopData {
   estimatedArrivalTime?: string;
 }
 
-// Planning types
-export type TripType = 'morning_pickup' | 'afternoon_dropoff' | 'evening_dropoff';
-
-export interface DailyPlan {
+// Trip types (Backend schema ile uyumlu)
+export interface Trip {
   id: number;
-  date: string;
-  busId: number;
-  tripType: TripType;
-  expectedStudents: number[];
-  notes?: string;
+  routeId: number;
+  departureTime: string; // HH:mm format
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  bus?: Bus;
-  students?: Student[];
+  route?: Route;
 }
 
-export interface CreatePlanData {
-  date: string;
+export interface CreateTripData {
+  routeId: number;
+  departureTime: string; // HH:mm format
+  isActive?: boolean;
+}
+
+export interface UpdateTripData {
+  routeId?: number;
+  departureTime?: string;
+  isActive?: boolean;
+}
+
+// DailyPlan types (Backend schema ile uyumlu)
+export interface DailyPlan {
+  id: number;
+  planDate: string; // YYYY-MM-DD format
+  studentId: number;
+  tripId: number;
   busId: number;
-  tripType: TripType;
-  studentIds: number[];
+  stopId?: number | null;
+  isBoarding: boolean; // true = minmə, false = düşmə
+  notes?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  student?: Student;
+  trip?: Trip;
+  bus?: Bus;
+  stop?: Stop;
+}
+
+export interface CreateDailyPlanData {
+  planDate: string; // YYYY-MM-DD format
+  studentId: number;
+  tripId: number;
+  busId: number;
+  stopId?: number;
+  isBoarding?: boolean; // true = minmə, false = düşmə
   notes?: string;
 }
 
-// Boarding types
-export type BoardingAction = 'board' | 'alight';
+export interface UpdateDailyPlanData {
+  planDate?: string;
+  studentId?: number;
+  tripId?: number;
+  busId?: number;
+  stopId?: number;
+  isBoarding?: boolean;
+  notes?: string;
+}
 
+// Boarding Record types (Backend schema ile uyumlu)
 export interface BoardingRecord {
   id: number;
   studentId: number;
+  tripId: number;
   busId: number;
+  stopId?: number | null;
+  recordDate: string; // YYYY-MM-DD format
+  recordTime: string; // ISO timestamp
   driverId: number;
-  action: BoardingAction;
-  timestamp: string;
-  planId?: number;
-  isPlanned: boolean;
+  wasPlanned: boolean;
+  dailyPlanId?: number | null;
+  createdAt: string;
+  updatedAt: string;
   student?: Student;
+  trip?: Trip;
   bus?: Bus;
+  stop?: Stop;
   driver?: User;
 }
 
-export interface CreateBoardingData {
+export interface CreateBoardingRecordData {
   studentId: number;
+  tripId: number;
   busId: number;
-  action: BoardingAction;
-  qrCode?: string;
+  stopId?: number;
+  recordDate: string; // YYYY-MM-DD format
+  driverId: number;
+  wasPlanned?: boolean;
+  dailyPlanId?: number;
+}
+
+export interface UpdateBoardingRecordData {
+  studentId?: number;
+  tripId?: number;
+  busId?: number;
+  stopId?: number;
+  recordDate?: string;
+  driverId?: number;
+  wasPlanned?: boolean;
+  dailyPlanId?: number;
+}
+
+// Disembarking Record types (Backend schema ile uyumlu)
+export interface DisembarkingRecord {
+  id: number;
+  studentId: number;
+  tripId: number;
+  busId: number;
+  stopId?: number | null;
+  recordDate: string; // YYYY-MM-DD format
+  recordTime: string; // ISO timestamp
+  driverId: number;
+  wasPlanned: boolean;
+  dailyPlanId?: number | null;
+  createdAt: string;
+  updatedAt: string;
+  student?: Student;
+  trip?: Trip;
+  bus?: Bus;
+  stop?: Stop;
+  driver?: User;
+}
+
+export interface CreateDisembarkingRecordData {
+  studentId: number;
+  tripId: number;
+  busId: number;
+  stopId?: number;
+  recordDate: string; // YYYY-MM-DD format
+  driverId: number;
+  wasPlanned?: boolean;
+  dailyPlanId?: number;
+}
+
+export interface UpdateDisembarkingRecordData {
+  studentId?: number;
+  tripId?: number;
+  busId?: number;
+  stopId?: number;
+  recordDate?: string;
+  driverId?: number;
+  wasPlanned?: boolean;
+  dailyPlanId?: number;
 }
 
 // Report types
