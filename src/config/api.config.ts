@@ -43,13 +43,21 @@ export const API_ENDPOINTS = {
     delete: (id: number) => `/api/students/${id}`,
     generateQR: (id: number) => `/api/students/${id}/qr`,
   },
-  // Routes (to be implemented)
+  // Routes
   routes: {
     list: '/api/routes',
     detail: (id: number) => `/api/routes/${id}`,
     create: '/api/routes',
     update: (id: number) => `/api/routes/${id}`,
     delete: (id: number) => `/api/routes/${id}`,
+  },
+  // Stops
+  stops: {
+    list: '/api/stops',
+    detail: (id: number) => `/api/stops/${id}`,
+    create: '/api/stops',
+    update: (id: number) => `/api/stops/${id}`,
+    delete: (id: number) => `/api/stops/${id}`,
   },
   // Planning (to be implemented)
   planning: {

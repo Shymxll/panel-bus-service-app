@@ -8,7 +8,12 @@ export const useBuses = () => {
   const queryClient = useQueryClient();
 
   // Get all buses
-  const { data: buses = [], isLoading, error } = useQuery({
+  const {
+    data: buses = [],
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: QUERY_KEYS.buses.all,
     queryFn: () => busService.getAll(),
   });
@@ -54,6 +59,7 @@ export const useBuses = () => {
     buses,
     isLoading,
     error,
+    refetch,
     createBus: createMutation.mutate,
     updateBus: updateMutation.mutate,
     deleteBus: deleteMutation.mutate,

@@ -93,26 +93,82 @@ export interface UpdateStudentData {
   isActive?: boolean;
 }
 
-// Route types
-export interface RouteStop {
+// Stop types (Backend schema ile uyumlu)
+export interface Stop {
   id: number;
   name: string;
-  address: string;
-  latitude?: number;
-  longitude?: number;
+  address?: string | null;
+  latitude?: string | null;
+  longitude?: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateStopData {
+  name: string;
+  address?: string;
+  latitude?: string;
+  longitude?: string;
+  isActive?: boolean;
+}
+
+export interface UpdateStopData {
+  name?: string;
+  address?: string;
+  latitude?: string;
+  longitude?: string;
+  isActive?: boolean;
+}
+
+// Route types (Backend schema ile uyumlu)
+export interface Route {
+  id: number;
+  name: string;
+  description?: string | null;
+  busId?: number | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  bus?: Bus;
+}
+
+export interface CreateRouteData {
+  name: string;
+  description?: string;
+  busId?: number;
+  isActive?: boolean;
+}
+
+export interface UpdateRouteData {
+  name?: string;
+  description?: string;
+  busId?: number;
+  isActive?: boolean;
+}
+
+// Route Stop types (Backend schema ile uyumlu)
+export interface RouteStop {
+  id: number;
+  routeId: number;
+  stopId: number;
+  order: number;
+  estimatedArrivalTime?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  stop?: Stop;
+}
+
+export interface CreateRouteStopData {
+  routeId: number;
+  stopId: number;
   order: number;
   estimatedArrivalTime?: string;
 }
 
-export interface BusRoute {
-  id: number;
-  name: string;
-  description?: string;
-  busId?: number;
-  stops: RouteStop[];
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
+export interface UpdateRouteStopData {
+  order?: number;
+  estimatedArrivalTime?: string;
 }
 
 // Planning types
@@ -231,4 +287,3 @@ export interface SortOption {
   field: string;
   direction: 'asc' | 'desc';
 }
-
