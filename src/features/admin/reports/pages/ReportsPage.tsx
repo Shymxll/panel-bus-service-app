@@ -29,18 +29,19 @@ import { Loading } from '@/components/common/Loading';
 export const ReportsPage = () => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split('T')[0]
+    new Date().toISOString().split('T')[0]!
   );
   const [studentSearch, setStudentSearch] = useState('');
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null);
 
   // Data hooks
+  const dateForQuery = selectedDate || new Date().toISOString().split('T')[0]!;
   const { data: boardingRecords = [], isLoading: isBoardingLoading } =
-    useBoardingRecordsByDate(selectedDate);
+    useBoardingRecordsByDate(dateForQuery);
   const { data: disembarkingRecords = [], isLoading: isDisembarkingLoading } =
-    useDisembarkingRecordsByDate(selectedDate);
+    useDisembarkingRecordsByDate(dateForQuery);
   const { data: dailyPlans = [], isLoading: isPlansLoading } =
-    useDailyPlansByDate(selectedDate);
+    useDailyPlansByDate(dateForQuery);
   const { students, isLoading: isStudentsLoading } = useStudents();
   const { buses, isLoading: isBusesLoading } = useBuses();
   const { trips, isLoading: isTripsLoading } = useTrips();
@@ -163,7 +164,7 @@ export const ReportsPage = () => {
 
     const rows: string[] = [];
     rows.push('Günlük Hesabat');
-    rows.push(`Tarix,${sanitize(formatDate(selectedDate))}`);
+    rows.push(`Tarix,${sanitize(formatDate(selectedDate || new Date()))}`);
     rows.push(
       `Planlanmış Minmə,${stats.plannedBoarding},Faktiki Minmə,${stats.actualBoarding}`
     );
@@ -261,7 +262,7 @@ export const ReportsPage = () => {
               <Input
                 type="date"
                 value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
+                onChange={(e) => setSelectedDate(e.target.value || new Date().toISOString().split('T')[0]!)}
                 className="w-auto"
               />
             </div>
@@ -383,7 +384,7 @@ export const ReportsPage = () => {
               <div className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg">
                 <span className="text-sm font-medium text-secondary-700">Tarix</span>
                 <span className="text-sm text-secondary-900">
-                  {formatDate(selectedDate)}
+                  {formatDate(selectedDate || new Date())}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg">
@@ -509,7 +510,7 @@ export const ReportsPage = () => {
       <Card>
         <CardHeader>
           <h2 className="text-lg font-semibold text-secondary-900">
-            Son Qeydlər ({formatDate(selectedDate)})
+            Son Qeydlər ({formatDate(selectedDate || new Date())})
           </h2>
         </CardHeader>
         <CardBody>

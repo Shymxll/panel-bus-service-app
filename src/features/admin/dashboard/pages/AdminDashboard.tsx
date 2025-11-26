@@ -27,7 +27,7 @@ import { formatDate } from '@/utils/format';
 
 export const AdminDashboard = () => {
   const navigate = useNavigate();
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0]!;
 
   // Data hooks
   const { buses, isLoading: isBusesLoading } = useBuses();
