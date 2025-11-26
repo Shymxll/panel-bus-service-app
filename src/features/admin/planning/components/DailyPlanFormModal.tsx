@@ -40,11 +40,31 @@ export const DailyPlanFormModal = ({
 }: DailyPlanFormModalProps) => {
   const { createDailyPlan, updateDailyPlan, isCreating, isUpdating } = useDailyPlans();
   const { students } = useStudents();
-  const { trips } = useTrips();
+  const { trips, isLoading: isTripsLoading, error: tripsError, refetch: refetchTrips } = useTrips();
   const { buses } = useBuses();
   const { routes } = useRoutes();
   const { stops } = useStops();
   const isEditing = !!dailyPlan;
+
+  // Modal açılanda trips-i yenilə (yeni yaradılan səfərləri görmək üçün)
+  useEffect(() => {
+    if (isOpen) {
+      console.log('🔄 DailyPlanFormModal - Modal açıldı, trips-i yeniləyirəm...');
+      refetchTrips();
+    }
+  }, [isOpen, refetchTrips]);
+
+  // Debug: trips verisini console-da göstər
+  useEffect(() => {
+    if (isOpen) {
+      console.log('🔍 DailyPlanFormModal - Trips data:', {
+        trips,
+        tripsCount: trips?.length || 0,
+        isTripsLoading,
+        tripsError,
+      });
+    }
+  }, [isOpen, trips, isTripsLoading, tripsError]);
 
   const {
     register,
@@ -66,9 +86,23 @@ export const DailyPlanFormModal = ({
     },
   });
 
-  const selectedRouteId = watch('tripId') 
-    ? trips.find(t => t.id === watch('tripId'))?.routeId 
-    : undefined;
+  const selectedTripId = watch('tripId');
+  const selectedTrip = selectedTripId ? trips.find(t => t.id === selectedTripId) : null;
+  const selectedRouteId = selectedTrip?.routeId;
+  const selectedRoute = selectedRouteId ? routes.find(r => r.id === selectedRouteId) : null;
+
+  // Seçilen səfərə uyğun avtobus avtomatik seç
+  useEffect(() => {
+    if (selectedRoute?.busId && selectedTripId && !dailyPlan) {
+      // Yalnız yeni plan yaradarkən avtomatik seç (redaktə zamanı deyil)
+      const currentBusId = watch('busId');
+      if (!currentBusId || currentBusId === 0) {
+        // Avtobus hələ seçilməyibsə, avtomatik seç
+        setValue('busId', selectedRoute.busId);
+        console.log('🚌 Avtomatik avtobus seçildi:', selectedRoute.busId);
+      }
+    }
+  }, [selectedRoute?.busId, selectedTripId, dailyPlan, setValue, watch]);
 
   // Seçilen route'a göre stops'ları filtrele
   const availableStops = selectedRouteId
@@ -213,11 +247,20 @@ export const DailyPlanFormModal = ({
               </label>
               <select
                 {...register('tripId', { valueAsNumber: true })}
+                disabled={isTripsLoading}
                 className={`w-full rounded-lg border ${
                   errors.tripId ? 'border-red-500' : 'border-secondary-300'
-                } bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500`}
+                } bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 disabled:bg-secondary-50 disabled:cursor-not-allowed`}
               >
-                <option value={0}>Səfər seçin</option>
+                <option value={0}>
+                  {isTripsLoading
+                    ? 'Yüklənir...'
+                    : tripsError
+                      ? 'Xəta: Səfərlər yüklənə bilmədi'
+                      : (trips || []).length === 0
+                        ? 'Səfər tapılmadı (əvvəlcə səfər yaradın)'
+                        : 'Səfər seçin'}
+                </option>
                 {(trips || []).map(trip => {
                   const route = routes.find(r => r.id === trip.routeId);
                   return (
@@ -229,6 +272,16 @@ export const DailyPlanFormModal = ({
               </select>
               {errors.tripId && (
                 <p className="mt-1 text-sm text-red-500">{errors.tripId.message}</p>
+              )}
+              {tripsError && (
+                <p className="mt-1 text-sm text-red-500">
+                  ⚠️ Səfərlər yüklənə bilmədi: {tripsError instanceof Error ? tripsError.message : 'Naməlum xəta'}
+                </p>
+              )}
+              {!isTripsLoading && !tripsError && (trips || []).length === 0 && (
+                <p className="mt-1 text-sm text-amber-600">
+                  ℹ️ Heç bir səfər tapılmadı. Əvvəlcə marşrut üçün səfər yaratmalısınız.
+                </p>
               )}
             </div>
 

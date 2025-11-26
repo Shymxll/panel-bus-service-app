@@ -16,11 +16,13 @@ import {
   ToggleLeft,
   ToggleRight,
   Settings,
+  Clock,
 } from 'lucide-react';
 import { useRoutes } from '@/hooks/useRoutes';
 import { useBuses } from '@/hooks/useBuses';
 import { RouteFormModal } from '../components/RouteFormModal';
 import { RouteStopsModal } from '../components/RouteStopsModal';
+import { RouteTripsModal } from '../components/RouteTripsModal';
 import { DeleteConfirmModal } from '@/components/common/DeleteConfirmModal';
 import type { Route } from '@/types';
 
@@ -51,6 +53,7 @@ export const RouteManagement = () => {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isStopsModalOpen, setIsStopsModalOpen] = useState(false);
+  const [isTripsModalOpen, setIsTripsModalOpen] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
 
   // Bus map for quick lookup
@@ -145,6 +148,11 @@ export const RouteManagement = () => {
   const handleManageStops = (route: Route) => {
     setSelectedRoute(route);
     setIsStopsModalOpen(true);
+  };
+
+  const handleManageTrips = (route: Route) => {
+    setSelectedRoute(route);
+    setIsTripsModalOpen(true);
   };
 
   const handleToggleStatus = (route: Route) => {
@@ -427,6 +435,14 @@ export const RouteManagement = () => {
                           <Button
                             variant="ghost"
                             size="sm"
+                            onClick={() => handleManageTrips(route)}
+                            title="Səfərləri idarə et"
+                          >
+                            <Clock className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => handleEdit(route)}
                             title="Redaktə et"
                           >
@@ -477,6 +493,15 @@ export const RouteManagement = () => {
         isOpen={isStopsModalOpen}
         onClose={() => {
           setIsStopsModalOpen(false);
+          setSelectedRoute(null);
+        }}
+        route={selectedRoute}
+      />
+
+      <RouteTripsModal
+        isOpen={isTripsModalOpen}
+        onClose={() => {
+          setIsTripsModalOpen(false);
           setSelectedRoute(null);
         }}
         route={selectedRoute}

@@ -15,8 +15,23 @@ export const useTrips = () => {
     refetch,
   } = useQuery({
     queryKey: QUERY_KEYS.trips.all,
-    queryFn: () => tripService.getAll(),
+    queryFn: async () => {
+      console.log('🔄 useTrips - Fetching trips...');
+      try {
+        const data = await tripService.getAll();
+        console.log('✅ useTrips - Fetched trips:', data);
+        return data;
+      } catch (err) {
+        console.error('❌ useTrips - Error fetching trips:', err);
+        throw err;
+      }
+    },
     staleTime: 1000 * 60 * 5, // 5 dakika
+    retry: 2, // 2 dəfə yenidən cəhd et
+    onError: (error: Error) => {
+      console.error('❌ useTrips - Query error:', error);
+      toast.error(`Səfərlər yüklənə bilmədi: ${error.message}`);
+    },
   });
 
   // Səfər oluştur

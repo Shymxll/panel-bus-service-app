@@ -9,13 +9,33 @@ import type {
 
 class TripService {
   async getAll(): Promise<Trip[]> {
-    const response = await axiosInstance.get<ApiResponse<Trip[]>>(
-      API_ENDPOINTS.trips.list
-    );
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      console.log('🚀 TripService.getAll - Requesting:', API_ENDPOINTS.trips.list);
+      const response = await axiosInstance.get<ApiResponse<Trip[]>>(
+        API_ENDPOINTS.trips.list
+      );
+      console.log('✅ TripService.getAll - Response:', {
+        success: response.data.success,
+        dataLength: response.data.data?.length || 0,
+        data: response.data.data,
+        message: response.data.message,
+      });
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      throw new Error(response.data.message || 'Səfərlər yüklənə bilmədi');
+    } catch (error: any) {
+      console.error('❌ TripService.getAll - Error:', {
+        message: error?.message,
+        response: error?.response?.data,
+        status: error?.response?.status,
+      });
+      throw new Error(
+        error?.response?.data?.message ||
+          error?.message ||
+          'Səfərlər yüklənə bilmədi'
+      );
     }
-    throw new Error(response.data.message || 'Səfərlər yüklənə bilmədi');
   }
 
   async getById(id: number): Promise<Trip> {
