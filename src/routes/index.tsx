@@ -8,7 +8,6 @@ import { DriverLayout } from '@/components/layouts/DriverLayout';
 
 // Public pages
 import { LandingPage } from '@/features/public/pages/LandingPage';
-import { LoginPage } from '@/features/auth/pages/LoginPage';
 import { AdminLoginPage } from '@/features/auth/pages/AdminLoginPage';
 
 // Admin pages
@@ -33,7 +32,7 @@ const ProtectedRoute = ({ children, role }: { children: React.ReactNode; role?: 
   const { user, isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated || !user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/admin/login" replace />;
   }
 
   if (role && user.role !== role) {
@@ -63,11 +62,7 @@ export const AppRoutes = () => {
         <Route path="/" element={<LandingPage />} />
         <Route
           path="/login"
-          element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          }
+          element={<Navigate to="/admin/login" replace />}
         />
         <Route
           path="/admin/login"
