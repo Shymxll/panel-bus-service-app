@@ -194,16 +194,14 @@ export const StopManagement = () => {
                         <button
                           type="button"
                           onClick={() => handleToggleActive(stop)}
-                          className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${
-                            stop.isActive
+                          className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${stop.isActive
                               ? 'bg-green-50 text-green-700'
                               : 'bg-secondary-100 text-secondary-600'
-                          }`}
+                            }`}
                         >
                           <span
-                            className={`h-2 w-2 rounded-full ${
-                              stop.isActive ? 'bg-green-500' : 'bg-secondary-400'
-                            }`}
+                            className={`h-2 w-2 rounded-full ${stop.isActive ? 'bg-green-500' : 'bg-secondary-400'
+                              }`}
                           />
                           {stop.isActive ? 'Aktiv' : 'Deaktiv'}
                         </button>
@@ -247,10 +245,8 @@ export const StopManagement = () => {
       <DeleteConfirmModal
         isOpen={deleteId !== null}
         title="Dayanacağı sil"
-        description="Bu dayanacağı silmək istədiyinizdən əminsiniz? Bu dayanacaq marşrutlarda istifadə olunursa, oradan da çıxarılmalıdır."
-        confirmText="Bəli, sil"
-        cancelText="Ləğv et"
-        onCancel={() => setDeleteId(null)}
+        message="Bu dayanacağı silmək istədiyinizdən əminsiniz? Bu dayanacaq marşrutlarda istifadə olunursa, oradan da çıxarılmalıdır."
+        onClose={() => setDeleteId(null)}
         onConfirm={handleDelete}
       />
     </div>

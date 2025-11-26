@@ -16,7 +16,7 @@ import { formatDate } from '@/utils/format';
 
 export const PlanningPage = () => {
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split('T')[0]
+    new Date().toISOString().split('T')[0]!
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<'all' | 'boarding' | 'dropoff'>('all');
@@ -24,7 +24,7 @@ export const PlanningPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<DailyPlan | null>(null);
 
-  const { data: dailyPlans = [], isLoading, refetch } = useDailyPlansByDate(selectedDate);
+  const { data: dailyPlans = [], isLoading, refetch } = useDailyPlansByDate(selectedDate || new Date().toISOString().split('T')[0]!);
   const { students } = useStudents();
   const { trips } = useTrips();
   const { buses } = useBuses();
@@ -62,7 +62,7 @@ export const PlanningPage = () => {
 
     // Type filter
     if (typeFilter !== 'all') {
-      result = result.filter(p => 
+      result = result.filter(p =>
         typeFilter === 'boarding' ? p.isBoarding : !p.isBoarding
       );
     }
@@ -264,7 +264,7 @@ export const PlanningPage = () => {
               <Input
                 type="date"
                 value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
+                onChange={(e) => setSelectedDate(e.target.value || new Date().toISOString().split('T')[0]!)}
                 className="w-auto"
               />
             </div>
