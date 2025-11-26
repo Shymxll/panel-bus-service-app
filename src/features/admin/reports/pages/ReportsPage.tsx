@@ -155,8 +155,78 @@ export const ReportsPage = () => {
   }, [selectedDate, boardingRecords, disembarkingRecords]);
 
   const handleExportReport = () => {
-    // TODO: Implement PDF/Excel export
-    alert('Export funksiyası tezliklə əlavə ediləcək');
+    const sanitize = (value: string | number | boolean | undefined | null) => {
+      if (value === undefined || value === null) return '';
+      const stringValue = String(value).replace(/"/g, '""');
+      return `"${stringValue}"`;
+    };
+
+    const rows: string[] = [];
+    rows.push('Günlük Hesabat');
+    rows.push(`Tarix,${sanitize(formatDate(selectedDate))}`);
+    rows.push(
+      `Planlanmış Minmə,${stats.plannedBoarding},Faktiki Minmə,${stats.actualBoarding}`
+    );
+    rows.push(
+      `Planlanmış Düşmə,${stats.plannedDropoff},Faktiki Düşmə,${stats.actualDropoff}`
+    );
+    rows.push(
+      `İştirak edən şagirdlər,${dailyReport.totalStudents},İstifadə olunan avtobuslar,${dailyReport.totalBuses}`
+    );
+    rows.push('');
+    rows.push('Minmə Qeydləri');
+    rows.push('Şagird,Avtobus,Marşrut,Səfər Vaxtı,Qeyd Vaxtı,Planlanmış?');
+
+    boardingRecords.forEach(record => {
+      const student = studentMap.get(record.studentId);
+      const bus = busMap.get(record.busId);
+      const trip = tripMap.get(record.tripId);
+      const route = trip ? routeMap.get(trip.routeId) : undefined;
+
+      rows.push(
+        [
+          sanitize(student ? `${student.firstName} ${student.lastName}` : 'Bilinməyən'),
+          sanitize(bus?.plateNumber || '-'),
+          sanitize(route?.name || '-'),
+          sanitize(trip?.departureTime || '-'),
+          sanitize(formatDateTime(record.recordTime)),
+          sanitize(record.wasPlanned ? 'Bəli' : 'Xeyr'),
+        ].join(',')
+      );
+    });
+
+    rows.push('');
+    rows.push('Düşmə Qeydləri');
+    rows.push('Şagird,Avtobus,Marşrut,Səfər Vaxtı,Qeyd Vaxtı,Planlanmış?');
+
+    disembarkingRecords.forEach(record => {
+      const student = studentMap.get(record.studentId);
+      const bus = busMap.get(record.busId);
+      const trip = tripMap.get(record.tripId);
+      const route = trip ? routeMap.get(trip.routeId) : undefined;
+
+      rows.push(
+        [
+          sanitize(student ? `${student.firstName} ${student.lastName}` : 'Bilinməyən'),
+          sanitize(bus?.plateNumber || '-'),
+          sanitize(route?.name || '-'),
+          sanitize(trip?.departureTime || '-'),
+          sanitize(formatDateTime(record.recordTime)),
+          sanitize(record.wasPlanned ? 'Bəli' : 'Xeyr'),
+        ].join(',')
+      );
+    });
+
+    const csvContent = rows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `hesabat-${selectedDate}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   if (isLoading) {
