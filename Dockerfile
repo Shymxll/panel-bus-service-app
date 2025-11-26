@@ -1,29 +1,25 @@
-# Build stage
-FROM node:22-alpine AS builder
 
-WORKDIR /app
+# Stage 1: Build
+FROM node:22-alpine AS build
 
-# Copy package files
+WORKDIR /user/src/app
+
 COPY package.json package-lock.json ./
+RUN npm install
 
-# Install dependencies
-RUN npm ci
-
-# Copy source code
 COPY . .
-
-# Build the application
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine
+# Stage 2: Production
+FROM node:22-alpine AS production
 
-# Copy built files from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR /user/src/app
 
-# Expose port 6001
+COPY package.json package-lock.json ./
+RUN npm install --omit=dev
+
+COPY --from=build /user/src/app/dist ./dist
+
 EXPOSE 6001
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
-
+CMD ["npx", "serve", "-s", "dist", "-l", "6001"]
