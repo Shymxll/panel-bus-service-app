@@ -35,7 +35,7 @@ export const AdminDashboard = () => {
   const { students, isLoading: isStudentsLoading } = useStudents();
   const { routes, isLoading: isRoutesLoading } = useRoutes();
   const { stops, isLoading: isStopsLoading } = useStops();
-  const { trips, isLoading: isTripsLoading } = useTrips();
+  const { trips = [], isLoading: isTripsLoading } = useTrips();
   const { data: todayPlans = [], isLoading: isPlansLoading } = useDailyPlansByDate(today);
 
   const isLoading =

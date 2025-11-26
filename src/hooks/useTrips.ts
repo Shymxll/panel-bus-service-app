@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { tripService } from '@/services/trip.service';
 import { QUERY_KEYS } from '@/config/constants';
-import type { CreateTripData, UpdateTripData } from '@/types';
+import type { CreateTripData, UpdateTripData, Trip } from '@/types';
 
 export const useTrips = () => {
   const queryClient = useQueryClient();
@@ -13,7 +14,7 @@ export const useTrips = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery({
+  } = useQuery<Trip[]>({
     queryKey: QUERY_KEYS.trips.all,
     queryFn: async () => {
       console.log('🔄 useTrips - Fetching trips...');
@@ -28,11 +29,16 @@ export const useTrips = () => {
     },
     staleTime: 1000 * 60 * 5, // 5 dakika
     retry: 2, // 2 dəfə yenidən cəhd et
-    onError: (error: Error) => {
-      console.error('❌ useTrips - Query error:', error);
-      toast.error(`Səfərlər yüklənə bilmədi: ${error.message}`);
-    },
   });
+
+  // Error handling useEffect ilə
+  useEffect(() => {
+    if (error) {
+      console.error('❌ useTrips - Query error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Səfərlər yüklənə bilmədi';
+      toast.error(`Səfərlər yüklənə bilmədi: ${errorMessage}`);
+    }
+  }, [error]);
 
   // Səfər oluştur
   const createMutation = useMutation({
@@ -87,7 +93,7 @@ export const useTrips = () => {
 
 // Marşruta göre səfərlər getir
 export const useTripsByRoute = (routeId: number) => {
-  return useQuery({
+  return useQuery<Trip[]>({
     queryKey: QUERY_KEYS.trips.byRoute(routeId),
     queryFn: () => tripService.getByRouteId(routeId),
     enabled: !!routeId,
@@ -97,7 +103,7 @@ export const useTripsByRoute = (routeId: number) => {
 
 // Tek səfər getir
 export const useTrip = (id: number) => {
-  return useQuery({
+  return useQuery<Trip>({
     queryKey: QUERY_KEYS.trips.detail(id),
     queryFn: () => tripService.getById(id),
     enabled: !!id,

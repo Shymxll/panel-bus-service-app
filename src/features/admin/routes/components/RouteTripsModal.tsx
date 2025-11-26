@@ -161,10 +161,8 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
       <DeleteConfirmModal
         isOpen={deleteTripId !== null}
         title="Səfəri sil"
-        description="Bu səfəri silmək istədiyinizdən əminsiniz? Bu səfər planlarda istifadə olunursa, oradan da çıxarılmalıdır."
-        confirmText="Bəli, sil"
-        cancelText="Ləğv et"
-        onCancel={() => setDeleteTripId(null)}
+        message="Bu səfəri silmək istədiyinizdən əminsiniz? Bu səfər planlarda istifadə olunursa, oradan da çıxarılmalıdır."
+        onClose={() => setDeleteTripId(null)}
         onConfirm={handleDeleteTrip}
       />
     </>

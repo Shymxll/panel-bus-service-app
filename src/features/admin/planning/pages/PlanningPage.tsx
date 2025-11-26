@@ -26,7 +26,7 @@ export const PlanningPage = () => {
 
   const { data: dailyPlans = [], isLoading, refetch } = useDailyPlansByDate(selectedDate || new Date().toISOString().split('T')[0]!);
   const { students } = useStudents();
-  const { trips } = useTrips();
+  const { trips = [] } = useTrips();
   const { buses } = useBuses();
   const { routes } = useRoutes();
   const { deleteDailyPlan, isDeleting } = useDailyPlans();
@@ -39,8 +39,8 @@ export const PlanningPage = () => {
   }, [students]);
 
   const tripMap = useMemo(() => {
-    const map = new Map<number, typeof trips[0]>();
-    trips.forEach(t => map.set(t.id, t));
+    const map = new Map<number, (typeof trips)[0]>();
+    trips.forEach((t) => map.set(t.id, t));
     return map;
   }, [trips]);
 

@@ -40,7 +40,7 @@ export const DailyPlanFormModal = ({
 }: DailyPlanFormModalProps) => {
   const { createDailyPlan, updateDailyPlan, isCreating, isUpdating } = useDailyPlans();
   const { students } = useStudents();
-  const { trips, isLoading: isTripsLoading, error: tripsError, refetch: refetchTrips } = useTrips();
+  const { trips = [], isLoading: isTripsLoading, error: tripsError, refetch: refetchTrips } = useTrips();
   const { buses } = useBuses();
   const { routes } = useRoutes();
   const { stops } = useStops();
@@ -59,7 +59,7 @@ export const DailyPlanFormModal = ({
     if (isOpen) {
       console.log('🔍 DailyPlanFormModal - Trips data:', {
         trips,
-        tripsCount: trips?.length || 0,
+        tripsCount: trips.length || 0,
         isTripsLoading,
         tripsError,
       });
@@ -87,7 +87,7 @@ export const DailyPlanFormModal = ({
   });
 
   const selectedTripId = watch('tripId');
-  const selectedTrip = selectedTripId ? trips.find(t => t.id === selectedTripId) : null;
+  const selectedTrip = selectedTripId ? trips.find((t) => t.id === selectedTripId) : null;
   const selectedRouteId = selectedTrip?.routeId;
   const selectedRoute = selectedRouteId ? routes.find(r => r.id === selectedRouteId) : null;
 
@@ -257,11 +257,11 @@ export const DailyPlanFormModal = ({
                     ? 'Yüklənir...'
                     : tripsError
                       ? 'Xəta: Səfərlər yüklənə bilmədi'
-                      : (trips || []).length === 0
+                      : trips.length === 0
                         ? 'Səfər tapılmadı (əvvəlcə səfər yaradın)'
                         : 'Səfər seçin'}
                 </option>
-                {(trips || []).map(trip => {
+                {trips.map((trip) => {
                   const route = routes.find(r => r.id === trip.routeId);
                   return (
                     <option key={trip.id} value={trip.id}>
@@ -278,7 +278,7 @@ export const DailyPlanFormModal = ({
                   ⚠️ Səfərlər yüklənə bilmədi: {tripsError instanceof Error ? tripsError.message : 'Naməlum xəta'}
                 </p>
               )}
-              {!isTripsLoading && !tripsError && (trips || []).length === 0 && (
+              {!isTripsLoading && !tripsError && trips.length === 0 && (
                 <p className="mt-1 text-sm text-amber-600">
                   ℹ️ Heç bir səfər tapılmadı. Əvvəlcə marşrut üçün səfər yaratmalısınız.
                 </p>

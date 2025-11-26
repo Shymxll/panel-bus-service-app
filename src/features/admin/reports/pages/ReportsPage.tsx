@@ -44,7 +44,7 @@ export const ReportsPage = () => {
     useDailyPlansByDate(dateForQuery);
   const { students, isLoading: isStudentsLoading } = useStudents();
   const { buses, isLoading: isBusesLoading } = useBuses();
-  const { trips, isLoading: isTripsLoading } = useTrips();
+  const { trips = [], isLoading: isTripsLoading } = useTrips();
   const { routes, isLoading: isRoutesLoading } = useRoutes();
 
   const isLoading =
@@ -70,8 +70,8 @@ export const ReportsPage = () => {
   }, [buses]);
 
   const tripMap = useMemo(() => {
-    const map = new Map<number, typeof trips[0]>();
-    trips.forEach(t => map.set(t.id, t));
+    const map = new Map<number, (typeof trips)[0]>();
+    trips.forEach((t) => map.set(t.id, t));
     return map;
   }, [trips]);
 
