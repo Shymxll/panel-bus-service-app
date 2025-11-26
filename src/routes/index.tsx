@@ -16,6 +16,7 @@ import { StudentManagement } from '@/features/admin/students/pages/StudentManage
 import { DriverManagement } from '@/features/admin/drivers/pages/DriverManagement';
 import { BusManagement } from '@/features/admin/buses/pages/BusManagement';
 import { RouteManagement } from '@/features/admin/routes/pages/RouteManagement';
+import { StopManagement } from '@/features/admin/stops/pages/StopManagement';
 import { PlanningPage } from '@/features/admin/planning/pages/PlanningPage';
 import { ReportsPage } from '@/features/admin/reports/pages/ReportsPage';
 
@@ -89,6 +90,7 @@ export const AppRoutes = () => {
         <Route path="drivers" element={<DriverManagement />} />
         <Route path="buses" element={<BusManagement />} />
         <Route path="routes" element={<RouteManagement />} />
+        <Route path="stops" element={<StopManagement />} />
         <Route path="planning" element={<PlanningPage />} />
         <Route path="reports" element={<ReportsPage />} />
       </Route>

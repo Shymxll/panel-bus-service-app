@@ -10,6 +10,7 @@ import {
   LogOut,
   Menu,
   X,
+  MapPin,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
@@ -22,6 +23,7 @@ const navigation = [
   { name: 'Şoförlər', href: '/admin/drivers', icon: UserCircle },
   { name: 'Avtobuslar', href: '/admin/buses', icon: Bus },
   { name: 'Marşrutlar', href: '/admin/routes', icon: RouteIcon },
+  { name: 'Dayanacaqlar', href: '/admin/stops', icon: MapPin },
   { name: 'Planlaşdırma', href: '/admin/planning', icon: Calendar },
   { name: 'Hesabatlar', href: '/admin/reports', icon: BarChart3 },
 ];
