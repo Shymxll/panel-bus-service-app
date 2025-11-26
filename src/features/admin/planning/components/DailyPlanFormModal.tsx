@@ -313,10 +313,16 @@ export const DailyPlanFormModal = ({
             {/* Dayanacaq */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
-                Dayanacaq
+                Dayanacaq <span className="text-secondary-400 text-xs">(istəyə bağlı)</span>
               </label>
               <select
-                {...register('stopId', { valueAsNumber: true, setValueAs: (v) => v === '' ? undefined : Number(v) })}
+                {...register('stopId', {
+                  setValueAs: (v) => {
+                    if (v === '' || v === '0' || v === 0) return undefined;
+                    const num = Number(v);
+                    return isNaN(num) ? undefined : num;
+                  },
+                })}
                 className="w-full rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
               >
                 <option value="">Dayanacaq seçin (istəyə bağlı)</option>
@@ -324,7 +330,7 @@ export const DailyPlanFormModal = ({
                   .filter(s => s.isActive)
                   .map(stop => (
                     <option key={stop.id} value={stop.id}>
-                      {stop.name} - {stop.address}
+                      {stop.name} {stop.address ? `- ${stop.address}` : ''}
                     </option>
                   ))}
               </select>
