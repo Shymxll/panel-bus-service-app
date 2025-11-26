@@ -218,16 +218,14 @@ export const DailyPlanFormModal = ({
                 } bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500`}
               >
                 <option value={0}>Səfər seçin</option>
-                {trips
-                  .filter(t => t.isActive)
-                  .map(trip => {
-                    const route = routes.find(r => r.id === trip.routeId);
-                    return (
-                      <option key={trip.id} value={trip.id}>
-                        {route?.name || `Marşrut #${trip.routeId}`} - {trip.departureTime}
-                      </option>
-                    );
-                  })}
+                {(trips || []).map(trip => {
+                  const route = routes.find(r => r.id === trip.routeId);
+                  return (
+                    <option key={trip.id} value={trip.id}>
+                      {route?.name || `Marşrut #${trip.routeId}`} - {trip.departureTime}
+                    </option>
+                  );
+                })}
               </select>
               {errors.tripId && (
                 <p className="mt-1 text-sm text-red-500">{errors.tripId.message}</p>
