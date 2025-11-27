@@ -20,7 +20,7 @@ export const LandingPage = () => {
     {
       icon: Bus,
       title: 'Avtobus İdarəçiliyi',
-      description: 'Bütün avtobusları, şoförləri və marşrutları vahid platformadan idarə edin. Real vaxtda GPS izləmə və marşrut planlaması.',
+      description: 'Bütün avtobusları, sürücüləri və marşrutları vahid platformadan idarə edin. Real vaxtda GPS izləmə və marşrut planlaması.',
       gradient: 'from-green-500 to-emerald-500',
       bgGradient: 'from-green-50 to-emerald-50',
     },
@@ -48,7 +48,7 @@ export const LandingPage = () => {
     {
       icon: Users,
       title: 'İstifadəçi İdarəçiliyi',
-      description: 'Adminlər, şoförlər və valideynlər üçün ayrı-ayrı panel və səlahiyyətlər.',
+      description: 'Adminlər, sürücülər və valideynlər üçün ayrı-ayrı panel və səlahiyyətlər.',
       gradient: 'from-pink-500 to-rose-500',
       bgGradient: 'from-pink-50 to-rose-50',
     },
@@ -131,7 +131,7 @@ export const LandingPage = () => {
     {
       step: '03',
       title: 'İzləmə',
-      description: 'Şoförlər QR kodu skan edərək şagirdlərin minib-düşməsini qeyd edir',
+      description: 'Sürücülər QR kodu skan edərək şagirdlərin minib-düşməsini qeyd edir',
       icon: Smartphone,
     },
     {
