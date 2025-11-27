@@ -14,6 +14,7 @@ Modern React + TypeScript əsaslı okul servis takip sistemi frontend uygulamas�
 ## ✨ Özellikler
 
 ### Admin Paneli
+
 - 📊 Dashboard - Sistem genel görünümü
 - 👥 Öğrenci Yönetimi - QR kod oluşturma ile
 - 👨‍✈️ Şoför Yönetimi
@@ -23,6 +24,7 @@ Modern React + TypeScript əsaslı okul servis takip sistemi frontend uygulamas�
 - 📈 Raporlama Sistemi
 
 ### Şoför Paneli
+
 - 📱 Mobil-uyumlu arayüz
 - 📸 QR kod okuyucu (kamera erişimi)
 - ✅ Öğrenci binme kaydı
@@ -33,33 +35,40 @@ Modern React + TypeScript əsaslı okul servis takip sistemi frontend uygulamas�
 ## 🛠 Teknoloji Stack
 
 ### Core
+
 - **React 18.3** - UI kütüphanesi
 - **TypeScript 5.4** - Type safety
 - **Vite 5.2** - Build tool ve dev server
 
 ### State Management & Data Fetching
+
 - **Zustand 4.5** - Global state management
 - **TanStack Query 5.32** - Server state management
 - **React Router 6.23** - Routing
 
 ### Styling & UI
+
 - **TailwindCSS 3.4** - Utility-first CSS framework
 - **Lucide React** - Icon library
 - **Sonner** - Toast notifications
 
 ### Forms & Validation
+
 - **React Hook Form 7.51** - Form management
 - **Zod 3.23** - Schema validation
 - **@hookform/resolvers** - Form validation integration
 
 ### HTTP & API
+
 - **Axios 1.6** - HTTP client
 
 ### QR Code
+
 - **html5-qrcode 2.3** - QR kod okuma
 - **@zxing/library 0.21** - QR/Barcode library
 
 ### Development Tools
+
 - **ESLint 8.57** - Code linting
 - **Prettier 3.2** - Code formatting
 - **Vitest 1.5** - Unit testing
@@ -69,29 +78,34 @@ Modern React + TypeScript əsaslı okul servis takip sistemi frontend uygulamas�
 ## 📦 Kurulum
 
 ### Gereksinimler
-- Node.js 18+ 
+
+- Node.js 18+
 - npm veya yarn
 - Backend API (http://localhost:3001)
 
 ### Adımlar
 
 1. **Repoyu klonlayın**
+
 ```bash
 git clone <repo-url>
 cd panel-bus-service-app
 ```
 
 2. **Bağımlılıkları yükleyin**
+
 ```bash
 npm install
 ```
 
 3. **Environment dosyasını oluşturun**
+
 ```bash
 cp .env.example .env
 ```
 
 4. **.env dosyasını düzenleyin**
+
 ```env
 VITE_API_BASE_URL=http://localhost:3001
 VITE_API_TIMEOUT=30000
@@ -100,6 +114,7 @@ VITE_ENABLE_DEVTOOLS=true
 ```
 
 5. **Development server'ı başlatın**
+
 ```bash
 npm run dev
 ```
@@ -203,11 +218,13 @@ npm run test:coverage
 ### Giriş Bilgileri
 
 **Admin Paneli:**
+
 - URL: http://localhost:5173/admin/login
 - Email: admin@example.com
 - Password: admin123
 
 **Şoför Paneli:**
+
 - URL: http://localhost:5173/login
 - Email: (backend'den oluşturulacak)
 - Password: (backend'den oluşturulacak)
@@ -280,12 +297,14 @@ export const useMyData = () => {
 ## 📝 Kod Standartları
 
 ### TypeScript
+
 - Strict mode aktif
 - Her prop ve state tip tanımlı
 - `any` kullanımı yasak
 - Explicit return types tercih edilir
 
 ### Component Yapısı
+
 ```typescript
 // 1. Imports
 import { useState } from 'react';
@@ -300,19 +319,20 @@ interface Props {
 export const MyComponent = ({ title }: Props) => {
   // 4. Hooks
   const [state, setState] = useState();
-  
+
   // 5. Handlers
   const handleClick = () => {};
-  
+
   // 6. Effects
   useEffect(() => {}, []);
-  
+
   // 7. Render
   return <div>{title}</div>;
 };
 ```
 
 ### Naming Conventions
+
 - **Components**: PascalCase (Button, UserCard)
 - **Hooks**: camelCase with "use" prefix (useAuth, useUsers)
 - **Utils**: camelCase (formatDate, cn)
@@ -333,6 +353,7 @@ npm run test:coverage
 ```
 
 Test dosyaları component'lerin yanında:
+
 ```
 Button.tsx
 Button.test.tsx
@@ -353,10 +374,12 @@ Build dosyaları `dist/` klasörüne oluşturulur.
 ### Deployment
 
 **Vercel/Netlify:**
+
 - Otomatik deployment
 - Environment variables panel üzerinden
 
 **Custom Server:**
+
 ```bash
 npm run build
 # dist/ klasörünü static server ile serve edin

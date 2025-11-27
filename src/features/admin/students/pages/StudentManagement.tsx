@@ -28,10 +28,11 @@ import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
 import { StudentQrModal } from '../components/StudentQrModal';
 import type { Student } from '@/types';
 
+// Şagird listesini filtreleme, sıralama ve QR aksiyonlarıyla yöneten sayfa.
 export const StudentManagement = () => {
   const { students, isLoading, refetch, deleteStudent, updateStudent, isDeleting, isUpdating } = useStudents();
   
-  // State
+  // Arama, filtre ve sıralama için kullanılan UI durumları.
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const [schoolFilter, setSchoolFilter] = useState<string>('all');
@@ -39,13 +40,13 @@ export const StudentManagement = () => {
   const [sortField, setSortField] = useState<keyof Student>('firstName');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   
-  // Modals
+  // Modal aç/kapa durumları ve seçili kayıt.
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
-  // Unique schools and grades for filters
+  // Filtrelerde kullanılacak benzersiz okul ve sınıf listeleri.
   const schools = useMemo(() => {
     const uniqueSchools = [...new Set(students.map(s => s.school))];
     return uniqueSchools.sort();
@@ -56,11 +57,11 @@ export const StudentManagement = () => {
     return uniqueGrades.sort();
   }, [students]);
 
-  // Filtered and sorted students
+  // Tüm filtre ve sıralama kurallarını uygulayıp tabloya kaynak olacak listeyi üretir.
   const filteredStudents = useMemo(() => {
     let result = [...students];
 
-    // Search filter
+    // Metin araması: ad, soyad, QR kodu vb.
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(s => 
@@ -73,24 +74,24 @@ export const StudentManagement = () => {
       );
     }
 
-    // Status filter
+    // Duruma göre filtreleme (aktif/deaktif)
     if (statusFilter !== 'all') {
       result = result.filter(s => 
         statusFilter === 'active' ? s.isActive : !s.isActive
       );
     }
 
-    // School filter
+    // Okul filtresi
     if (schoolFilter !== 'all') {
       result = result.filter(s => s.school === schoolFilter);
     }
 
-    // Grade filter
+    // Sınıf filtresi
     if (gradeFilter !== 'all') {
       result = result.filter(s => s.grade === gradeFilter);
     }
 
-    // Sort
+    // Kolon başlığına göre sıralama
     result.sort((a, b) => {
       const aValue = a[sortField];
       const bValue = b[sortField];
@@ -112,7 +113,7 @@ export const StudentManagement = () => {
     return result;
   }, [students, searchQuery, statusFilter, schoolFilter, gradeFilter, sortField, sortDirection]);
 
-  // Statistics
+  // Kartlarda gösterilen özet sayılar.
   const stats = useMemo(() => ({
     total: students.length,
     active: students.filter(s => s.isActive).length,
@@ -120,7 +121,7 @@ export const StudentManagement = () => {
     schools: new Set(students.map(s => s.school)).size,
   }), [students]);
 
-  // Handlers
+  // Kullanıcı etkileşimleri: sıralama, düzenleme, silme vb.
   const handleSort = (field: keyof Student) => {
     if (sortField === field) {
       setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
@@ -172,7 +173,7 @@ export const StudentManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Sayfa başlığı ve üst aksiyonlar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-secondary-900">Şagirdlər</h1>
@@ -198,7 +199,7 @@ export const StudentManagement = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Özet kartlar: toplam, aktif, pasif, okul sayısı */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="p-4">
@@ -257,11 +258,11 @@ export const StudentManagement = () => {
         </Card>
       </div>
 
-      {/* Filters */}
+      {/* Arama ve filtre çubuğu */}
       <Card>
         <CardBody className="p-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-            {/* Search */}
+            {/* Metin bazlı arama alanı */}
             <div className="flex-1">
               <Input
                 placeholder="Ad, soyad, QR kod, məktəb və ya telefon ilə axtar..."
@@ -271,7 +272,7 @@ export const StudentManagement = () => {
               />
             </div>
 
-            {/* Filters */}
+            {/* Durum, okul ve sınıf seçimleri */}
             <div className="flex flex-wrap gap-2">
               <select
                 className="rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
@@ -309,7 +310,7 @@ export const StudentManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Students Table */}
+      {/* Şagird tablo görünümü */}
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">
@@ -481,7 +482,7 @@ export const StudentManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Modals */}
+      {/* Form, silme onayı ve QR modal entegrasyonları */}
       <StudentFormModal
         isOpen={isFormModalOpen}
         onClose={handleCloseFormModal}

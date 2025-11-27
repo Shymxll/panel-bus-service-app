@@ -5,6 +5,7 @@ interface TableProps {
   className?: string;
 }
 
+// Bu tablo yapisi govde, baslik ve hucreler icin esnek bir temel olusturur.
 export const Table = ({ children, className }: TableProps) => {
   return (
     <div className="overflow-x-auto">

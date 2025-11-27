@@ -13,6 +13,7 @@ import { useRoutes } from '@/hooks/useRoutes';
 import { useStops } from '@/hooks/useStops';
 import type { DailyPlan } from '@/types';
 
+// Günlük plan kayıtları için doğrulama şeması.
 const dailyPlanSchema = z.object({
   planDate: z.string().min(1, 'Tarix tələb olunur'),
   studentId: z.number().min(1, 'Şagird seçilməlidir'),
@@ -32,6 +33,7 @@ interface DailyPlanFormModalProps {
   defaultDate?: string; // Modal açılırken varsayılan tarih
 }
 
+// Şagirdlerin günlük minme/düşme planlarını oluşturan modal form.
 export const DailyPlanFormModal = ({
   isOpen,
   onClose,
@@ -46,7 +48,7 @@ export const DailyPlanFormModal = ({
   const { stops } = useStops();
   const isEditing = !!dailyPlan;
 
-  // Modal açılanda trips-i yenilə (yeni yaradılan səfərləri görmək üçün)
+  // Modal açıldığında en güncel sefer listesini yeniden çek.
   useEffect(() => {
     if (isOpen) {
       console.log('🔄 DailyPlanFormModal - Modal açıldı, trips-i yeniləyirəm...');
@@ -54,7 +56,7 @@ export const DailyPlanFormModal = ({
     }
   }, [isOpen, refetchTrips]);
 
-  // Debug: trips verisini console-da göstər
+  // Debug amaçlı sefer verisini konsola dök (sorunları izlemek için).
   useEffect(() => {
     if (isOpen) {
       console.log('🔍 DailyPlanFormModal - Trips data:', {
@@ -91,7 +93,7 @@ export const DailyPlanFormModal = ({
   const selectedRouteId = selectedTrip?.routeId;
   const selectedRoute = selectedRouteId ? routes.find(r => r.id === selectedRouteId) : null;
 
-  // Seçilen səfərə uyğun avtobus avtomatik seç
+  // Seçilen sefere göre bus alanını otomatik doldur.
   useEffect(() => {
     if (selectedRoute?.busId && selectedTripId && !dailyPlan) {
       // Yalnız yeni plan yaradarkən avtomatik seç (redaktə zamanı deyil)
@@ -104,7 +106,7 @@ export const DailyPlanFormModal = ({
     }
   }, [selectedRoute?.busId, selectedTripId, dailyPlan, setValue, watch]);
 
-  // Seçilen route'a göre stops'ları filtrele
+  // Route bilgisi varsa durağa göre filtrelenmiş liste hazırla (şimdilik tüm duraklar).
   const availableStops = selectedRouteId
     ? stops.filter(stop => {
         // Route'un stops'larını kontrol et (basitleştirilmiş - gerçekte route.stops kontrol edilmeli)
@@ -113,6 +115,7 @@ export const DailyPlanFormModal = ({
     : stops;
 
   useEffect(() => {
+    // Modal her açıldığında formu seçilen kayda göre başa sar.
     if (isOpen) {
       if (dailyPlan) {
         reset({
@@ -139,6 +142,7 @@ export const DailyPlanFormModal = ({
   }, [isOpen, dailyPlan, defaultDate, reset]);
 
   const onSubmit = (data: DailyPlanFormData) => {
+    // Güncelleme ve oluşturma senaryolarını tek noktada ele al.
     if (dailyPlan) {
       updateDailyPlan(
         {
@@ -179,19 +183,19 @@ export const DailyPlanFormModal = ({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Modal kapalıyken DOM'a render etme.
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
+      {/* Arka plan tıklamasıyla modalı kapat */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal */}
+      {/* Modal kapsayıcısı */}
       <div className="relative w-full max-w-2xl mx-4 bg-white rounded-xl shadow-xl max-h-[90vh] overflow-hidden flex flex-col">
-        {/* Header */}
+        {/* Başlık */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-200">
           <h2 className="text-xl font-semibold text-secondary-900">
             {isEditing ? 'Planı Redaktə Et' : 'Yeni Plan Əlavə Et'}
@@ -204,10 +208,10 @@ export const DailyPlanFormModal = ({
           </button>
         </div>
 
-        {/* Body */}
+        {/* Form gövdesi */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 flex-1 overflow-y-auto">
           <div className="space-y-4">
-            {/* Plan Tarixi */}
+            {/* Plan tarihi */}
             <Input
               label="Plan Tarixi"
               type="date"
@@ -215,7 +219,7 @@ export const DailyPlanFormModal = ({
               error={errors.planDate?.message}
             />
 
-            {/* Şagird */}
+            {/* Öğrenci seçimi */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
                 Şagird <span className="text-red-500">*</span>
@@ -240,7 +244,7 @@ export const DailyPlanFormModal = ({
               )}
             </div>
 
-            {/* Səfər */}
+            {/* Sefere göre rota seçimi */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
                 Səfər <span className="text-red-500">*</span>
@@ -285,7 +289,7 @@ export const DailyPlanFormModal = ({
               )}
             </div>
 
-            {/* Avtobus */}
+            {/* Otobus seçimi */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
                 Avtobus <span className="text-red-500">*</span>
@@ -310,7 +314,7 @@ export const DailyPlanFormModal = ({
               )}
             </div>
 
-            {/* Dayanacaq */}
+            {/* Durak bilgisi */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
                 Dayanacaq <span className="text-secondary-400 text-xs">(istəyə bağlı)</span>
@@ -336,7 +340,7 @@ export const DailyPlanFormModal = ({
               </select>
             </div>
 
-            {/* Minmə/Düşmə */}
+            {/* Minme/dusme kutusu */}
             <div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -350,7 +354,7 @@ export const DailyPlanFormModal = ({
               </label>
             </div>
 
-            {/* Qeydlər */}
+            {/* Ilave notlar */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
                 Qeydlər
@@ -364,7 +368,7 @@ export const DailyPlanFormModal = ({
             </div>
           </div>
 
-          {/* Footer */}
+          {/* Alt aksiyonlar */}
           <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-secondary-200">
             <Button variant="secondary" onClick={onClose} type="button">
               Ləğv et

@@ -11,20 +11,22 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/common/Button';
 
+// Suruculer icin sinirli sayfa setini merkezi olarak tanimlar.
 const navigation = [
   { name: 'İdarə Paneli', href: '/driver/dashboard', icon: LayoutDashboard },
   { name: 'Minənlər', href: '/driver/boarding', icon: LogIn },
   { name: 'Düşənlər', href: '/driver/alighting', icon: LogOutIcon },
 ];
 
+// Surucu arayuzlerini mobil uyumlu yan menu ve icerik alaniyla sarmalar.
 export const DriverLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
-  const { user, logout } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Drawer durumu
+  const location = useLocation(); // Aktif link vurgusu icin
+  const { user, logout } = useAuth(); // Oturum ve cikis
 
   return (
     <div className="flex h-screen bg-secondary-50">
-      {/* Mobile sidebar backdrop */}
+      {/* Mobilde menunun disina tiklandiginda kapanmasini saglayan arka plan */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-20 bg-black/50 lg:hidden"
@@ -32,7 +34,7 @@ export const DriverLayout = () => {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Surucunun gorev sayfalarini gosteren yan panel */}
       <aside
         className={cn(
           'fixed inset-y-0 left-0 z-30 w-64 transform bg-white shadow-lg transition-transform duration-300 lg:static lg:translate-x-0',
@@ -40,7 +42,7 @@ export const DriverLayout = () => {
         )}
       >
         <div className="flex h-full flex-col">
-          {/* Logo */}
+          {/* Baslik ve mobil kapatma butonu */}
           <div className="flex h-16 items-center justify-between border-b border-secondary-200 px-6">
             <h1 className="text-xl font-bold text-primary-600">
               Şoför Paneli
@@ -53,7 +55,7 @@ export const DriverLayout = () => {
             </button>
           </div>
 
-          {/* Navigation */}
+          {/* Sadece yetkili rotalari gosterip aktif olani one cikaran liste */}
           <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
             {navigation.map((item) => {
               const Icon = item.icon;
@@ -78,7 +80,7 @@ export const DriverLayout = () => {
             })}
           </nav>
 
-          {/* User info */}
+          {/* Oturum acmis surucu bilgisi ve guvenli cikis */}
           <div className="border-t border-secondary-200 p-4">
             <div className="mb-3">
               <p className="text-sm font-medium text-secondary-900">
@@ -99,9 +101,9 @@ export const DriverLayout = () => {
         </div>
       </aside>
 
-      {/* Main content */}
+      {/* Sagda surucu sayfa iceriklerinin yerlestigi ana alan */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Header */}
+        {/* Mobil menu butonu ve tarih bilgisi */}
         <header className="flex h-16 items-center justify-between border-b border-secondary-200 bg-white px-4 lg:px-6">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -120,7 +122,7 @@ export const DriverLayout = () => {
           </div>
         </header>
 
-        {/* Page content */}
+        {/* Dinamik moduller Outlet ile yuklenir */}
         <main className="flex-1 overflow-y-auto p-4 lg:p-6">
           <Outlet />
         </main>

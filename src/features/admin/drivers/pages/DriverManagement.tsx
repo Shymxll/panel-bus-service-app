@@ -27,6 +27,7 @@ import type { User } from '@/types';
 type StatusFilter = 'all' | 'active' | 'inactive';
 type SortOption = 'name-asc' | 'name-desc' | 'date-desc' | 'date-asc';
 
+// Şoför kadrosunu yönetme, filtreleme ve durum değiştirme ekranı.
 export const DriverManagement = () => {
   const {
     drivers,
@@ -61,6 +62,7 @@ export const DriverManagement = () => {
     let result = [...drivers];
 
     if (searchQuery) {
+      // Ad, e-posta veya telefon üzerinden serbest metin araması.
       const query = searchQuery.toLowerCase();
       result = result.filter(
         (driver) =>
@@ -77,6 +79,7 @@ export const DriverManagement = () => {
     }
 
     result.sort((a, b) => {
+      // Secilen siralama kriterini uygula.
       switch (sortOption) {
         case 'name-asc':
           return a.name.localeCompare(b.name);
@@ -117,6 +120,7 @@ export const DriverManagement = () => {
   };
 
   const handleConfirmDelete = () => {
+    // Onaylanan silme istegini API'ye ilet.
     if (!selectedDriver) return;
     setDeletingId(selectedDriver.id);
     deleteUser(selectedDriver.id, {
@@ -137,7 +141,7 @@ export const DriverManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Baslik ve hizli aksiyonlar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-secondary-900">Şoförlər</h1>
@@ -159,7 +163,7 @@ export const DriverManagement = () => {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Şoför kadrosu özet kartları */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="flex items-center justify-between">
@@ -196,7 +200,7 @@ export const DriverManagement = () => {
         </Card>
       </div>
 
- 	    {/* Filters */}
+ 	    {/* Filtre ve sıralama araçları */}
       <Card>
         <CardBody className="flex flex-col gap-4 lg:flex-row lg:items-center">
           <div className="flex-1">
@@ -231,7 +235,7 @@ export const DriverManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Drivers Table */}
+      {/* Şoför tablo görünümü */}
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Şoförlər ({filteredDrivers.length})</h2>
@@ -345,7 +349,7 @@ export const DriverManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Modals */}
+      {/* Form ve silme onay modalları */}
       <DriverFormModal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}

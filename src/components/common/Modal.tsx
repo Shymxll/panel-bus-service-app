@@ -11,6 +11,7 @@ interface ModalProps {
   showCloseButton?: boolean;
 }
 
+// Bu modal bileseni farkli boyut ve baslik secenekleriyle genel kullanim sunar.
 export const Modal = ({
   isOpen,
   onClose,

@@ -13,6 +13,7 @@ interface RouteTripsModalProps {
   route: Route | null;
 }
 
+// Bir marşruta ait sefeleri listeleyen ve yoneten modal.
 export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps) => {
   const { trips: allTrips, deleteTrip } = useTrips();
   const { data: routeTrips = [], isLoading, refetch } = useTripsByRoute(route?.id || 0);
@@ -33,6 +34,7 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
   };
 
   const handleDeleteTrip = () => {
+    // Silme istegini tamamlayip listeyi guncelle.
     if (deleteTripId) {
       deleteTrip(deleteTripId, {
         onSuccess: () => {
@@ -65,7 +67,7 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
           </div>
 
           <div className="max-h-[calc(90vh-180px)] overflow-y-auto p-6">
-            {/* Add Trip Button */}
+            {/* Yeni sefere gecis butonu */}
             <div className="mb-4">
               <Button
                 leftIcon={<Plus className="h-4 w-4" />}
@@ -76,7 +78,7 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
               </Button>
             </div>
 
-            {/* Trips List */}
+            {/* Sefere ait kart listesini goster */}
             {isLoading ? (
               <div className="py-8 text-center text-secondary-500">Yüklənir...</div>
             ) : routeTrips.length === 0 ? (
@@ -145,7 +147,7 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
         </div>
       </div>
 
-      {/* Trip Form Modal */}
+      {/* Sefere ait olusturma/düzenleme formu */}
       <TripFormModal
         isOpen={isTripFormOpen}
         onClose={() => {
@@ -157,7 +159,7 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
         trip={selectedTrip}
       />
 
-      {/* Delete Confirm Modal */}
+      {/* Silme onay modali */}
       <DeleteConfirmModal
         isOpen={deleteTripId !== null}
         title="Səfəri sil"

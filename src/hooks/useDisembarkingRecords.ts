@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { disembarkingRecordService } from '@/services/disembarkingRecord.service';
 import { QUERY_KEYS } from '@/config/constants';
 
+// Dusme kayitlarini sorgulayan hook.
 export const useDisembarkingRecords = () => {
   const {
     data: disembarkingRecords = [],

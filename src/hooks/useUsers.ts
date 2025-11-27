@@ -5,10 +5,11 @@ import { authService } from '@/services/auth.service';
 import { QUERY_KEYS } from '@/config/constants';
 import type { User, RegisterData } from '@/types';
 
+// TUM kullanici CRUD islemlerini yoneten hook.
 export const useUsers = () => {
   const queryClient = useQueryClient();
 
-  // Get all users
+  // Tum kullanicilari getir
   const {
     data: users = [],
     isLoading,
@@ -19,10 +20,10 @@ export const useUsers = () => {
     queryFn: () => userService.getAll(),
   });
 
-  // Get drivers only
+  // Sadece suruculeri filtrele
   const drivers = users.filter((user) => user.role === 'driver');
 
-  // Update user mutation
+  // Profil guncelleme mutasyonu
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: Partial<User> }) =>
       userService.update(id, data),
@@ -35,7 +36,7 @@ export const useUsers = () => {
     },
   });
 
-  // Create driver mutation (uses auth endpoint for password hashing + role assignment)
+  // Yeni sofor olusturmak icin auth servisinden yararlan.
   const createDriverMutation = useMutation({
     mutationFn: (data: RegisterData) =>
       authService.createDriver({
@@ -55,7 +56,7 @@ export const useUsers = () => {
     },
   });
 
-  // Delete user mutation
+  // Kullanici silme mutasyonu
   const deleteMutation = useMutation({
     mutationFn: (id: number) => userService.delete(id),
     onSuccess: () => {
@@ -82,7 +83,7 @@ export const useUsers = () => {
   };
 };
 
-// Get single user by ID
+// ID'ye gore tek kullanici sorgusu
 export const useUser = (id: number) => {
   return useQuery({
     queryKey: QUERY_KEYS.users.detail(id),

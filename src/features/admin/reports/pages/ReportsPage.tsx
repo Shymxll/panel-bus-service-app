@@ -26,6 +26,7 @@ import { useTrips } from '@/hooks/useTrips';
 import { useRoutes } from '@/hooks/useRoutes';
 import { Loading } from '@/components/common/Loading';
 
+// Minme/dusme kayitlarini tarih bazli analiz edip raporlayan ekran.
 export const ReportsPage = () => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(
@@ -34,7 +35,7 @@ export const ReportsPage = () => {
   const [studentSearch, setStudentSearch] = useState('');
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null);
 
-  // Data hooks
+  // Aynı tarihe ait plan ve gerçek kayıtları çeken sorgular.
   const dateForQuery = selectedDate || new Date().toISOString().split('T')[0]!;
   const { data: boardingRecords = [], isLoading: isBoardingLoading } =
     useBoardingRecordsByDate(dateForQuery);
@@ -56,7 +57,7 @@ export const ReportsPage = () => {
     isTripsLoading ||
     isRoutesLoading;
 
-  // Maps for quick lookup
+  // Id -> nesne mapleri rapor kartlarinda hizli erisim saglar.
   const studentMap = useMemo(() => {
     const map = new Map<number, typeof students[0]>();
     students.forEach(s => map.set(s.id, s));
@@ -81,7 +82,7 @@ export const ReportsPage = () => {
     return map;
   }, [routes]);
 
-  // Statistics
+  // Planlanan vs gerceklesen minme/dusme sayilarini hesapla.
   const stats = useMemo(() => {
     const plannedBoardingPlans = dailyPlans.filter(p => p.isBoarding);
     const plannedDropoffPlans = dailyPlans.filter(p => !p.isBoarding);
@@ -116,7 +117,7 @@ export const ReportsPage = () => {
     };
   }, [dailyPlans, boardingRecords, disembarkingRecords]);
 
-  // Filtered students for search
+  // Ogrenci aramasini girilen metne gore filtrele.
   const filteredStudents = useMemo(() => {
     if (!studentSearch) return students.slice(0, 10);
     const query = studentSearch.toLowerCase();
@@ -129,7 +130,7 @@ export const ReportsPage = () => {
     );
   }, [students, studentSearch]);
 
-  // Student history (if selected)
+  // Secili ogrencinin gun icindeki tum hareketlerini getir.
   const studentHistory = useMemo(() => {
     if (!selectedStudentId) return null;
 
@@ -146,7 +147,7 @@ export const ReportsPage = () => {
     };
   }, [selectedStudentId, boardingRecords, disembarkingRecords, studentMap]);
 
-  // Daily report summary
+  // Genel rapor ozetinde kullanilacak benzersiz ogrenci ve otobus sayisi.
   const dailyReport = useMemo(() => {
     const uniqueStudents = new Set([
       ...boardingRecords.map(r => r.studentId),
@@ -168,6 +169,7 @@ export const ReportsPage = () => {
   }, [selectedDate, boardingRecords, disembarkingRecords]);
 
   const handleExportReport = () => {
+    // Basit CSV olusturucu: tum satirlari manuel olarak birlestir.
     const sanitize = (value: string | number | boolean | undefined | null) => {
       if (value === undefined || value === null) return '';
       const stringValue = String(value).replace(/"/g, '""');
@@ -248,7 +250,7 @@ export const ReportsPage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Sayfa başlığı ve yenileme */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-secondary-900">Hesabatlar</h1>
@@ -265,7 +267,7 @@ export const ReportsPage = () => {
         </Button>
       </div>
 
-      {/* Date Selector */}
+      {/* Tarih secimi ve rapor indirme */}
       <Card>
         <CardBody className="p-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -288,7 +290,7 @@ export const ReportsPage = () => {
         </CardBody>
       </Card>
 
-      {/* Statistics Cards */}
+      {/* Planlanan vs gerceklesen metrik kartlari */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="p-4">
@@ -361,7 +363,7 @@ export const ReportsPage = () => {
         </Card>
       </div>
 
-      {/* Warnings */}
+      {/* Kacirilan planlar varsa uyari karti */}
       {(stats.missedBoarding > 0 || stats.missedDropoff > 0) && (
         <Card className="border-red-200 bg-red-50">
           <CardBody className="p-4">
@@ -384,7 +386,7 @@ export const ReportsPage = () => {
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Daily Report Summary */}
+        {/* Gunluk ozet kutusu */}
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold text-secondary-900">
@@ -435,7 +437,7 @@ export const ReportsPage = () => {
           </CardBody>
         </Card>
 
-        {/* Student History Search */}
+        {/* Ogrenci bazli gecmis arama */}
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold text-secondary-900">
@@ -518,7 +520,7 @@ export const ReportsPage = () => {
         </Card>
       </div>
 
-      {/* Recent Records */}
+      {/* Son kayit listesi */}
       <Card>
         <CardHeader>
           <h2 className="text-lg font-semibold text-secondary-900">
@@ -527,7 +529,7 @@ export const ReportsPage = () => {
         </CardHeader>
         <CardBody>
           <div className="space-y-4">
-            {/* Boarding Records */}
+            {/* Minme kayitlari */}
             <div>
               <h3 className="text-sm font-semibold text-secondary-700 mb-2 flex items-center gap-2">
                 <ArrowUp className="h-4 w-4 text-green-600" />
@@ -569,7 +571,7 @@ export const ReportsPage = () => {
               )}
             </div>
 
-            {/* Disembarking Records */}
+            {/* Dusme kayitlari */}
             <div>
               <h3 className="text-sm font-semibold text-secondary-700 mb-2 flex items-center gap-2">
                 <ArrowDown className="h-4 w-4 text-orange-600" />

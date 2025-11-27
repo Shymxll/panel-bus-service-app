@@ -5,6 +5,7 @@ import { tripService } from '@/services/trip.service';
 import { QUERY_KEYS } from '@/config/constants';
 import type { CreateTripData, UpdateTripData, Trip } from '@/types';
 
+// Sefere ait sorgular ve mutasyonlar icin hook.
 export const useTrips = () => {
   const queryClient = useQueryClient();
 

@@ -8,6 +8,7 @@ import { Input } from '@/components/common/Input';
 import type { Stop } from '@/types';
 import { useStops } from '@/hooks/useStops';
 
+// Dayanacak formu icin dogrulama kurallari.
 const stopSchema = z.object({
   name: z.string().min(1, 'Ad tələb olunur').max(255, 'Ad maksimum 255 simvol ola bilər'),
   address: z.string().optional(),
@@ -36,6 +37,7 @@ interface StopFormModalProps {
   stop: Stop | null;
 }
 
+// Durak ekleme/düzenleme modalı.
 export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => {
   const { createStop, updateStop, isCreating, isUpdating } = useStops();
   const isEditing = !!stop;
@@ -57,6 +59,7 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
   });
 
   useEffect(() => {
+    // Modal acildiginda mevcut verileri form alanlarina dagit.
     if (isOpen) {
       if (stop) {
         reset({
@@ -79,7 +82,7 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
   }, [isOpen, stop, reset]);
 
   const onSubmit = (data: StopFormData) => {
-    // Backend-ə göndərməzdən əvvəl boş string-ləri null-a çevir
+    // Backend'e gondermeden once bos stringleri undefined yap.
     const submitData = {
       name: data.name.trim(),
       address: data.address?.trim() || undefined,
@@ -105,7 +108,7 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Modal kapaliysa gostermeyelim.
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -120,6 +123,7 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
           </button>
         </div>
 
+        {/* Form alanlari */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-6 py-5">
           <Input
             label="Ad"
@@ -152,6 +156,7 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
             Aktiv dayanacaq
           </label>
 
+          {/* Alt aksiyonlar */}
           <div className="mt-4 flex justify-end gap-3">
             <Button type="button" variant="outline" onClick={onClose}>
               Ləğv et

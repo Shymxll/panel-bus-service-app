@@ -1,14 +1,16 @@
+// Tum HTTP istemcilerinin uymasi gereken temel ayarlar: base URL, zaman asimi, cookie ile kimlik dogrulama.
 export const API_CONFIG = {
-  // In development, use proxy (empty string = relative URL)
-  // In production, use full URL
-  baseURL: import.meta.env.VITE_API_BASE_URL || 
-    (import.meta.env.DEV ? '' : 'http://localhost:3000'),
+  // Gelistirmede proxy kullanildigi icin bos string tarayicinin ayni hostuna isaret eder; prod'da tam URL gerekir.
+  baseURL:
+    import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? '' : 'http://localhost:3000'),
+  // Ortam degiskeni yoksa 30 sn'lik zaman asimi kullanilir.
   timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || '30000', 10),
-  withCredentials: true, // For cookie-based auth (httpOnly cookies)
+  withCredentials: true, // httpOnly cookie tabanli oturum icin gerekli bayrak.
 };
 
+// Backend'in tum REST sonuclarini tek noktadan yonetilen fonksiyonlarla tanimlar.
 export const API_ENDPOINTS = {
-  // Auth
+  // Kimlik islemleri ve rol bazli girisler.
   auth: {
     register: '/api/auth/register',
     login: '/api/auth/login',
@@ -18,7 +20,7 @@ export const API_ENDPOINTS = {
     createAdmin: '/api/auth/create-admin',
     createDriver: '/api/auth/create-driver',
   },
-  // Users
+  // Sistem kullanicilari (admin, veli vb.) uzerindeki CRUD islemleri.
   users: {
     list: '/api/users',
     detail: (id: number) => `/api/users/${id}`,
@@ -26,7 +28,7 @@ export const API_ENDPOINTS = {
     update: (id: number) => `/api/users/${id}`,
     delete: (id: number) => `/api/users/${id}`,
   },
-  // Buses
+  // Fiziksel arac kayitlarinin yonetimi.
   buses: {
     list: '/api/buses',
     detail: (id: number) => `/api/buses/${id}`,
@@ -34,7 +36,7 @@ export const API_ENDPOINTS = {
     update: (id: number) => `/api/buses/${id}`,
     delete: (id: number) => `/api/buses/${id}`,
   },
-  // Students (to be implemented)
+  // Ogrenci kartlari ve QR kod uretimi.
   students: {
     list: '/api/students',
     detail: (id: number) => `/api/students/${id}`,
@@ -43,7 +45,7 @@ export const API_ENDPOINTS = {
     delete: (id: number) => `/api/students/${id}`,
     generateQR: (id: number) => `/api/students/${id}/qr`,
   },
-  // Routes
+  // Servis guzergah planlari.
   routes: {
     list: '/api/routes',
     detail: (id: number) => `/api/routes/${id}`,
@@ -51,7 +53,7 @@ export const API_ENDPOINTS = {
     update: (id: number) => `/api/routes/${id}`,
     delete: (id: number) => `/api/routes/${id}`,
   },
-  // Stops
+  // Durak bilgileri.
   stops: {
     list: '/api/stops',
     detail: (id: number) => `/api/stops/${id}`,
@@ -59,7 +61,7 @@ export const API_ENDPOINTS = {
     update: (id: number) => `/api/stops/${id}`,
     delete: (id: number) => `/api/stops/${id}`,
   },
-  // Daily Plans
+  // Gunluk servis planlari ve filtreleme yardimcilari.
   dailyPlans: {
     list: '/api/daily-plans',
     detail: (id: number) => `/api/daily-plans/${id}`,
@@ -69,7 +71,7 @@ export const API_ENDPOINTS = {
     byDate: (date: string) => `/api/daily-plans/date/${date}`,
     byStudent: (studentId: number) => `/api/daily-plans/student/${studentId}`,
   },
-  // Trips
+  // Gun icinde calisilan seferler.
   trips: {
     list: '/api/trips',
     detail: (id: number) => `/api/trips/${id}`,
@@ -78,7 +80,7 @@ export const API_ENDPOINTS = {
     delete: (id: number) => `/api/trips/${id}`,
     byRoute: (routeId: number) => `/api/trips/route/${routeId}`,
   },
-  // Boarding Records
+  // Araca binis kayitlari ve raporlama endpointleri.
   boardingRecords: {
     list: '/api/boarding-records',
     detail: (id: number) => `/api/boarding-records/${id}`,
@@ -88,7 +90,7 @@ export const API_ENDPOINTS = {
     byDate: (date: string) => `/api/boarding-records/date/${date}`,
     byStudent: (studentId: number) => `/api/boarding-records/student/${studentId}`,
   },
-  // Disembarking Records
+  // Aractan inis kayitlari.
   disembarkingRecords: {
     list: '/api/disembarking-records',
     detail: (id: number) => `/api/disembarking-records/${id}`,
@@ -99,4 +101,3 @@ export const API_ENDPOINTS = {
     byStudent: (studentId: number) => `/api/disembarking-records/student/${studentId}`,
   },
 };
-

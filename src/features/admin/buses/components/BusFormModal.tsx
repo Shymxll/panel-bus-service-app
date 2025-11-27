@@ -8,6 +8,7 @@ import { Input } from '@/components/common/Input';
 import type { Bus as BusType, CreateBusData, User } from '@/types';
 import type { UseMutateFunction } from '@tanstack/react-query';
 
+// Otobus formunun tum validasyonlarini toplar.
 const busSchema = z.object({
   plateNumber: z.string().min(3, 'Plaka ən azı 3 simvol olmalıdır'),
   brand: z.string().optional(),
@@ -35,6 +36,7 @@ interface BusFormModalProps {
   isUpdating: boolean;
 }
 
+// Yeni otobus ekleme ve mevcut kaydi guncelleme icin modal formu.
 export const BusFormModal = ({
   isOpen,
   onClose,
@@ -45,7 +47,7 @@ export const BusFormModal = ({
   isCreating,
   isUpdating,
 }: BusFormModalProps) => {
-  const isEditing = !!bus;
+  const isEditing = !!bus; // Modali duzenleme modunda mi calistigini belirler.
 
   const {
     register,
@@ -69,6 +71,7 @@ export const BusFormModal = ({
   const selectedDriverId = watch('driverId');
 
   useEffect(() => {
+    // Duzenleme modunda mevcut verileri doldur, aksi halde varsayilanlari ayarla.
     if (bus) {
       reset({
         plateNumber: bus.plateNumber,
@@ -91,6 +94,7 @@ export const BusFormModal = ({
   }, [bus, reset]);
 
   const onSubmit = (data: BusFormData) => {
+    // Form verilerini API'nin bekledigi formata getir.
     const payload: CreateBusData = {
       plateNumber: data.plateNumber.trim().toUpperCase(),
       brand: data.brand?.trim() || undefined,
@@ -115,6 +119,7 @@ export const BusFormModal = ({
   };
 
   const handleDriverChange = (value: string) => {
+    // Bos secim yapildiginda sofor eslestirmesini kaldir.
     if (!value) {
       setValue('driverId', undefined);
     } else {
@@ -122,13 +127,14 @@ export const BusFormModal = ({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Modal kapaliysa hicbir sey gosterme.
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       <div className="relative mx-4 max-h-[90vh] w-full max-w-2xl overflow-hidden rounded-xl bg-white shadow-xl">
+        {/* Baslik ve kapatma butonu */}
         <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4">
           <div>
             <p className="text-sm text-secondary-500">
@@ -147,6 +153,7 @@ export const BusFormModal = ({
           </button>
         </div>
 
+        {/* Form alanlari */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="max-h-[calc(90vh-140px)] space-y-4 overflow-y-auto p-6"
@@ -217,6 +224,7 @@ export const BusFormModal = ({
           </div>
         </form>
 
+        {/* Alt aksiyonlar */}
         <div className="flex items-center justify-end gap-3 border-t border-secondary-200 bg-secondary-50 px-6 py-4">
           <Button variant="outline" onClick={onClose}>
             Ləğv et

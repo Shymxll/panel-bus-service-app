@@ -5,6 +5,7 @@ import type { CreateStopData, UpdateStopData } from '@/types';
 
 const QUERY_KEY = ['stops'];
 
+// Durak CRUD akislari icin hook.
 export const useStops = () => {
   const queryClient = useQueryClient();
 

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
 import { Button } from './Button';
 
+// Bu sayfa bulunamayan rotalar icin kullaniciya geri donus yolu sunar.
 export const NotFound = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-secondary-50">

@@ -17,6 +17,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/common/Button';
 
+// Panel menusu icin baslik, rota ve ikon bilgisini tek noktada tutar.
 const navigation = [
   { name: 'İdarə Paneli', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Şagirdlər', href: '/admin/students', icon: Users },
@@ -28,14 +29,15 @@ const navigation = [
   { name: 'Hesabatlar', href: '/admin/reports', icon: BarChart3 },
 ];
 
+// Tum yonetici ekranlarini yan menu, ust bar ve icerik alanina oturtur.
 export const AdminLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
-  const { user, logout } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Mobil yan menu acik mi
+  const location = useLocation(); // Route bilgisini aktif linkler icin kullan
+  const { user, logout } = useAuth(); // Kimlik ve cikis islemleri
 
   return (
     <div className="flex h-screen bg-secondary-50">
-      {/* Mobile sidebar backdrop */}
+      {/* Mobilde acilan yan menunun arkaplanini kilitler */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-20 bg-black/50 lg:hidden"
@@ -43,7 +45,7 @@ export const AdminLayout = () => {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Yoneticinin tum sayfalari erisecegi sabit menu */}
       <aside
         className={cn(
           'fixed inset-y-0 left-0 z-30 w-64 transform bg-white shadow-lg transition-transform duration-300 lg:static lg:translate-x-0',
@@ -51,7 +53,7 @@ export const AdminLayout = () => {
         )}
       >
         <div className="flex h-full flex-col">
-          {/* Logo */}
+          {/* Logo ve mobil kapama tusu */}
           <div className="flex h-16 items-center justify-between border-b border-secondary-200 px-6">
             <h1 className="text-xl font-bold text-primary-600">
               Admin Panel
@@ -64,7 +66,7 @@ export const AdminLayout = () => {
             </button>
           </div>
 
-          {/* Navigation */}
+          {/* Sol menude aktif rotayi vurgulayan navigasyon listesi */}
           <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
             {navigation.map((item) => {
               const Icon = item.icon;
@@ -89,7 +91,7 @@ export const AdminLayout = () => {
             })}
           </nav>
 
-          {/* User info */}
+          {/* Aktif kullanici ve guvenli cikis butonu */}
           <div className="border-t border-secondary-200 p-4">
             <div className="mb-3">
               <p className="text-sm font-medium text-secondary-900">
@@ -110,9 +112,9 @@ export const AdminLayout = () => {
         </div>
       </aside>
 
-      {/* Main content */}
+      {/* Sag taraftaki tum icerik alanini olusturur */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Header */}
+        {/* Tarih gostergeli ust bar ve mobil menu tetikleyicisi */}
         <header className="flex h-16 items-center justify-between border-b border-secondary-200 bg-white px-4 lg:px-6">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -131,7 +133,7 @@ export const AdminLayout = () => {
           </div>
         </header>
 
-        {/* Page content */}
+        {/* Sayfalara gore degisen dinamik icerik */}
         <main className="flex-1 overflow-y-auto p-4 lg:p-6">
           <Outlet />
         </main>

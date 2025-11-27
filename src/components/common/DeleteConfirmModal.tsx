@@ -10,6 +10,7 @@ interface DeleteConfirmModalProps {
   message: string;
 }
 
+// Bu modal silme onayi aksiyonlarinda kullaniciya ek guvenlik saglar.
 export const DeleteConfirmModal = ({
   isOpen,
   onClose,

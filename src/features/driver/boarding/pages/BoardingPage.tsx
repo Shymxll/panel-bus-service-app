@@ -3,10 +3,12 @@ import { QrCode, Camera, CheckCircle } from 'lucide-react';
 import { Card, CardBody, CardHeader } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 
+// Minme kaydi olusturan surucu sayfasi.
 export const BoardingPage = () => {
   const [isScanning, setIsScanning] = useState(false);
 
   const handleStartScanning = () => {
+    // QR tarayici implementasyonu icin placeholder.
     setIsScanning(true);
     // QR scanner will be implemented here
   };
@@ -20,7 +22,7 @@ export const BoardingPage = () => {
         </p>
       </div>
 
-      {/* QR Scanner */}
+      {/* QR tarama bolumu */}
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
@@ -67,7 +69,7 @@ export const BoardingPage = () => {
           </CardBody>
         </Card>
 
-        {/* Today's Boarded Students */}
+        {/* Bugun binen ogrenci listesi */}
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold">Bugün Minən Şagirdlər</h2>
@@ -80,7 +82,7 @@ export const BoardingPage = () => {
         </Card>
       </div>
 
-      {/* Expected Students */}
+      {/* Planlanan ogrenciler */}
       <Card>
         <CardHeader>
           <h2 className="text-lg font-semibold">Gözlənilən Şagirdlər</h2>

@@ -1,14 +1,18 @@
+// Uygulama genelinde tekrar eden tanimlar tek merkezde toplaniyor.
 export const APP_NAME = 'Servis Takip Sistemi';
 export const APP_DESCRIPTION = 'Məktəb Servisi Şagird İzləmə Sistemi';
 
+// Kimliklendirmede kullanilan sabit rol etiketleri.
 export const ROLES = {
   ADMIN: 'admin',
   DRIVER: 'driver',
 } as const;
 
+// LocalStorage anahtarlari icin dogru isimleri garanti eder.
 export const TOKEN_KEY = 'auth_token';
 export const USER_KEY = 'user_data';
 
+// React Query icin kullanim birliği saglayan cache anahtarlari.
 export const QUERY_KEYS = {
   auth: {
     me: ['auth', 'me'] as const,
@@ -58,6 +62,7 @@ export const QUERY_KEYS = {
   },
 } as const;
 
+// Tarih formatlari UI ve API arasinda tutarliligi korur.
 export const DATE_FORMATS = {
   display: 'dd.MM.yyyy',
   displayWithTime: 'dd.MM.yyyy HH:mm',
@@ -65,6 +70,7 @@ export const DATE_FORMATS = {
   apiWithTime: "yyyy-MM-dd'T'HH:mm:ss",
 } as const;
 
+// Liste bileşenlerinin varsayilan sayfalama degerleri.
 export const PAGINATION = {
   defaultPageSize: 10,
   pageSizeOptions: [10, 20, 50, 100],

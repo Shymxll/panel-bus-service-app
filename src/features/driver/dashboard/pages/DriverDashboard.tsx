@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { Link } from 'react-router-dom';
 
+// Şoförlerin günlük performansını özetleyen ana sayfa.
 export const DriverDashboard = () => {
   const todayStats = [
     {
@@ -34,7 +35,7 @@ export const DriverDashboard = () => {
         </p>
       </div>
 
-      {/* Stats */}
+      {/* Stat kartları */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {todayStats.map((stat, index) => {
           const Icon = stat.icon;
@@ -60,7 +61,7 @@ export const DriverDashboard = () => {
         })}
       </div>
 
-      {/* Quick Actions */}
+      {/* Hızlı aksiyon kartları */}
       <div className="grid gap-6 md:grid-cols-2">
         <Link to="/driver/boarding">
           <Card className="cursor-pointer transition-shadow hover:shadow-md">
@@ -95,7 +96,7 @@ export const DriverDashboard = () => {
         </Link>
       </div>
 
-      {/* Today's Expected Students */}
+      {/* Bugünün beklenen öğrenci listesi */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">

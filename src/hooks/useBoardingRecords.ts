@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { boardingRecordService } from '@/services/boardingRecord.service';
 import { QUERY_KEYS } from '@/config/constants';
 
+// Minme kayitlarini sorgulayan hook.
 export const useBoardingRecords = () => {
   const {
     data: boardingRecords = [],

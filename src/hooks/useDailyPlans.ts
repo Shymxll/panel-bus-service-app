@@ -4,6 +4,7 @@ import { dailyPlanService } from '@/services/dailyPlan.service';
 import { QUERY_KEYS } from '@/config/constants';
 import type { CreateDailyPlanData, UpdateDailyPlanData } from '@/types';
 
+// Gunluk plan CRUD akislari icin hook.
 export const useDailyPlans = () => {
   const queryClient = useQueryClient();
 
