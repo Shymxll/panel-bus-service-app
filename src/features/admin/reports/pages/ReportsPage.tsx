@@ -84,12 +84,24 @@ export const ReportsPage = () => {
 
   // Planlanan vs gerceklesen minme/dusme sayilarini hesapla.
   const stats = useMemo(() => {
-    const plannedBoarding = dailyPlans.filter(p => p.isBoarding).length;
-    const plannedDropoff = dailyPlans.filter(p => !p.isBoarding).length;
+    const plannedBoardingPlans = dailyPlans.filter(p => p.isBoarding);
+    const plannedDropoffPlans = dailyPlans.filter(p => !p.isBoarding);
+    const plannedBoarding = plannedBoardingPlans.length;
+    const plannedDropoff = plannedDropoffPlans.length;
     const actualBoarding = boardingRecords.length;
     const actualDropoff = disembarkingRecords.length;
     const plannedBoardingRecords = boardingRecords.filter(r => r.wasPlanned).length;
     const plannedDropoffRecords = disembarkingRecords.filter(r => r.wasPlanned).length;
+
+    // Calculate missed boardings: plans without corresponding boarding records
+    const missedBoarding = plannedBoardingPlans.filter(
+      plan => !boardingRecords.some(record => record.dailyPlanId === plan.id)
+    ).length;
+
+    // Calculate missed dropoffs: plans without corresponding disembarking records
+    const missedDropoff = plannedDropoffPlans.filter(
+      plan => !disembarkingRecords.some(record => record.dailyPlanId === plan.id)
+    ).length;
 
     return {
       plannedBoarding,
@@ -100,8 +112,8 @@ export const ReportsPage = () => {
       plannedDropoffRecords,
       unplannedBoarding: actualBoarding - plannedBoardingRecords,
       unplannedDropoff: actualDropoff - plannedDropoffRecords,
-      missedBoarding: plannedBoarding - actualBoarding,
-      missedDropoff: plannedDropoff - actualDropoff,
+      missedBoarding,
+      missedDropoff,
     };
   }, [dailyPlans, boardingRecords, disembarkingRecords]);
 
