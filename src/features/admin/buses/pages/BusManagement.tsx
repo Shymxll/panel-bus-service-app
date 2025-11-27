@@ -31,6 +31,7 @@ type StatusFilter = 'all' | 'active' | 'inactive';
 type DriverFilter = 'all' | 'assigned' | 'unassigned' | number;
 type SortOption = 'plate-asc' | 'plate-desc' | 'capacity-desc' | 'capacity-asc';
 
+// Avtobus envanterini filtreleyip sofor atamalariyla birlikte yoneten sayfa.
 export const BusManagement = () => {
   const {
     buses,
@@ -55,6 +56,7 @@ export const BusManagement = () => {
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const driverMap = useMemo(() => {
+    // Sürücü bilgilerini hızlı erişim için id -> driver map'ine çevir.
     const map = new Map<number, User>();
     drivers.forEach((driver) => map.set(driver.id, driver));
     return map;
@@ -75,6 +77,7 @@ export const BusManagement = () => {
     const query = searchQuery.toLowerCase();
 
     if (query) {
+      // Plaka/marka/model aramasını uygula.
       result = result.filter(
         (bus) =>
           bus.plateNumber.toLowerCase().includes(query) ||
@@ -84,6 +87,7 @@ export const BusManagement = () => {
     }
 
     if (statusFilter !== 'all') {
+      // Aktif/deaktif filtrelemesi.
       result = result.filter((bus) => (statusFilter === 'active' ? bus.isActive : !bus.isActive));
     }
 
@@ -98,6 +102,7 @@ export const BusManagement = () => {
     }
 
     result.sort((a, b) => {
+      // Secilen kritere gore siralama yap.
       switch (sortOption) {
         case 'plate-asc':
           return a.plateNumber.localeCompare(b.plateNumber);
@@ -138,6 +143,7 @@ export const BusManagement = () => {
   };
 
   const confirmDelete = () => {
+    // Silme onayi geldikten sonra API'ye istegi gonder.
     if (!selectedBus) return;
     setDeletingId(selectedBus.id);
     deleteBus(selectedBus.id, {
@@ -156,7 +162,7 @@ export const BusManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Baslik ve ana aksiyon butonlari */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-secondary-900">Avtobuslar</h1>
@@ -178,7 +184,7 @@ export const BusManagement = () => {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Envanter ozet kartlari */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100">
           <CardBody className="flex items-center justify-between">
@@ -226,7 +232,7 @@ export const BusManagement = () => {
         </Card>
       </div>
 
-      {/* Filters */}
+      {/* Arama ve filtre kontrolleri */}
       <Card>
         <CardBody className="flex flex-col gap-4 lg:flex-row lg:items-center">
           <div className="flex-1">
@@ -285,7 +291,7 @@ export const BusManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Table */}
+      {/* Detay tablo gorunumu */}
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Avtobuslar ({filteredBuses.length})</h2>
@@ -425,7 +431,7 @@ export const BusManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Modals */}
+      {/* Form ve silme onay modal kaliplari */}
       <BusFormModal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}

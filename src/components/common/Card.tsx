@@ -5,6 +5,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
+// Bu kart yapisi baslik, govde ve alt kisim icin ortak bir cerceve sunar.
 export const Card = ({ children, className, ...props }: CardProps) => {
   return (
     <div

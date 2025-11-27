@@ -3,10 +3,12 @@ import { QrCode, Camera } from 'lucide-react';
 import { Card, CardBody, CardHeader } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 
+// Dusme kayitlarini olusturan surucu arabirimi.
 export const AlightingPage = () => {
   const [isScanning, setIsScanning] = useState(false);
 
   const handleStartScanning = () => {
+    // QR tarayici entegrasyonu icin placeholder.
     setIsScanning(true);
     // QR scanner will be implemented here
   };
@@ -20,7 +22,7 @@ export const AlightingPage = () => {
         </p>
       </div>
 
-      {/* QR Scanner */}
+      {/* QR tarama modulu */}
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
@@ -67,7 +69,7 @@ export const AlightingPage = () => {
           </CardBody>
         </Card>
 
-        {/* Today's Alighted Students */}
+        {/* Bugun inen ogrenciler */}
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold">Bugün Düşən Şagirdlər</h2>
@@ -80,7 +82,7 @@ export const AlightingPage = () => {
         </Card>
       </div>
 
-      {/* Boarded Students (not yet alighted) */}
+      {/* Hala otobuste olan ogrenciler */}
       <Card>
         <CardHeader>
           <h2 className="text-lg font-semibold">Avtobusda Olan Şagirdlər</h2>

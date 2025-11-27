@@ -5,6 +5,7 @@ import type { CreateStudentData, UpdateStudentData } from '@/types';
 
 const QUERY_KEY = ['students'];
 
+// Şagird CRUD işlemlerini yöneten merkezi hook.
 export const useStudents = () => {
   const queryClient = useQueryClient();
 

@@ -4,10 +4,11 @@ import { busService } from '@/services/bus.service';
 import { QUERY_KEYS } from '@/config/constants';
 import type { CreateBusData } from '@/types';
 
+// Avtobus listesi ve CRUD islemlerini yoneten hook.
 export const useBuses = () => {
   const queryClient = useQueryClient();
 
-  // Get all buses
+  // Tum avtobuslari getir
   const {
     data: buses = [],
     isLoading,
@@ -18,7 +19,7 @@ export const useBuses = () => {
     queryFn: () => busService.getAll(),
   });
 
-  // Create bus mutation
+  // Avtobus olusturma mutasyonu
   const createMutation = useMutation({
     mutationFn: (data: CreateBusData) => busService.create(data),
     onSuccess: () => {
@@ -30,7 +31,7 @@ export const useBuses = () => {
     },
   });
 
-  // Update bus mutation
+  // Avtobus guncelleme mutasyonu
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: Partial<CreateBusData> }) =>
       busService.update(id, data),
@@ -43,7 +44,7 @@ export const useBuses = () => {
     },
   });
 
-  // Delete bus mutation
+  // Avtobus silme mutasyonu
   const deleteMutation = useMutation({
     mutationFn: (id: number) => busService.delete(id),
     onSuccess: () => {
@@ -69,7 +70,7 @@ export const useBuses = () => {
   };
 };
 
-// Get single bus by ID
+// Tek avtobusu ID ile getir
 export const useBus = (id: number) => {
   return useQuery({
     queryKey: QUERY_KEYS.buses.detail(id),

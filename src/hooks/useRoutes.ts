@@ -4,6 +4,7 @@ import { routeService } from '@/services/route.service';
 import { QUERY_KEYS } from '@/config/constants';
 import type { CreateRouteData, UpdateRouteData, CreateRouteStopData, UpdateRouteStopData } from '@/types';
 
+// Marşrut ve ona bagli durak akışlarini yöneten hook.
 export const useRoutes = () => {
   const queryClient = useQueryClient();
 

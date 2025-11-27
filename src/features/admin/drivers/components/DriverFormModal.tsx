@@ -8,6 +8,7 @@ import { Input } from '@/components/common/Input';
 import type { User, RegisterData } from '@/types';
 import type { UseMutateFunction } from '@tanstack/react-query';
 
+// Şoför formu için geçerli alanları tanımlar.
 const driverSchema = z.object({
   name: z.string().min(2, 'Ad ən az 2 simvol olmalıdır'),
   email: z.string().email('Düzgün email daxil edin'),
@@ -33,6 +34,7 @@ interface DriverFormModalProps {
   isUpdating: boolean;
 }
 
+// Şoför ekleme/düzenleme işlemlerini yöneten modal.
 export const DriverFormModal = ({
   isOpen,
   onClose,
@@ -42,7 +44,7 @@ export const DriverFormModal = ({
   isCreating,
   isUpdating,
 }: DriverFormModalProps) => {
-  const isEditing = !!driver;
+  const isEditing = !!driver; // Şifre alanının gösterimi ve mutasyon türü buradan belirlenir.
 
   const {
     register,
@@ -62,6 +64,7 @@ export const DriverFormModal = ({
   });
 
   useEffect(() => {
+    // Duzenleme modunda mevcut bilgileri yükle, yeni kayıtta varsayılanları kur.
     if (driver) {
       reset({
         name: driver.name,
@@ -84,6 +87,7 @@ export const DriverFormModal = ({
   const isSubmitting = isEditing ? isUpdating : isCreating;
 
   const onSubmit = (data: DriverFormData) => {
+    // Yeni kayıt için şifre zorunlu, düzenlemede isteğe bağlı.
     if (!isEditing && !data.password) {
       setError('password', {
         type: 'required',
@@ -127,7 +131,7 @@ export const DriverFormModal = ({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Modal kapalıysa hicbir şey render etme.
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -137,6 +141,7 @@ export const DriverFormModal = ({
       />
 
       <div className="relative w-full max-w-xl mx-4 bg-white rounded-xl shadow-xl max-h-[90vh] overflow-hidden">
+        {/* Baslik ve kapatma alani */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-200">
           <div>
             <p className="text-sm text-secondary-500">
@@ -154,6 +159,7 @@ export const DriverFormModal = ({
           </button>
         </div>
 
+        {/* Form kontrolleri */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]"
@@ -208,6 +214,7 @@ export const DriverFormModal = ({
           </div>
         </form>
 
+        {/* Alt aksiyon butonlari */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-secondary-200 bg-secondary-50">
           <Button variant="outline" onClick={onClose}>
             Ləğv et

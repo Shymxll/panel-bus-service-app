@@ -9,6 +9,7 @@ import { useStudents } from '@/hooks/useStudents';
 import { studentService } from '@/services/student.service';
 import type { Student } from '@/types';
 
+// Form validasyonunu merkezileştiren Zod şeması.
 const studentSchema = z.object({
   firstName: z.string().min(2, 'Ad ən az 2 simvol olmalıdır'),
   lastName: z.string().min(2, 'Soyad ən az 2 simvol olmalıdır'),
@@ -29,9 +30,10 @@ interface StudentFormModalProps {
   student: Student | null;
 }
 
+// Yeni şagird oluşturma veya mevcut kaydı güncelleme modalı.
 export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalProps) => {
   const { createStudent, updateStudent, isCreating, isUpdating } = useStudents();
-  const isEditing = !!student;
+  const isEditing = !!student; // Modal başlığı ve submit aksiyonunu belirler.
 
   const {
     register,
@@ -58,6 +60,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
   const qrCode = watch('qrCode');
 
   useEffect(() => {
+    // Gelen öğrenci varsa formu doldur, yoksa varsayılan değerler ve QR üret.
     if (student) {
       reset({
         firstName: student.firstName,
@@ -86,10 +89,12 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
   }, [student, reset]);
 
   const handleGenerateQrCode = () => {
+    // Kullanıcı tek tıkla benzersiz QR kodu oluşturabilsin.
     setValue('qrCode', studentService.generateQrCode());
   };
 
   const onSubmit = (data: StudentFormData) => {
+    // Düzenleme ve oluşturma akışlarını tek noktada ayrıştır.
     if (isEditing && student) {
       updateStudent(
         { id: student.id, data },
@@ -108,11 +113,11 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Modal kapalıyken DOM'a hiçbir şey render etme.
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
+      {/* Backdrop: kullanıcı modal dışına tıkladığında kapanması için */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
@@ -133,9 +138,9 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
           </button>
         </div>
 
-        {/* Form */}
+        {/* Form kontrolleri kaydırılabilir gövde içinde */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
-          {/* Name fields */}
+          {/* İsim/Soyisim alanları yan yana */}
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Ad"
@@ -151,7 +156,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
             />
           </div>
 
-          {/* QR Code */}
+          {/* QR kodu alanı ve tek tuşla üretme butonu */}
           <div>
             <label className="block text-sm font-medium text-secondary-700 mb-1">
               QR Kod
@@ -176,7 +181,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
             </div>
           </div>
 
-          {/* School and Grade */}
+          {/* Okul ve sınıf detayları */}
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Məktəb"
@@ -192,7 +197,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
             />
           </div>
 
-          {/* Parent Info */}
+          {/* Velilere ait isteğe bağlı bilgiler */}
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Valideyn adı"
@@ -208,7 +213,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
             />
           </div>
 
-          {/* Address */}
+          {/* Adres açıklaması */}
           <div>
             <label className="block text-sm font-medium text-secondary-700 mb-1">
               Ünvan
@@ -221,7 +226,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
             />
           </div>
 
-          {/* Status */}
+          {/* Öğrencinin aktiflik durumu */}
           <div className="flex items-center gap-3">
             <input
               type="checkbox"
@@ -235,7 +240,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
           </div>
         </form>
 
-        {/* Footer */}
+        {/* Footer: kaydet veya vazgeç aksiyonları */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-secondary-200 bg-secondary-50">
           <Button variant="outline" onClick={onClose}>
             Ləğv et

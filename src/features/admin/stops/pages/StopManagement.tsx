@@ -9,6 +9,7 @@ import { DeleteConfirmModal } from '@/components/common/DeleteConfirmModal';
 import { Loading } from '@/components/common/Loading';
 import type { Stop } from '@/types';
 
+// Tum durak kayitlarini filtreleyip yoneten sayfa.
 export const StopManagement = () => {
   const { stops, isLoading, deleteStop, updateStop } = useStops();
   const [search, setSearch] = useState('');
@@ -76,7 +77,7 @@ export const StopManagement = () => {
         </Button>
       </div>
 
-      {/* Statistics Cards */}
+      {/* Durum ozet kartlari */}
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="p-4">

@@ -6,12 +6,13 @@ import { useAuthStore } from '@/store/auth-store';
 import { QUERY_KEYS } from '@/config/constants';
 import type { LoginCredentials, RegisterData } from '@/types';
 
+// Giris, cikis ve kimlik sorgularini yoneten merkezi hook.
 export const useAuth = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { setAuth, clearAuth, user, isAuthenticated } = useAuthStore();
 
-  // Login mutation
+  // Surucu girisi mutasyonu
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginCredentials) => authService.login(credentials),
     onSuccess: (data) => {
@@ -32,7 +33,7 @@ export const useAuth = () => {
     },
   });
 
-  // Admin login mutation
+  // Admin girisi icin ayri mutasyon
   const adminLoginMutation = useMutation({
     mutationFn: (credentials: LoginCredentials) => authService.adminLogin(credentials),
     onSuccess: (data) => {
@@ -75,7 +76,7 @@ export const useAuth = () => {
     },
   });
 
-  // Register mutation
+  // Surucu kaydi mutasyonu
   const registerMutation = useMutation({
     mutationFn: (data: RegisterData) => authService.register(data),
     onSuccess: (data) => {
@@ -89,7 +90,7 @@ export const useAuth = () => {
     },
   });
 
-  // Logout mutation
+  // Oturumu sonlandirma mutasyonu
   const logoutMutation = useMutation({
     mutationFn: () => authService.logout(),
     onSuccess: () => {
@@ -100,7 +101,7 @@ export const useAuth = () => {
     },
   });
 
-  // Get current user query
+  // Mevcut kullaniciyi dogrulayan sorgu
   const { data: currentUser, isLoading: isLoadingUser } = useQuery({
     queryKey: QUERY_KEYS.auth.me,
     queryFn: () => authService.getCurrentUser(),

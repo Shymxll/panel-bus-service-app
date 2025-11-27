@@ -9,19 +9,20 @@ interface StudentQrModalProps {
   student: Student | null;
 }
 
+// Şagirdin QR kodunu indirip yazdırabileceği modal.
 export const StudentQrModal = ({ isOpen, onClose, student }: StudentQrModalProps) => {
   const qrRef = useRef<HTMLDivElement>(null);
 
   if (!isOpen || !student) return null;
 
-  // Simple QR code SVG generator (basic implementation)
+  // Basit QR kod üreticisi; üretim ortamında daha güçlü bir kütüphane tercih edilmeli.
   const generateQrSvg = (text: string, size: number = 200) => {
-    // This is a placeholder - in production, use a proper QR library like qrcode.react
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
     return qrUrl;
   };
 
   const handleDownload = () => {
+    // QR kodunu daha büyük boyutta oluşturup PNG olarak indir.
     const link = document.createElement('a');
     link.href = generateQrSvg(student.qrCode, 400);
     link.download = `${student.firstName}-${student.lastName}-qr.png`;
@@ -29,6 +30,7 @@ export const StudentQrModal = ({ isOpen, onClose, student }: StudentQrModalProps
   };
 
   const handlePrint = () => {
+    // Yeni pencere açıp sade HTML şablonu ile yazdırma işlemini başlat.
     const printWindow = window.open('', '_blank');
     if (printWindow) {
       printWindow.document.write(`

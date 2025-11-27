@@ -7,6 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { Card, CardBody } from '@/components/common/Card';
+
+// Admin paneline giris ekranini saglar.
 export const AdminLoginPage = () => {
   const { adminLogin, isLoggingIn } = useAuth();
   const {
@@ -18,13 +20,14 @@ export const AdminLoginPage = () => {
   });
 
   const onSubmit = (data: LoginFormData) => {
+    // Admin yetkisini dogrulamak icin özel login aksiyonunu kullan.
     adminLogin(data);
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
-        {/* Logo */}
+        {/* Baslik ve logo */}
         <div className="mb-8 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-600">
             <Shield className="h-8 w-8 text-white" />
@@ -33,7 +36,7 @@ export const AdminLoginPage = () => {
           <p className="mt-2 text-sm text-secondary-600">İdarəetmə panelinə daxil olun</p>
         </div>
 
-        {/* Login Form */}
+        {/* Giris formu */}
         <Card>
           <CardBody>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -66,15 +69,10 @@ export const AdminLoginPage = () => {
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
-              <Link to="/login" className="text-sm text-primary-600 hover:text-primary-700">
-                Şoför girişi
-              </Link>
-            </div>
           </CardBody>
         </Card>
 
-        {/* Back to home */}
+        {/* Ana sayfaya donus baglantisi */}
         <div className="mt-4 text-center">
           <Link to="/" className="text-sm text-secondary-600 hover:text-secondary-900">
             ← Ana səhifəyə qayıt

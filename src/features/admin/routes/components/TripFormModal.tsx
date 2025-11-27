@@ -8,6 +8,7 @@ import { Input } from '@/components/common/Input';
 import { useTrips } from '@/hooks/useTrips';
 import type { Trip, Route } from '@/types';
 
+// Sefere ait basit dogrulama kurallari.
 const tripSchema = z.object({
   departureTime: z.string().regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Vaxt formatı düzgün deyil (HH:mm)'),
   isActive: z.boolean().default(true),
@@ -22,6 +23,7 @@ interface TripFormModalProps {
   trip: Trip | null; // null = yeni səfər, Trip = redaktə
 }
 
+// Marşruta bağlı seferleri ekleme/düzenleme modalı.
 export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalProps) => {
   const { createTrip, updateTrip, isCreating, isUpdating } = useTrips();
   const isEditing = !!trip;
@@ -40,6 +42,7 @@ export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalPro
   });
 
   useEffect(() => {
+    // Modal her acildiginda formu secili sefere gore doldur.
     if (isOpen) {
       if (trip) {
         reset({
@@ -56,6 +59,7 @@ export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalPro
   }, [isOpen, trip, reset]);
 
   const onSubmit = (data: TripFormData) => {
+    // Duzenleme mi yeni olusturma mi oldugunu ayir.
     if (isEditing && trip) {
       updateTrip(
         {
@@ -87,12 +91,13 @@ export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalPro
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Modal kapaliysa hicbir sey gosterme.
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative mx-4 w-full max-w-md overflow-hidden rounded-xl bg-white shadow-xl">
+        {/* Baslik */}
         <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4">
           <div>
             <h2 className="text-lg font-semibold text-secondary-900">
@@ -107,6 +112,7 @@ export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalPro
           </button>
         </div>
 
+        {/* Form alanlari */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-6 py-5">
           <Input
             label="Yola çıxma vaxtı"
@@ -122,6 +128,7 @@ export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalPro
             Aktiv səfər
           </label>
 
+          {/* Alt aksiyonlar */}
           <div className="mt-4 flex justify-end gap-3">
             <Button type="button" variant="outline" onClick={onClose}>
               Ləğv et

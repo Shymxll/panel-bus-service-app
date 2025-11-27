@@ -14,6 +14,7 @@ import { useDailyPlans } from '@/hooks/useDailyPlans';
 import type { DailyPlan } from '@/types';
 import { formatDate } from '@/utils/format';
 
+// Gunluk servis planlarini tarih bazli organize eden sayfa.
 export const PlanningPage = () => {
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split('T')[0]!
@@ -31,7 +32,7 @@ export const PlanningPage = () => {
   const { routes } = useRoutes();
   const { deleteDailyPlan, isDeleting } = useDailyPlans();
 
-  // Maps for quick lookup
+  // Id -> kayit haritalari surekli lookuplar icin hiz kazandirir.
   const studentMap = useMemo(() => {
     const map = new Map<number, typeof students[0]>();
     students.forEach(s => map.set(s.id, s));
@@ -56,18 +57,18 @@ export const PlanningPage = () => {
     return map;
   }, [routes]);
 
-  // Filtered plans
+  // Tum filtreleri uygulayip siralanmis plan listesi olustur.
   const filteredPlans = useMemo(() => {
     let result = [...dailyPlans];
 
-    // Type filter
+    // Minme/dusme filtresi
     if (typeFilter !== 'all') {
       result = result.filter(p =>
         typeFilter === 'boarding' ? p.isBoarding : !p.isBoarding
       );
     }
 
-    // Search filter
+    // Serbest arama filtrelemesi
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(p => {
@@ -87,7 +88,7 @@ export const PlanningPage = () => {
       });
     }
 
-    // Sort by trip departure time
+    // Sefer kalkis zamanina gore siralama
     result.sort((a, b) => {
       const tripA = tripMap.get(a.tripId);
       const tripB = tripMap.get(b.tripId);
@@ -98,11 +99,11 @@ export const PlanningPage = () => {
     return result;
   }, [dailyPlans, typeFilter, searchQuery, studentMap, busMap, tripMap, routeMap]);
 
-  // Group plans by type
+  // Gorunumde kolaylik icin ayrilmis listeler.
   const boardingPlans = filteredPlans.filter(p => p.isBoarding);
   const dropoffPlans = filteredPlans.filter(p => !p.isBoarding);
 
-  // Statistics
+  // Kartlarda gosterilen metrikler.
   const stats = useMemo(() => ({
     total: dailyPlans.length,
     boarding: dailyPlans.filter(p => p.isBoarding).length,
@@ -122,6 +123,7 @@ export const PlanningPage = () => {
   };
 
   const handleConfirmDelete = () => {
+    // Plan silme islemi onaylandiginda API'ye istegi yolla.
     if (selectedPlan) {
       deleteDailyPlan(selectedPlan.id, {
         onSuccess: () => {
@@ -155,7 +157,7 @@ export const PlanningPage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Baslik ve aksiyon butonlari */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-secondary-900">Günlük Planlama</h1>
@@ -181,7 +183,7 @@ export const PlanningPage = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Gunluk plan ozet kartlari */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="p-4">
@@ -254,11 +256,11 @@ export const PlanningPage = () => {
         </Card>
       </div>
 
-      {/* Date Selector and Filters */}
+      {/* Tarih secici ve filtre bolumu */}
       <Card>
         <CardBody className="p-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-            {/* Date Selector */}
+            {/* Tarih secimi */}
             <div className="flex items-center gap-2">
               <Calendar className="h-5 w-5 text-secondary-400" />
               <Input
@@ -269,7 +271,7 @@ export const PlanningPage = () => {
               />
             </div>
 
-            {/* Search */}
+            {/* Arama alanı */}
             <div className="flex-1">
               <Input
                 placeholder="Şagird, avtobus, marşrut və ya vaxt ilə axtar..."
@@ -279,7 +281,7 @@ export const PlanningPage = () => {
               />
             </div>
 
-            {/* Type Filter */}
+            {/* Minme/dusme filtreleri */}
             <div className="flex gap-2">
               <select
                 className="rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
@@ -295,7 +297,7 @@ export const PlanningPage = () => {
         </CardBody>
       </Card>
 
-      {/* Plans List */}
+      {/* Plan listeleri */}
       {isLoading ? (
         <Card>
           <CardBody className="p-12">
@@ -326,7 +328,7 @@ export const PlanningPage = () => {
         </Card>
       ) : (
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Minmə Planları */}
+          {/* Minme Planlari */}
           <Card>
             <CardHeader className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -392,7 +394,7 @@ export const PlanningPage = () => {
             </CardBody>
           </Card>
 
-          {/* Düşmə Planları */}
+          {/* Dusme Planlari */}
           <Card>
             <CardHeader className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -460,7 +462,7 @@ export const PlanningPage = () => {
         </div>
       )}
 
-      {/* Modals */}
+      {/* Form ve silme modallari */}
       <DailyPlanFormModal
         isOpen={isFormModalOpen}
         onClose={handleCloseFormModal}

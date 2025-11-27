@@ -8,6 +8,7 @@ interface LoadingProps {
   className?: string;
 }
 
+// Bu yukleme gostergesi hem sayfa ici hem tam ekran bekleme durumlarini kapsar.
 export const Loading = ({
   size = 'md',
   text,

@@ -8,6 +8,7 @@ import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { Card, CardBody } from '@/components/common/Card';
 
+// Surucu rolundeki kullanicilarin hesaba giris yapabildigi sayfa.
 export const LoginPage = () => {
   const { login, isLoggingIn } = useAuth();
   const {
@@ -19,13 +20,14 @@ export const LoginPage = () => {
   });
 
   const onSubmit = (data: LoginFormData) => {
+    // useAuth hook'u ile gelen login mutasyonunu tetikler.
     login(data);
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
-        {/* Logo */}
+        {/* Ust kisim: logo ve sayfa basligi */}
         <div className="mb-8 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-600">
             <Bus className="h-8 w-8 text-white" />
@@ -36,7 +38,7 @@ export const LoginPage = () => {
           </p>
         </div>
 
-        {/* Login Form */}
+        {/* Giris formu */}
         <Card>
           <CardBody>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -80,7 +82,7 @@ export const LoginPage = () => {
           </CardBody>
         </Card>
 
-        {/* Back to home */}
+        {/* Ana sayfaya geri baglantisi */}
         <div className="mt-4 text-center">
           <Link to="/" className="text-sm text-secondary-600 hover:text-secondary-900">
             ← Ana səhifəyə qayıt

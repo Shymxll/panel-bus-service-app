@@ -25,11 +25,12 @@ import { useTrips } from '@/hooks/useTrips';
 import { useDailyPlansByDate } from '@/hooks/useDailyPlans';
 import { formatDate } from '@/utils/format';
 
+// Admin ana ekraninda anlik istatistikleri, son hareketleri ve hizli aksiyonlari topluca gosterir.
 export const AdminDashboard = () => {
   const navigate = useNavigate();
   const today = new Date().toISOString().split('T')[0]!;
 
-  // Data hooks
+  // Istatistikleri besleyen sorgular: sayaclar ve grafikler icin kaynak veriler.
   const { buses, isLoading: isBusesLoading } = useBuses();
   const { users, drivers, isLoading: isUsersLoading } = useUsers();
   const { students, isLoading: isStudentsLoading } = useStudents();
@@ -47,7 +48,7 @@ export const AdminDashboard = () => {
     isTripsLoading ||
     isPlansLoading;
 
-  // Statistics
+  // Sistem genelinde aktif/pasif sayaclarini hesaplar.
   const stats = useMemo(() => {
     const activeStudents = students.filter(s => s.isActive).length;
     const activeDrivers = drivers.filter(d => d.isActive).length;
@@ -75,7 +76,7 @@ export const AdminDashboard = () => {
     };
   }, [students, drivers, buses, routes, trips, stops, todayPlans]);
 
-  // Recent items (last 5)
+  // En son olusturulan kayitlari tek listede toplar.
   const recentItems = useMemo(() => {
     const items: Array<{
       type: string;
@@ -87,7 +88,7 @@ export const AdminDashboard = () => {
       date: string;
     }> = [];
 
-    // Recent students
+    // Son eklenen ogrencileri zaman damgasina gore sirala.
     students
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 3)
@@ -103,7 +104,7 @@ export const AdminDashboard = () => {
         });
       });
 
-    // Recent drivers
+    // Son eklenen soforleri ayir ve tarihine gore listeye ekle.
     drivers
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 2)
@@ -124,7 +125,7 @@ export const AdminDashboard = () => {
       .slice(0, 5);
   }, [students, drivers]);
 
-  // Today's plans summary
+  // Bugune ait planlardan benzersiz ogrenci, otobus ve rota sayisini cikartir.
   const todayPlansSummary = useMemo(() => {
     const uniqueStudents = new Set(todayPlans.map(p => p.studentId)).size;
     const uniqueBuses = new Set(todayPlans.map(p => p.busId)).size;
@@ -145,12 +146,13 @@ export const AdminDashboard = () => {
   }, [todayPlans, trips]);
 
   if (isLoading) {
+    // Tum sorgular tamamlanana kadar merkezi yukleme gostergesi cikar.
     return <Loading size="lg" text="Yüklənir..." className="py-20" />;
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Sayfa basligi ve manuel yenileme butonu */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-secondary-900">İdarə Paneli</h1>
@@ -167,7 +169,7 @@ export const AdminDashboard = () => {
         </Button>
       </div>
 
-      {/* Main Stats Grid */}
+      {/* Temel sayaclar: ogrenci, sofor, otobus, rota dagilimi */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="p-4">
@@ -246,7 +248,7 @@ export const AdminDashboard = () => {
         </Card>
       </div>
 
-      {/* Secondary Stats Grid */}
+      {/* Yardimci sayaclar: sefer, durak, bugunku plan ve otobus dagilimi */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardBody className="p-4">
@@ -321,7 +323,7 @@ export const AdminDashboard = () => {
         </Card>
       </div>
 
-      {/* Today's Plans Overview */}
+      {/* Bugune ait planlar varsa minme/dusme detayli ozet goster */}
       {stats.todayPlans > 0 && (
         <Card>
           <CardHeader className="flex items-center justify-between">
@@ -380,7 +382,7 @@ export const AdminDashboard = () => {
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Recent Activity */}
+        {/* Son eklenen kayitlarin hizli listesi */}
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold text-secondary-900">
@@ -429,7 +431,7 @@ export const AdminDashboard = () => {
           </CardBody>
         </Card>
 
-        {/* Quick Actions */}
+        {/* Yoneticinin en sik kullandigi sayfalara kisa yol kutucuklari */}
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold text-secondary-900">

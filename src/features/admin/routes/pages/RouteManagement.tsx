@@ -26,6 +26,7 @@ import { RouteTripsModal } from '../components/RouteTripsModal';
 import { DeleteConfirmModal } from '@/components/common/DeleteConfirmModal';
 import type { Route } from '@/types';
 
+// Marşrut, durak ve sefer konfigurasyonunu yoneten ekran.
 export const RouteManagement = () => {
   const {
     routes,
@@ -42,32 +43,32 @@ export const RouteManagement = () => {
   } = useRoutes();
   const { buses } = useBuses();
 
-  // State
+  // Filtre, siralama ve modal durumlari.
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const [busFilter, setBusFilter] = useState<string>('all');
   const [sortField, setSortField] = useState<keyof Route>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
-  // Modals
+  // Modal gorunumleri icin durumlar.
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isStopsModalOpen, setIsStopsModalOpen] = useState(false);
   const [isTripsModalOpen, setIsTripsModalOpen] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
 
-  // Bus map for quick lookup
+  // Avtobus bilgisine hizli erisim icin map.
   const busMap = useMemo(() => {
     const map = new Map<number, typeof buses[0]>();
     buses.forEach(bus => map.set(bus.id, bus));
     return map;
   }, [buses]);
 
-  // Filtered and sorted routes
+  // Tabloda gosterilecek veriyi filtreleyip sirala.
   const filteredRoutes = useMemo(() => {
     let result = [...routes];
 
-    // Search filter
+    // Metin aramasi
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(r =>
@@ -77,14 +78,14 @@ export const RouteManagement = () => {
       );
     }
 
-    // Status filter
+    // Durum filtresi
     if (statusFilter !== 'all') {
       result = result.filter(r =>
         statusFilter === 'active' ? r.isActive : !r.isActive
       );
     }
 
-    // Bus filter
+    // Bus baglantisi filtresi
     if (busFilter !== 'all') {
       if (busFilter === 'unassigned') {
         result = result.filter(r => !r.busId);
@@ -95,7 +96,7 @@ export const RouteManagement = () => {
       }
     }
 
-    // Sort
+    // Kolona gore siralama
     result.sort((a, b) => {
       const aValue = a[sortField];
       const bValue = b[sortField];
@@ -117,7 +118,7 @@ export const RouteManagement = () => {
     return result;
   }, [routes, searchQuery, statusFilter, busFilter, sortField, sortDirection, busMap]);
 
-  // Statistics
+  // Kartlarda gosterilen ozet rakamlar.
   const stats = useMemo(() => ({
     total: routes.length,
     active: routes.filter(r => r.isActive).length,
@@ -125,7 +126,7 @@ export const RouteManagement = () => {
     assigned: routes.filter(r => !!r.busId).length,
   }), [routes]);
 
-  // Handlers
+  // Sıralama butonlarının durumunu güncelle.
   const handleSort = (field: keyof Route) => {
     if (sortField === field) {
       setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
@@ -182,7 +183,7 @@ export const RouteManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Baslik ve hizli aksiyonlar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-secondary-900">Marşrutlar</h1>
@@ -208,7 +209,7 @@ export const RouteManagement = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Ozet kartlari */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100">
           <CardBody className="p-4">
@@ -267,11 +268,11 @@ export const RouteManagement = () => {
         </Card>
       </div>
 
-      {/* Filters */}
+      {/* Arama ve filtre satiri */}
       <Card>
         <CardBody className="p-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-            {/* Search */}
+            {/* Arama alanı */}
             <div className="flex-1">
               <Input
                 placeholder="Marşrut adı, təsvir və ya plaka ilə axtar..."
@@ -281,7 +282,7 @@ export const RouteManagement = () => {
               />
             </div>
 
-            {/* Filters */}
+            {/* Durum ve otobus filtreleri */}
             <div className="flex flex-wrap gap-2">
               <select
                 className="rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
@@ -312,7 +313,7 @@ export const RouteManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Routes Table */}
+      {/* Rota tablo gorunumu */}
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">
@@ -468,7 +469,7 @@ export const RouteManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Modals */}
+      {/* Modal baglantilari */}
       <RouteFormModal
         isOpen={isFormModalOpen}
         onClose={handleCloseFormModal}

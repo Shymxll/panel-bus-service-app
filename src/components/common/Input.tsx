@@ -9,6 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rightIcon?: React.ReactNode;
 }
 
+// Bu girdi komponenti ikon, hata ve yardim metni senaryolarini destekler.
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {

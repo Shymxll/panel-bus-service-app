@@ -8,6 +8,7 @@ import { Input } from '@/components/common/Input';
 import type { Route, CreateRouteData, Bus as BusType } from '@/types';
 import type { UseMutateFunction } from '@tanstack/react-query';
 
+// Rota formunun dogrulama kurallari.
 const routeSchema = z.object({
   name: z.string().min(2, 'Marşrut adı ən az 2 simvol olmalıdır'),
   description: z.string().optional(),
@@ -33,6 +34,7 @@ interface RouteFormModalProps {
   isUpdating: boolean;
 }
 
+// Rota olusturma/düzenleme modalı.
 export const RouteFormModal = ({
   isOpen,
   onClose,
@@ -43,7 +45,7 @@ export const RouteFormModal = ({
   isCreating,
   isUpdating,
 }: RouteFormModalProps) => {
-  const isEditing = !!route;
+  const isEditing = !!route; // Duzenleme modunu takip eder.
 
   const {
     register,
@@ -65,6 +67,7 @@ export const RouteFormModal = ({
   const selectedBusId = watch('busId');
 
   useEffect(() => {
+    // Mevcut rota varsa formu doldur, yoksa varsayilanlari yukle.
     if (route) {
       reset({
         name: route.name,
@@ -83,6 +86,7 @@ export const RouteFormModal = ({
   }, [route, reset]);
 
   const onSubmit = (data: RouteFormData) => {
+    // Form verilerini API payload'una cevir.
     const payload: CreateRouteData = {
       name: data.name.trim(),
       description: data.description?.trim() || undefined,
@@ -105,6 +109,7 @@ export const RouteFormModal = ({
   };
 
   const handleBusChange = (value: string) => {
+    // Bos secimde busId'yi sifirla.
     if (!value) {
       setValue('busId', undefined);
     } else {
@@ -112,7 +117,7 @@ export const RouteFormModal = ({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Modal kapaliysa DOM'a cizme.
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -122,6 +127,7 @@ export const RouteFormModal = ({
       />
 
       <div className="relative mx-4 max-h-[90vh] w-full max-w-2xl overflow-hidden rounded-xl bg-white shadow-xl">
+        {/* Baslik */}
         <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4">
           <div>
             <p className="text-sm text-secondary-500">
@@ -140,6 +146,7 @@ export const RouteFormModal = ({
           </button>
         </div>
 
+        {/* Form alanlari */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="max-h-[calc(90vh-140px)] space-y-4 overflow-y-auto p-6"
@@ -198,6 +205,7 @@ export const RouteFormModal = ({
           </div>
         </form>
 
+        {/* Alt aksiyonlar */}
         <div className="flex items-center justify-end gap-3 border-t border-secondary-200 bg-secondary-50 px-6 py-4">
           <Button variant="outline" onClick={onClose}>
             Ləğv et

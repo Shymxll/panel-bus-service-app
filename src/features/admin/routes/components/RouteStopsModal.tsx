@@ -14,6 +14,7 @@ interface RouteStopsModalProps {
   route: Route | null;
 }
 
+// Bir marşrutun durak siralamasini yoneten modal.
 export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps) => {
   const { stops, isLoading: isStopsLoading } = useStops();
   const { addRouteStop, deleteRouteStop, isAddingStop, isDeletingStop } = useRoutes();
@@ -22,26 +23,27 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
   const [order, setOrder] = useState<number>(1);
   const [estimatedTime, setEstimatedTime] = useState<string>('');
 
-  // Get route stops
+  // Secilen rotanin duraklarini cek.
   const { data: routeStops = [], isLoading: isRouteStopsLoading, refetch } = useQuery({
     queryKey: ['routes', route?.id, 'stops'],
     queryFn: () => routeService.getRouteStops(route!.id),
     enabled: !!route?.id,
   });
 
-  // Create stop map for quick lookup
+  // Durak detaylarini id uzerinden hizli ulasmak icin map'e cevir.
   const stopMap = new Map<number, Stop>();
   stops.forEach(stop => stopMap.set(stop.id, stop));
 
-  // Get available stops (not already in route)
+  // Rotada olmayan duraklari filtreleyerek kullanilabilir liste olustur.
   const availableStops = stops.filter(
     stop => !routeStops.some(rs => rs.stopId === stop.id)
   );
 
-  // Sort route stops by order
+  // Siparis numarasina gore duraklari sirala.
   const sortedRouteStops = [...routeStops].sort((a, b) => a.order - b.order);
 
   useEffect(() => {
+    // Otomatik olarak bir sonraki sirayi oner.
     if (routeStops.length > 0) {
       const maxOrder = Math.max(...routeStops.map(rs => rs.order));
       setOrder(maxOrder + 1);
@@ -107,7 +109,7 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
         </div>
 
         <div className="max-h-[calc(90vh-180px)] overflow-y-auto p-6">
-          {/* Add Stop Form */}
+          {/* Yeni durak ekleme formu */}
           <div className="mb-6 rounded-lg border border-secondary-200 bg-secondary-50 p-4">
             <h3 className="mb-3 text-sm font-semibold text-secondary-700">Yeni dayanacaq əlavə et</h3>
             <div className="grid gap-3 md:grid-cols-3">
@@ -164,7 +166,7 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
             </Button>
           </div>
 
-          {/* Route Stops List */}
+          {/* Mevcut durak listesi */}
           <div>
             <h3 className="mb-3 text-sm font-semibold text-secondary-700">
               Marşrut dayanacaqları ({sortedRouteStops.length})
