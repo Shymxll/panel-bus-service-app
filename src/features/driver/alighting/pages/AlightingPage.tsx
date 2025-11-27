@@ -38,11 +38,11 @@ export const AlightingPage = () => {
   const [selectedTripId, setSelectedTripId] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const today = new Date().toISOString().split('T')[0];
+  const today: string = new Date().toISOString().split('T')[0]!;
 
   // İlk sefer'i otomatik seç
   useEffect(() => {
-    if (trips.length > 0 && !selectedTripId) {
+    if (trips.length > 0 && !selectedTripId && trips[0]) {
       setSelectedTripId(trips[0].id);
     }
   }, [trips, selectedTripId]);

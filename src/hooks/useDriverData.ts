@@ -22,7 +22,7 @@ export const useDriverData = () => {
   const { user } = useAuthStore();
   
   // Bugünün tarihi (YYYY-MM-DD formatında)
-  const today = new Date().toISOString().split('T')[0];
+  const today: string = new Date().toISOString().split('T')[0]!;
 
   // ============ QUERIES ============
 
