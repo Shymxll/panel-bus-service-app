@@ -11,6 +11,7 @@ import { DriverLayout } from '@/components/layouts/DriverLayout'; // Sürücü p
 // Genel erişime açık sayfalar
 import { LandingPage } from '@/features/public/pages/LandingPage'; // Ana sayfa (landing page)
 import { AdminLoginPage } from '@/features/auth/pages/AdminLoginPage'; // Admin giriş sayfası
+import { DriverLoginPage } from '@/features/auth/pages/DriverLoginPage'; // Şoför giriş sayfası
 
 // Admin paneli sayfaları
 import { AdminDashboard } from '@/features/admin/dashboard/pages/AdminDashboard'; // Admin ana kontrol paneli
@@ -48,8 +49,9 @@ const ProtectedRoute = ({ children, role }: { children: React.ReactNode; role?: 
 
   // Eğer kullanıcı giriş yapmamışsa veya kullanıcı bilgisi yoksa
   if (!isAuthenticated || !user) {
-    // Admin login sayfasına yönlendir (replace: tarayıcı geçmişine ekleme)
-    return <Navigate to="/admin/login" replace />;
+    // Rol bazlı login sayfasına yönlendir (replace: tarayıcı geçmişine ekleme)
+    const loginPath = role === 'driver' ? '/driver/login' : '/admin/login';
+    return <Navigate to={loginPath} replace />;
   }
 
   // Eğer belirli bir rol gerekiyorsa ve kullanıcının rolü uyuşmuyorsa
@@ -130,6 +132,19 @@ export const AppRoutes = () => {
           element={
             <PublicRoute>
               <AdminLoginPage />
+            </PublicRoute>
+          }
+        />
+        
+        {/* 
+          Şoför giriş sayfası
+          PublicRoute ile sarılmıştır - zaten giriş yapmış kullanıcılar dashboard'a yönlendirilir
+        */}
+        <Route
+          path="/driver/login"
+          element={
+            <PublicRoute>
+              <DriverLoginPage />
             </PublicRoute>
           }
         />

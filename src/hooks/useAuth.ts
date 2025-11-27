@@ -28,8 +28,59 @@ export const useAuth = () => {
       }
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data?.message || 'Email və ya şifrə yanlışdır';
-      toast.error(errorMessage);
+      // Get error message from backend response
+      console.error('Driver login error:', error);
+      console.error('Error response:', error?.response);
+      console.error('Error response data:', error?.response?.data);
+      console.error('Error response headers:', error?.response?.headers);
+      console.error('Error message:', error?.message);
+      
+      // Response data'yı düzgün parse et
+      let errorMessage = 'Email və ya şifrə yanlışdır.';
+      
+      if (error?.response?.data) {
+        const responseData = error.response.data;
+        // Obje ise
+        if (typeof responseData === 'object' && responseData !== null) {
+          errorMessage = (responseData as any)?.message || 
+                        (responseData as any)?.error || 
+                        errorMessage;
+        }
+        // String ise
+        else if (typeof responseData === 'string') {
+          errorMessage = responseData;
+        }
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+      
+      // Eğer hala varsayılan mesajsa, ek bilgi ekle
+      if (errorMessage === 'Email və ya şifrə yanlışdır.') {
+        errorMessage += ' Zəhmət olmasa admin panelindən şoför hesabı yaradıldığından əmin olun.';
+      }
+      
+      // Check for database initialization error
+      if (errorMessage.includes('Database not initialized') || errorMessage.includes('migrations')) {
+        toast.error('Database hazır deyil. Zəhmət olmasa backend-də "npm run db:migrate" komutunu çalıştırın.', {
+          duration: 10000,
+        });
+      } else if (errorMessage.includes('Failed query') || errorMessage.includes('does not exist')) {
+        toast.error('Database cədvəlləri yoxdur. Zəhmət olmasa backend-də "npm run db:migrate" komutunu çalıştırın.', {
+          duration: 10000,
+        });
+      } else if (error?.response?.status === 401) {
+        toast.error(errorMessage, {
+          duration: 8000,
+        });
+      } else if (error?.response?.status === 403) {
+        toast.error('Bu hesab şoför hesabı deyil. Zəhmət olmasa /admin/login istifadə edin.', {
+          duration: 8000,
+        });
+      } else {
+        toast.error(errorMessage, {
+          duration: 8000,
+        });
+      }
     },
   });
 

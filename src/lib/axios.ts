@@ -68,12 +68,27 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       // HTTP durum kodunu al (401, 403, 404, 500 vb.)
       const status = error.response.status;
+      
       // Sunucudan gelen hata mesajını al (mesaj veya error alanından)
-      const responseData = error.response.data as {
-        success?: boolean;
-        message?: string;
-        error?: string;
-      };
+      // Response data'nın tipini kontrol et
+      let responseData: { success?: boolean; message?: string; error?: string } | null = null;
+      
+      if (error.response.data) {
+        // Eğer data bir obje ise
+        if (typeof error.response.data === 'object' && error.response.data !== null) {
+          responseData = error.response.data as { success?: boolean; message?: string; error?: string };
+        }
+        // Eğer data bir string ise (bazı backend'ler string döndürebilir)
+        else if (typeof error.response.data === 'string') {
+          try {
+            responseData = JSON.parse(error.response.data);
+          } catch {
+            // Parse edilemezse string olarak kullan
+            responseData = { message: error.response.data };
+          }
+        }
+      }
+      
       // Hata mesajını belirle: önce message, yoksa error, yoksa varsayılan mesaj
       const message = responseData?.message || responseData?.error || 'Bir xəta baş verdi';
 
@@ -81,14 +96,20 @@ axiosInstance.interceptors.response.use(
       switch (status) {
         case 401:
           // Yetkisiz erişim - kullanıcı oturumu sonlandırılmış veya geçersiz
-          // Kimlik doğrulama token'ını ve kullanıcı verilerini temizle
-          localStorage.removeItem('auth_token');
-          localStorage.removeItem('user_data');
-          // Eğer zaten login sayfasında değilsek, kullanıcıyı login sayfasına yönlendir
-          if (!window.location.pathname.includes('/login')) {
+          // Login sayfalarında 401 hatası normaldir (yanlış şifre), bu yüzden interceptor'da işlem yapmayalım
+          const isLoginPage = window.location.pathname.includes('/login') || 
+                              window.location.pathname.includes('/admin/login') ||
+                              window.location.pathname.includes('/driver/login');
+          
+          if (!isLoginPage) {
+            // Sadece login sayfaları dışında otomatik yönlendirme yap
+            // Kimlik doğrulama token'ını ve kullanıcı verilerini temizle
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_data');
             toast.error('Sessiya bitdi. Yenidən daxil olun.');
             window.location.href = '/login';
           }
+          // Login sayfalarında hata mesajını sadece çağrı yapan kod göstersin (toast göstermeyelim)
           break;
         case 403:
           // Yasak - kullanıcının bu işlem için yetkisi yok

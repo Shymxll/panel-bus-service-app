@@ -46,33 +46,87 @@ class AuthService {
   }
 
   /**
-   * Kullanıcı girişi (Login)
-   * Mevcut bir kullanıcının sisteme giriş yapmasını sağlar
+   * Kullanıcı girişi (Login) - Driver Login
+   * Sürücü (driver) rolündeki kullanıcıların sisteme giriş yapmasını sağlar
+   * Daha detaylı hata yönetimi ve loglama içerir
    *
    * @param credentials - Giriş bilgileri (email ve password)
    * @returns Promise<AuthResponse> - Başarılı giriş sonrası kullanıcı bilgileri ve mesaj
-   * @throws Error - Giriş başarısız olursa hata fırlatır
+   * @throws Error - Giriş başarısız olursa detaylı hata mesajı fırlatır
    *
    * Backend yanıt formatı: { success: true, message: "...", data: user }
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    // POST isteği gönder - kullanıcı girişi yap
-    const response = await axiosInstance.post<ApiResponse<User>>(
-      API_ENDPOINTS.auth.login,
-      credentials
-    );
-    // Backend'den gelen yanıt: { success: true, message: "...", data: user }
-    // Yanıt başarılı ve kullanıcı verisi varsa
-    if (response.data.success && response.data.data) {
-      // AuthResponse formatında döndür
-      return {
-        success: true,
-        message: response.data.message || 'Login successful',
-        data: response.data.data,
-      };
+    try {
+      // Konsola driver giriş denemesi bilgisi yazdır (debug için)
+      console.log('Driver login attempt:', { email: credentials.email });
+      // POST isteği gönder - driver girişi yap
+      const response = await axiosInstance.post<ApiResponse<User>>(
+        API_ENDPOINTS.auth.login,
+        credentials
+      );
+      // Konsola driver giriş yanıtı yazdır (debug için)
+      console.log('Driver login response:', response.data);
+
+      // Backend'den gelen yanıt: { success: true, message: "...", data: user }
+      // Yanıt başarılı ve kullanıcı verisi varsa
+      if (response.data.success && response.data.data) {
+        // AuthResponse formatında döndür
+        return {
+          success: true,
+          message: response.data.message || 'Login successful',
+          data: response.data.data,
+        };
+      }
+      // Başarısız ise hata fırlat
+      throw new Error(response.data.message || 'Login failed');
+    } catch (error) {
+      // Hata durumunda detaylı hata bilgilerini yönet (401 ve diğer hatalar)
+      // Axios hatası kontrolü
+      const axiosError = error as AxiosError<{ success?: boolean; message?: string; error?: string }>;
+      
+      // Konsola hata detaylarını yazdır (debug için)
+      console.error('Driver login error details:', {
+        status: axiosError?.response?.status,
+        statusText: axiosError?.response?.statusText,
+        data: axiosError?.response?.data,
+        headers: axiosError?.response?.headers,
+        message: axiosError?.message,
+        config: {
+          url: axiosError?.config?.url,
+          method: axiosError?.config?.method,
+        },
+      });
+
+      // Response data'yı kontrol et
+      const responseData = axiosError?.response?.data;
+      
+      // Hata mesajını belirle: önce backend mesajı, sonra genel mesaj, sonra varsayılan mesaj
+      let errorMessage = 'Email və ya şifrə yanlışdır.';
+      
+      if (responseData) {
+        // Response data bir obje ise
+        if (typeof responseData === 'object') {
+          errorMessage = (responseData as any)?.message || 
+                        (responseData as any)?.error || 
+                        errorMessage;
+        }
+        // Response data bir string ise
+        else if (typeof responseData === 'string') {
+          errorMessage = responseData;
+        }
+      } else if (axiosError?.message) {
+        errorMessage = axiosError.message;
+      }
+      
+      // Eğer hala varsayılan mesajsa, ek bilgi ekle
+      if (errorMessage === 'Email və ya şifrə yanlışdır.') {
+        errorMessage += ' Zəhmət olmasa admin panelindən şoför hesabı yaradıldığından əmin olun.';
+      }
+      
+      // Hata fırlat
+      throw new Error(errorMessage);
     }
-    // Başarısız ise hata fırlat
-    throw new Error(response.data.message || 'Login failed');
   }
 
   /**
