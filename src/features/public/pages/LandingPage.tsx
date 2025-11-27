@@ -212,30 +212,6 @@ export const LandingPage = () => {
           </div>
         </div>
       </div>
-
-      {/* CTA Section */}
-      <div className="container-custom py-24">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary-600 to-primary-800 p-12 text-center shadow-2xl">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
-          <div className="relative z-10 max-w-2xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Hazırsınız başlamağa?
-            </h2>
-            <p className="text-xl text-primary-100 mb-8">
-              Sistemə daxil olun və idarəetməni başlayın
-            </p>
-            <Link to="/admin/login">
-              <Button
-                size="lg"
-                className="bg-white text-primary-600 hover:bg-white/90 hover:scale-105 transition-all duration-200 shadow-xl hover:shadow-2xl px-8 py-4 text-lg font-semibold"
-                rightIcon={<ArrowRight className="h-5 w-5" />}
-              >
-                İndi başla
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
