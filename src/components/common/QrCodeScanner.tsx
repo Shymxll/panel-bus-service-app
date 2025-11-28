@@ -43,11 +43,49 @@ export const QrCodeScanner = ({
         return;
       }
 
-      // Arka kamera tercih et, yoksa ilk kamerayı kullan
-      const cameraId = devices.find((device) => 
-        device.label.toLowerCase().includes('back') || 
-        device.label.toLowerCase().includes('rear')
-      )?.id || devices[0]!.id;
+      // Arka kamerayı bul - önce facingMode ile dene, sonra etiketlere bak
+      let cameraId: string | null = null;
+      
+      // Önce etiketlere göre arka kamerayı ara
+      const backCamera = devices.find((device) => {
+        const label = device.label.toLowerCase();
+        return (
+          label.includes('back') ||
+          label.includes('rear') ||
+          label.includes('environment') ||
+          label.includes('arka') ||
+          label.includes('arxa') ||
+          label.includes('rear-facing') ||
+          label.includes('back-facing')
+        );
+      });
+
+      if (backCamera) {
+        cameraId = backCamera.id;
+      } else if (devices.length > 1) {
+        // Eğer birden fazla kamera varsa, genellikle arka kamera ikinci sırada olur
+        // Önce ön kamerayı (front) bul, sonra diğerini seç
+        const frontCamera = devices.find((device) => {
+          const label = device.label.toLowerCase();
+          return (
+            label.includes('front') ||
+            label.includes('user') ||
+            label.includes('ön') ||
+            label.includes('qarşı')
+          );
+        });
+        
+        if (frontCamera && devices.length > 1) {
+          // Ön kamerayı bulduysak, diğer kamerayı seç (arka kamera olabilir)
+          cameraId = devices.find((d) => d.id !== frontCamera.id)?.id || devices[devices.length - 1]!.id;
+        } else {
+          // Ön kamera bulunamadıysa, son kamerayı seç (genellikle arka kamera)
+          cameraId = devices[devices.length - 1]!.id;
+        }
+      } else {
+        // Tek kamera varsa onu kullan
+        cameraId = devices[0]!.id;
+      }
 
       await html5QrCode.start(
         cameraId,
