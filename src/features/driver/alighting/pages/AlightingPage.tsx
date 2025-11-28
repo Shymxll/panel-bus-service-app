@@ -72,6 +72,11 @@ export const AlightingPage = () => {
     }
   };
 
+  // Manuel buton tıklaması için handler
+  const handleManualSearch = () => {
+    handleQrSearch();
+  };
+
   // Kamera ile QR kod tarandığında
   const handleQrScan = async (decodedText: string) => {
     await handleQrSearch(decodedText);
@@ -235,7 +240,7 @@ export const AlightingPage = () => {
                         className="flex-1"
                       />
                       <Button
-                        onClick={handleQrSearch}
+                        onClick={handleManualSearch}
                         isLoading={isSearchingStudent}
                         disabled={!qrInput.trim()}
                       >
