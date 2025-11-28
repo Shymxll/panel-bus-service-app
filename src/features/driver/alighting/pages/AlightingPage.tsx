@@ -6,6 +6,7 @@ import {
 import { Card, CardBody, CardHeader } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
+import { QrCodeScanner } from '@/components/common/QrCodeScanner';
 import { useDriverData } from '@/hooks/useDriverData';
 import { useAuthStore } from '@/store/auth-store';
 import type { Student } from '@/types';
@@ -55,19 +56,25 @@ export const AlightingPage = () => {
   }, [showManualInput]);
 
   // QR kod ile öğrenci ara
-  const handleQrSearch = async () => {
-    if (!qrInput.trim()) {
+  const handleQrSearch = async (qrCode?: string) => {
+    const codeToSearch = qrCode || qrInput.trim();
+    if (!codeToSearch) {
       toast.error('QR kod daxil edin');
       return;
     }
 
     try {
-      const student = await searchStudentByQr(qrInput.trim());
+      const student = await searchStudentByQr(codeToSearch);
       setScannedStudent(student);
       setQrInput('');
     } catch (error) {
       setScannedStudent(null);
     }
+  };
+
+  // Kamera ile QR kod tarandığında
+  const handleQrScan = async (decodedText: string) => {
+    await handleQrSearch(decodedText);
   };
 
   // Enter tuşu ile arama
@@ -237,23 +244,14 @@ export const AlightingPage = () => {
                     </div>
                   </div>
                 ) : (
-                  // Kamera modu (placeholder)
-                  <div className="aspect-square rounded-lg border-2 border-dashed border-secondary-300 bg-secondary-50 flex items-center justify-center">
-                    <div className="text-center">
-                      <Camera className="mx-auto h-16 w-16 text-secondary-400 animate-pulse" />
-                      <p className="mt-4 text-sm text-secondary-600">
-                        Kamera funksiyası tezliklə əlavə olunacaq
-                      </p>
-                      <Button
-                        className="mt-4"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setShowManualInput(true)}
-                      >
-                        Manual Girişə Keç
-                      </Button>
-                    </div>
-                  </div>
+                  // Kamera modu
+                  <QrCodeScanner
+                    onScanSuccess={handleQrScan}
+                    onScanError={(error) => {
+                      console.error('QR scan error:', error);
+                    }}
+                    className="w-full"
+                  />
                 )}
 
                 {/* Bilgi kutusu */}
