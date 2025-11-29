@@ -30,7 +30,13 @@ function App() {
 
   return (
     // BrowserRouter ile uygulamayı sarmala - routing yapısını etkinleştirir
-    <BrowserRouter>
+    // future flags - React Router v7 için hazırlık
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       {/* Tüm route'ları içeren AppRoutes bileşenini render et */}
       <AppRoutes />
     </BrowserRouter>

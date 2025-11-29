@@ -154,11 +154,23 @@ export const LandingPage = () => {
               </div>
               <span className="text-xl font-bold text-secondary-900">Panel Bus</span>
             </div>
-            <Link to="/admin/login">
-              <Button size="sm" className="shadow-md hover:shadow-lg transition-shadow">
-                Daxil ol
-              </Button>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link to="/admin/login">
+                <Button variant="outline" size="sm">
+                  Admin
+                </Button>
+              </Link>
+              <Link to="/driver/login">
+                <Button variant="outline" size="sm">
+                  Şoför
+                </Button>
+              </Link>
+              <Link to="/parent/login">
+                <Button size="sm" className="shadow-md hover:shadow-lg transition-shadow">
+                  Valideyin
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
@@ -201,16 +213,18 @@ export const LandingPage = () => {
                     className="group bg-white text-primary-600 hover:bg-white/90 hover:scale-105 transition-all duration-200 shadow-xl hover:shadow-2xl px-8 py-4 text-lg font-semibold"
                     rightIcon={<ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />}
                   >
-                    Başlayın
+                    Admin Girişi
                   </Button>
                 </Link>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="group bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm px-8 py-4 text-lg font-semibold"
-                >
-                  Demo İzlə
-                </Button>
+                <Link to="/parent/login">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="group bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm px-8 py-4 text-lg font-semibold"
+                  >
+                    Valideyin Girişi
+                  </Button>
+                </Link>
               </div>
 
               {/* Trust badges */}

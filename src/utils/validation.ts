@@ -92,8 +92,8 @@ export const studentSchema = z.object({
   name: requiredStringSchema.min(2, 'Ad ən azı 2 simvol olmalıdır'), // Minimum 2 karakter
   studentNumber: requiredStringSchema, // Öğrenci numarası zorunlu
   grade: z.string().optional(), // Sınıf (isteğe bağlı)
-  parentName: z.string().optional(), // Veli adı (isteğe bağlı)
-  parentPhone: phoneSchema, // Veli telefonu (isteğe bağlı)
+  parentName: z.string().optional(), // Valideyin adı (isteğe bağlı)
+  parentPhone: phoneSchema, // Valideyin telefonu (isteğe bağlı)
   address: z.string().optional(), // Adres (isteğe bağlı)
 });
 

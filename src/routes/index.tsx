@@ -7,11 +7,13 @@ import { useAuthStore } from '@/store/auth-store';
 import { PublicLayout } from '@/components/layouts/PublicLayout'; // Genel/public sayfalar için layout
 import { AdminLayout } from '@/components/layouts/AdminLayout'; // Admin paneli sayfaları için layout
 import { DriverLayout } from '@/components/layouts/DriverLayout'; // Sürücü paneli sayfaları için layout
+import { ParentLayout } from '@/components/layouts/ParentLayout'; // Valideyin paneli sayfaları için layout
 
 // Genel erişime açık sayfalar
 import { LandingPage } from '@/features/public/pages/LandingPage'; // Ana sayfa (landing page)
 import { AdminLoginPage } from '@/features/auth/pages/AdminLoginPage'; // Admin giriş sayfası
 import { DriverLoginPage } from '@/features/auth/pages/DriverLoginPage'; // Şoför giriş sayfası
+import { ParentLoginPage } from '@/features/auth/pages/ParentLoginPage'; // Valideyin giriş sayfası
 
 // Admin paneli sayfaları
 import { AdminDashboard } from '@/features/admin/dashboard/pages/AdminDashboard'; // Admin ana kontrol paneli
@@ -27,6 +29,11 @@ import { ReportsPage } from '@/features/admin/reports/pages/ReportsPage'; // Rap
 import { DriverDashboard } from '@/features/driver/dashboard/pages/DriverDashboard'; // Sürücü ana kontrol paneli
 import { BoardingPage } from '@/features/driver/boarding/pages/BoardingPage'; // Biniş işlemleri sayfası
 import { AlightingPage } from '@/features/driver/alighting/pages/AlightingPage'; // İniş işlemleri sayfası
+
+// Valideyin paneli sayfaları
+import { ParentDashboard } from '@/features/parent/dashboard/pages/ParentDashboard'; // Valideyin ana kontrol paneli
+import { ParentHistoryPage } from '@/features/parent/history/pages/ParentHistoryPage'; // Valideyin tarixçə sayfası
+import { ParentQrCodePage } from '@/features/parent/qr-code/pages/ParentQrCodePage'; // Valideyin QR kod sayfası
 
 // Hata sayfası bileşeni
 import { NotFound } from '@/components/common/NotFound'; // 404 - Sayfa bulunamadı sayfası
@@ -148,6 +155,15 @@ export const AppRoutes = () => {
             </PublicRoute>
           }
         />
+
+        {/* 
+          Valideyin giriş sayfası
+          Valideyin paneline giriş için QR kod ve telefon nömrəsi ilə giriş
+        */}
+        <Route
+          path="/parent/login"
+          element={<ParentLoginPage />}
+        />
       </Route>
 
       {/* 
@@ -217,6 +233,26 @@ export const AppRoutes = () => {
         
         {/* İniş işlemleri - öğrencilerin otobüsten iniş işlemlerini kaydetme */}
         <Route path="alighting" element={<AlightingPage />} />
+      </Route>
+
+      {/* 
+        Valideyin Paneli Route'ları
+        Bu route'lar öğrenci valideyinləri için özel olarak tasarlanmıştır
+        QR kod ve telefon nömrəsi ilə basit giriş sistemi vardır
+        Tüm alt route'lar /parent/ prefix'i ile başlar
+      */}
+      <Route path="/parent" element={<ParentLayout />}>
+        {/* /parent rotasına gidildiğinde dashboard'a yönlendir */}
+        <Route index element={<Navigate to="/parent/dashboard" replace />} />
+        
+        {/* Valideyin ana kontrol paneli - uşağın günlük aktivitələri */}
+        <Route path="dashboard" element={<ParentDashboard />} />
+        
+        {/* Tarixçə - minmə/düşmə tarixçəsi */}
+        <Route path="history" element={<ParentHistoryPage />} />
+        
+        {/* QR Kod - uşağın QR kodunu görüntülə və paylaş */}
+        <Route path="qr-code" element={<ParentQrCodePage />} />
       </Route>
 
       {/* 

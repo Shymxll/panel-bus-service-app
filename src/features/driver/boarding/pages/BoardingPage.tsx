@@ -294,7 +294,7 @@ export const BoardingPage = () => {
                     <p className="font-medium text-secondary-900">{scannedStudent.qrCode}</p>
                   </div>
                   <div className="p-3 rounded-lg bg-secondary-50">
-                    <p className="text-xs text-secondary-500">Vəli</p>
+                    <p className="text-xs text-secondary-500">Valideyin</p>
                     <p className="font-medium text-secondary-900">
                       {scannedStudent.parentName || '-'}
                     </p>

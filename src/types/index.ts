@@ -110,8 +110,8 @@ export interface Student {
   qrCode: string; // Öğrencinin QR kod numarası (otobüse biniş/iniş için kullanılır)
   school: string; // Öğrencinin okuduğu okul adı
   grade: string; // Öğrencinin sınıfı (örn: "5A", "6B")
-  parentName?: string | null; // Velinin adı (isteğe bağlı veya null olabilir)
-  parentPhone?: string | null; // Velinin telefon numarası (isteğe bağlı veya null olabilir)
+  parentName?: string | null; // Valideynin adı (isteğe bağlı veya null olabilir)
+  parentPhone?: string | null; // Valideynin telefon numarası (isteğe bağlı veya null olabilir)
   address?: string | null; // Öğrencinin adresi (isteğe bağlı veya null olabilir)
   isActive: boolean; // Öğrencinin aktif olup olmadığı
   createdAt: string; // Öğrencinin oluşturulma tarihi (ISO string formatında)
@@ -128,8 +128,8 @@ export interface CreateStudentData {
   qrCode: string; // Öğrencinin QR kod numarası (zorunlu)
   school: string; // Öğrencinin okuduğu okul adı (zorunlu)
   grade: string; // Öğrencinin sınıfı (zorunlu)
-  parentName?: string; // Velinin adı (isteğe bağlı)
-  parentPhone?: string; // Velinin telefon numarası (isteğe bağlı)
+  parentName?: string; // Valideynin adı (isteğe bağlı)
+  parentPhone?: string; // Valideynin telefon numarası (isteğe bağlı)
   address?: string; // Öğrencinin adresi (isteğe bağlı)
   isActive?: boolean; // Öğrencinin aktif olup olmadığı (isteğe bağlı, varsayılan: true)
 }
@@ -145,8 +145,8 @@ export interface UpdateStudentData {
   qrCode?: string; // Öğrencinin QR kod numarası (isteğe bağlı)
   school?: string; // Öğrencinin okuduğu okul adı (isteğe bağlı)
   grade?: string; // Öğrencinin sınıfı (isteğe bağlı)
-  parentName?: string; // Velinin adı (isteğe bağlı)
-  parentPhone?: string; // Velinin telefon numarası (isteğe bağlı)
+  parentName?: string; // Valideynin adı (isteğe bağlı)
+  parentPhone?: string; // Valideynin telefon numarası (isteğe bağlı)
   address?: string; // Öğrencinin adresi (isteğe bağlı)
   isActive?: boolean; // Öğrencinin aktif olup olmadığı (isteğe bağlı)
 }
