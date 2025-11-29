@@ -99,17 +99,21 @@ axiosInstance.interceptors.response.use(
           // Login sayfalarında 401 hatası normaldir (yanlış şifre), bu yüzden interceptor'da işlem yapmayalım
           const isLoginPage = window.location.pathname.includes('/login') || 
                               window.location.pathname.includes('/admin/login') ||
-                              window.location.pathname.includes('/driver/login');
+                              window.location.pathname.includes('/driver/login') ||
+                              window.location.pathname.includes('/parent/login');
           
-          if (!isLoginPage) {
-            // Sadece login sayfaları dışında otomatik yönlendirme yap
+          // Parent login için özel kontrol - QR kod endpoint'i public olmalı
+          const isParentQrRequest = error.config?.url?.includes('/api/students/qr/');
+          
+          if (!isLoginPage && !isParentQrRequest) {
+            // Sadece login sayfaları ve parent QR istekleri dışında otomatik yönlendirme yap
             // Kimlik doğrulama token'ını ve kullanıcı verilerini temizle
             localStorage.removeItem('auth_token');
             localStorage.removeItem('user_data');
             toast.error('Sessiya bitdi. Yenidən daxil olun.');
             window.location.href = '/login';
           }
-          // Login sayfalarında hata mesajını sadece çağrı yapan kod göstersin (toast göstermeyelim)
+          // Login sayfalarında ve parent QR isteklerinde hata mesajını sadece çağrı yapan kod göstersin (toast göstermeyelim)
           break;
         case 403:
           // Yasak - kullanıcının bu işlem için yetkisi yok

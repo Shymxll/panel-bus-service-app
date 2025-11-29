@@ -72,8 +72,13 @@ class StudentService {
     const cleanQrCode = encodeURIComponent(qrCode.trim());
     
     // GET isteği gönder - QR kod ile öğrenciyi getir
+    // NOT: Bu endpoint public'tir, authentication gerektirmez (parent login için)
     const response = await axiosInstance.get<ApiResponse<Student>>(
-      API_ENDPOINTS.students.byQrCode(cleanQrCode)
+      API_ENDPOINTS.students.byQrCode(cleanQrCode),
+      {
+        // Parent login için credentials göndermeyelim (cookie yok)
+        withCredentials: false,
+      }
     );
     // Yanıt başarılı ve veri varsa, veriyi döndür
     if (response.data.success && response.data.data) {

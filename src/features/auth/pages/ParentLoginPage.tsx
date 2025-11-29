@@ -44,7 +44,7 @@ export const ParentLoginPage = () => {
         phone: normalizedInputPhone,
       });
 
-      // QR kod ilə öğrenciyi bul
+      // QR kod ilə öğrenciyi bul (public endpoint - authentication gerektirmez)
       const student = await studentService.getStudentByQrCode(cleanQrCode);
       
       console.log('✅ Öğrenci bulundu:', {
