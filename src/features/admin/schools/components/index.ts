@@ -1,0 +1,2 @@
+export { SchoolFormModal } from './SchoolFormModal';
+

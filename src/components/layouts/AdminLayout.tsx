@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   MapPin,
+  Building2,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
@@ -20,6 +21,7 @@ import { Button } from '@/components/common/Button';
 // Panel menusu icin baslik, rota ve ikon bilgisini tek noktada tutar.
 const navigation = [
   { name: 'İdarə Paneli', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Məktəblər', href: '/admin/schools', icon: Building2 },
   { name: 'Şagirdlər', href: '/admin/students', icon: Users },
   { name: 'Şoförlər', href: '/admin/drivers', icon: UserCircle },
   { name: 'Avtobuslar', href: '/admin/buses', icon: Bus },

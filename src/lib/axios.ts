@@ -34,13 +34,8 @@ axiosInstance.interceptors.request.use(
     // Ancak geriye dönük uyumluluk için localStorage'da token varsa onu kullanıyoruz
     const token = localStorage.getItem('auth_token');
 
-    // Eğer Authorization header açıkça boş string olarak ayarlanmışsa (public endpoint için)
-    // token eklemeyelim - bu parent login gibi public endpoint'ler için gerekli
-    if (config.headers?.Authorization === '') {
-      delete config.headers.Authorization;
-    }
     // Eğer token mevcutsa ve Authorization başlığı henüz eklenmemişse, Bearer token olarak ekle
-    else if (token && config.headers && !config.headers.Authorization) {
+    if (token && config.headers && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -104,21 +99,17 @@ axiosInstance.interceptors.response.use(
           // Login sayfalarında 401 hatası normaldir (yanlış şifre), bu yüzden interceptor'da işlem yapmayalım
           const isLoginPage = window.location.pathname.includes('/login') || 
                               window.location.pathname.includes('/admin/login') ||
-                              window.location.pathname.includes('/driver/login') ||
-                              window.location.pathname.includes('/parent/login');
+                              window.location.pathname.includes('/driver/login');
           
-          // Parent login için özel kontrol - QR kod endpoint'i public olmalı
-          const isParentQrRequest = error.config?.url?.includes('/api/students/qr/');
-          
-          if (!isLoginPage && !isParentQrRequest) {
-            // Sadece login sayfaları ve parent QR istekleri dışında otomatik yönlendirme yap
+          if (!isLoginPage) {
+            // Sadece login sayfaları dışında otomatik yönlendirme yap
             // Kimlik doğrulama token'ını ve kullanıcı verilerini temizle
             localStorage.removeItem('auth_token');
             localStorage.removeItem('user_data');
             toast.error('Sessiya bitdi. Yenidən daxil olun.');
             window.location.href = '/login';
           }
-          // Login sayfalarında ve parent QR isteklerinde hata mesajını sadece çağrı yapan kod göstersin (toast göstermeyelim)
+          // Login sayfalarında hata mesajını sadece çağrı yapan kod göstersin (toast göstermeyelim)
           break;
         case 403:
           // Yasak - kullanıcının bu işlem için yetkisi yok
@@ -126,12 +117,7 @@ axiosInstance.interceptors.response.use(
           break;
         case 404:
           // Bulunamadı - istenen kaynak mevcut değil
-          // Parent login sayfasında 404 hatası normal olabilir (QR kod bulunamadı)
-          // Bu yüzden interceptor'da toast göstermeyelim, çağrı yapan kod göstersin
-          const isParentLoginPage = window.location.pathname.includes('/parent/login');
-          if (!isParentLoginPage) {
-            toast.error('Məlumat tapılmadı.');
-          }
+          toast.error('Məlumat tapılmadı.');
           break;
         case 409:
           // Çakışma - genellikle kayıt işlemlerinde çift kayıt gibi durumlar için

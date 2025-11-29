@@ -12,12 +12,14 @@ import {
   ArrowDown,
   RefreshCw,
   Plus,
+  Building2,
 } from 'lucide-react';
 import { Card, CardBody, CardHeader } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { Loading } from '@/components/common/Loading';
 import { useBuses } from '@/hooks/useBuses';
 import { useUsers } from '@/hooks/useUsers';
+import { useSchools } from '@/hooks/useSchools';
 import { useStudents } from '@/hooks/useStudents';
 import { useRoutes } from '@/hooks/useRoutes';
 import { useStops } from '@/hooks/useStops';
@@ -31,6 +33,7 @@ export const AdminDashboard = () => {
   const today = new Date().toISOString().split('T')[0]!;
 
   // Istatistikleri besleyen sorgular: sayaclar ve grafikler icin kaynak veriler.
+  const { data: schools = [], isLoading: isSchoolsLoading } = useSchools();
   const { buses, isLoading: isBusesLoading } = useBuses();
   const { users, drivers, isLoading: isUsersLoading } = useUsers();
   const { students, isLoading: isStudentsLoading } = useStudents();
@@ -40,6 +43,7 @@ export const AdminDashboard = () => {
   const { data: todayPlans = [], isLoading: isPlansLoading } = useDailyPlansByDate(today);
 
   const isLoading =
+    isSchoolsLoading ||
     isBusesLoading ||
     isUsersLoading ||
     isStudentsLoading ||
@@ -50,6 +54,7 @@ export const AdminDashboard = () => {
 
   // Sistem genelinde aktif/pasif sayaclarini hesaplar.
   const stats = useMemo(() => {
+    const activeSchools = schools.filter(s => s.isActive).length;
     const activeStudents = students.filter(s => s.isActive).length;
     const activeDrivers = drivers.filter(d => d.isActive).length;
     const activeBuses = buses.filter(b => b.isActive).length;
@@ -58,6 +63,8 @@ export const AdminDashboard = () => {
     const activeStops = stops.filter(s => s.isActive).length;
 
     return {
+      totalSchools: schools.length,
+      activeSchools,
       totalStudents: students.length,
       activeStudents,
       totalDrivers: drivers.length,
@@ -74,7 +81,7 @@ export const AdminDashboard = () => {
       todayBoarding: todayPlans.filter(p => p.isBoarding).length,
       todayDropoff: todayPlans.filter(p => !p.isBoarding).length,
     };
-  }, [students, drivers, buses, routes, trips, stops, todayPlans]);
+  }, [schools, students, drivers, buses, routes, trips, stops, todayPlans]);
 
   // En son olusturulan kayitlari tek listede toplar.
   const recentItems = useMemo(() => {
@@ -169,8 +176,27 @@ export const AdminDashboard = () => {
         </Button>
       </div>
 
-      {/* Temel sayaclar: ogrenci, sofor, otobus, rota dagilimi */}
+      {/* Temel sayaclar: okul, ogrenci, sofor, otobus, rota dagilimi */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="bg-gradient-to-br from-cyan-50 to-cyan-100 border-cyan-200">
+          <CardBody className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-cyan-600">Cəmi Məktəb</p>
+                <p className="mt-1 text-2xl font-bold text-cyan-900">
+                  {stats.totalSchools}
+                </p>
+                <p className="text-xs text-cyan-700 mt-1">
+                  {stats.activeSchools} aktiv
+                </p>
+              </div>
+              <div className="rounded-lg bg-cyan-500 p-3">
+                <Building2 className="h-6 w-6 text-white" />
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
@@ -440,6 +466,16 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardBody>
             <div className="grid gap-3 sm:grid-cols-2">
+              <button
+                onClick={() => navigate('/admin/schools')}
+                className="flex flex-col items-center gap-2 rounded-lg border border-secondary-300 p-4 text-center transition-colors hover:bg-secondary-50 hover:border-primary-500"
+              >
+                <div className="rounded-full bg-cyan-100 p-3">
+                  <Building2 className="h-6 w-6 text-cyan-600" />
+                </div>
+                <p className="text-sm font-medium text-secondary-900">Məktəblər</p>
+                <p className="text-xs text-secondary-500">İdarə et</p>
+              </button>
               <button
                 onClick={() => navigate('/admin/students')}
                 className="flex flex-col items-center gap-2 rounded-lg border border-secondary-300 p-4 text-center transition-colors hover:bg-secondary-50 hover:border-primary-500"

@@ -58,6 +58,52 @@ export interface AuthResponse {
 
 /**
  * ============================================================================
+ * OKUL TİPLERİ (SCHOOL TYPES)
+ * ============================================================================
+ */
+
+/**
+ * Okul Arayüzü (School Interface)
+ * Sistemdeki okulların bilgilerini tanımlar
+ */
+export interface School {
+  id: number; // Okulun benzersiz ID'si
+  name: string; // Okulun adı
+  address?: string | null; // Okulun adresi (isteğe bağlı)
+  phone?: string | null; // Okulun telefon numarası (isteğe bağlı)
+  email?: string | null; // Okulun e-posta adresi (isteğe bağlı)
+  isActive: boolean; // Okulun aktif olup olmadığı
+  createdAt: string; // Okulun oluşturulma tarihi (ISO string formatında)
+  updatedAt: string; // Okulun son güncellenme tarihi (ISO string formatında)
+}
+
+/**
+ * Okul Oluşturma Verisi Arayüzü (Create School Data Interface)
+ * Yeni okul oluşturulurken gönderilecek verileri tanımlar
+ */
+export interface CreateSchoolData {
+  name: string; // Okulun adı (zorunlu)
+  address?: string; // Okulun adresi (isteğe bağlı)
+  phone?: string; // Okulun telefon numarası (isteğe bağlı)
+  email?: string; // Okulun e-posta adresi (isteğe bağlı)
+  isActive?: boolean; // Okulun aktif olup olmadığı (isteğe bağlı, varsayılan: true)
+}
+
+/**
+ * Okul Güncelleme Verisi Arayüzü (Update School Data Interface)
+ * Mevcut okul bilgilerini güncellerken gönderilecek verileri tanımlar
+ * Tüm alanlar isteğe bağlıdır - sadece güncellenecek alanlar gönderilir
+ */
+export interface UpdateSchoolData {
+  name?: string; // Okulun adı (isteğe bağlı)
+  address?: string; // Okulun adresi (isteğe bağlı)
+  phone?: string; // Okulun telefon numarası (isteğe bağlı)
+  email?: string; // Okulun e-posta adresi (isteğe bağlı)
+  isActive?: boolean; // Okulun aktif olup olmadığı (isteğe bağlı)
+}
+
+/**
+ * ============================================================================
  * OTOBÜS TİPLERİ (BUS TYPES)
  * ============================================================================
  */

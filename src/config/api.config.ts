@@ -36,6 +36,14 @@ export const API_ENDPOINTS = {
     update: (id: number) => `/api/buses/${id}`,
     delete: (id: number) => `/api/buses/${id}`,
   },
+  // Okul kayitlari.
+  schools: {
+    list: '/api/schools',
+    detail: (id: number) => `/api/schools/${id}`,
+    create: '/api/schools',
+    update: (id: number) => `/api/schools/${id}`,
+    delete: (id: number) => `/api/schools/${id}`,
+  },
   // Ogrenci kartlari ve QR kod uretimi.
   students: {
     list: '/api/students',

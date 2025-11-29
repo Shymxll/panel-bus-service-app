@@ -48,7 +48,7 @@ export const LandingPage = () => {
     {
       icon: Users,
       title: 'İstifadəçi İdarəçiliyi',
-      description: 'Adminlər, sürücülər və valideynlər üçün ayrı-ayrı panel və səlahiyyətlər.',
+      description: 'Adminlər və sürücülər üçün ayrı-ayrı panel və səlahiyyətlər. Rol əsaslı giriş sistemi.',
       gradient: 'from-pink-500 to-rose-500',
       bgGradient: 'from-pink-50 to-rose-50',
     },
@@ -105,12 +105,12 @@ export const LandingPage = () => {
       avatar: 'RƏ'
     },
     {
-      name: 'Nigar Həsənova',
-      role: 'Valideyn',
-      company: '',
-      content: 'Uşağımın avtobusa minib-düşdüyünü telefona bildiriş gəlir. Artıq narahat olmuram. Təşəkkür edirəm!',
+      name: 'Əli Quliyev',
+      role: 'Şoför',
+      company: 'Məktəb Servisi',
+      content: 'QR kod oxuma sistemi çox sürətli işləyir. Şagirdləri qeydə almaq artıq saniyələr ərzində baş verir.',
       rating: 5,
-      avatar: 'NH'
+      avatar: 'ƏQ'
     },
   ];
 
@@ -165,11 +165,6 @@ export const LandingPage = () => {
                   Şoför
                 </Button>
               </Link>
-              <Link to="/parent/login">
-                <Button size="sm" className="shadow-md hover:shadow-lg transition-shadow">
-                  Valideyin
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
@@ -204,7 +199,7 @@ export const LandingPage = () => {
               <p className="mt-6 text-xl sm:text-2xl text-primary-100 leading-relaxed">
                 QR kod texnologiyası ilə şagirdlərin servis hərəkətlərini{' '}
                 <span className="font-semibold text-white">real vaxtda</span> izləyin və idarə edin.
-                Valideynlərə tam nəzarət və rahatlıq təqdim edin.
+                Məktəb servisi idarəetməsində yeni standart.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link to="/admin/login">
@@ -216,13 +211,13 @@ export const LandingPage = () => {
                     Admin Girişi
                   </Button>
                 </Link>
-                <Link to="/parent/login">
+                <Link to="/driver/login">
                   <Button
                     size="lg"
                     variant="outline"
                     className="group bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm px-8 py-4 text-lg font-semibold"
                   >
-                    Valideyin Girişi
+                    Şoför Girişi
                   </Button>
                 </Link>
               </div>
@@ -464,7 +459,7 @@ export const LandingPage = () => {
                 Niyə Panel Bus?
               </h2>
               <p className="text-lg text-secondary-600 mb-8">
-                Məktəb servisi idarəetməsini sadələşdirən, təhlükəsizliyi təmin edən və valideynlərə rahatlıq gətirən ən müasir həll
+                Məktəb servisi idarəetməsini sadələşdirən, təhlükəsizliyi təmin edən və şagird təhlükəsizliyini artıran ən müasir həll
               </p>
               <div className="space-y-4">
                 {benefits.map((benefit, idx) => (

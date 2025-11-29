@@ -25,6 +25,7 @@ export const QUERY_KEYS = {
     all: ['buses'] as const,
     detail: (id: number) => ['buses', id] as const,
   },
+  schools: ['schools'] as const,
   students: {
     all: ['students'] as const,
     detail: (id: number) => ['students', id] as const,

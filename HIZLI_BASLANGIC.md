@@ -63,74 +63,7 @@ http://localhost:5173
 
 ---
 
-## 🎯 Vəli Paneli Kullanımı
-
-### Giriş Yapma
-
-1. **Ana Sayfaya Gidin:**
-   ```
-   http://localhost:5173
-   ```
-
-2. **Sağ üstteki "Vəli" butonuna tıklayın**
-
-3. **Veya doğrudan giriş sayfasına gidin:**
-   ```
-   http://localhost:5173/parent/login
-   ```
-
-4. **Giriş Bilgileri:**
-   ```
-   QR Kod: STU001 (örnek)
-   Telefon: +994501234567 (örnek)
-   ```
-
-> **Not:** Gerçek sistemde veritabanınızda kayıtlı öğrenci bilgilerini kullanın.
-
----
-
-## 📱 Sayfalar
-
-### 1. Ana Səhifə (Dashboard)
-```
-URL: /parent/dashboard
-```
-
-**Ne Görebilirsiniz:**
-- ✅ Öğrenci bilgileri
-- 🚌 Bugünkü minmə/düşmə durumu
-- 📞 İletişim bilgileri
-- ℹ️ Bildirimler
-
----
-
-### 2. Tarixçə
-```
-URL: /parent/history
-```
-
-**Özellikler:**
-- 📊 Tüm minmə/düşmə kayıtları
-- 🔍 Filtreleme (Hamısı/Minənlər/Düşənlər)
-- 📅 Tarihe göre gruplama
-- 📈 İstatistikler
-
----
-
-### 3. QR Kod
-```
-URL: /parent/qr-code
-```
-
-**Yapabilecekleriniz:**
-- 👀 QR kodu görüntüleme
-- ⬇️ PNG olarak indirme
-- 📤 Paylaşma
-- 📋 Kullanım talimatları
-
----
-
-## 🎨 Diğer Paneller
+## 🎨 Paneller
 
 ### Admin Paneli
 ```
@@ -192,15 +125,10 @@ npm run test
 panel-bus-service-app/
 ├── src/
 │   ├── features/
-│   │   ├── parent/           ← Vəli Paneli
-│   │   │   ├── dashboard/
-│   │   │   ├── history/
-│   │   │   └── qr-code/
 │   │   ├── driver/           ← Şoför Paneli
 │   │   └── admin/            ← Admin Paneli
 │   ├── components/
 │   │   ├── layouts/
-│   │   │   ├── ParentLayout.tsx
 │   │   │   ├── DriverLayout.tsx
 │   │   │   └── AdminLayout.tsx
 │   │   └── common/
@@ -213,21 +141,15 @@ panel-bus-service-app/
 
 ---
 
-## 🆕 Yeni Eklenen Özellikler
+## 🆕 Özellikler
 
-### 1. Vəli Paneli (Parent Portal)
-- ✅ QR kod + telefon ile giriş
-- ✅ Öğrenci takibi
-- ✅ Geçmiş kayıtları görüntüleme
-- ✅ QR kod paylaşımı
-
-### 2. Modern Tasarım
+### 1. Modern Tasarım
 - ✅ Minimalist UI/UX
 - ✅ Responsive tasarım
 - ✅ Gradient ve gölge efektleri
 - ✅ Smooth animasyonlar
 
-### 3. Performans İyileştirmeleri
+### 2. Performans İyileştirmeleri
 - ✅ React Router v7 hazırlığı
 - ✅ Optimize edilmiş bundle
 - ✅ Lazy loading
@@ -314,13 +236,8 @@ Uygulamayı çalıştırmadan önce:
 - [ ] Backend API çalışıyor
 - [ ] PostgreSQL veritabanı aktif
 - [ ] Environment variables ayarlandı
-
-Vəli Paneli için:
-
 - [ ] Veritabanında öğrenci kayıtları var
 - [ ] Öğrencilere QR kod atanmış
-- [ ] Veli telefon numaraları kayıtlı
-- [ ] Test verisi oluşturuldu
 
 ---
 
@@ -341,7 +258,6 @@ Artık Panel Bus uygulamasını kullanmaya başlayabilirsiniz!
 
 ## 📚 İleri Okuma
 
-- [Vəli Panel Detaylı Dokümantasyon](./VELI_PANEL_README.md)
 - [Ana README](./README.md)
 - [API Dokümantasyonu](./docs/api/)
 - [Mimari Dokümantasyon](./ARCHITECTURE.md)
