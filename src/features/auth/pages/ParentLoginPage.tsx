@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardBody } from '@/components/common/Card';
 import { Input } from '@/components/common/Input';
@@ -16,6 +16,20 @@ export const ParentLoginPage = () => {
   const [qrCode, setQrCode] = useState('');
   const [parentPhone, setParentPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Parent login sayfası açıldığında mevcut admin/driver authentication token'larını temizle
+  // Çünkü bu token'lar parent login QR kod endpoint'ine eklenirse 401 hatası oluşur
+  useEffect(() => {
+    const authToken = localStorage.getItem('auth_token');
+    const userData = localStorage.getItem('user_data');
+    
+    // Eğer admin/driver auth token'ı varsa temizle
+    if (authToken || userData) {
+      console.log('🧹 Temizleniyor: Önceki admin/driver session bulundu, parent login için temizleniyor...');
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
+    }
+  }, []); // Sadece component mount olduğunda çalışsın
 
   // Telefon numarasını normalize et (boşluk, tire, parantez temizle)
   const normalizePhone = (phone: string): string => {

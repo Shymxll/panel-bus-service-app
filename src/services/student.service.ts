@@ -78,6 +78,10 @@ class StudentService {
       {
         // Parent login için credentials göndermeyelim (cookie yok)
         withCredentials: false,
+        // Authorization header'ını da gönderme (public endpoint)
+        headers: {
+          Authorization: '',
+        },
       }
     );
     // Yanıt başarılı ve veri varsa, veriyi döndür

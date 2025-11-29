@@ -34,8 +34,13 @@ axiosInstance.interceptors.request.use(
     // Ancak geriye dönük uyumluluk için localStorage'da token varsa onu kullanıyoruz
     const token = localStorage.getItem('auth_token');
 
+    // Eğer Authorization header açıkça boş string olarak ayarlanmışsa (public endpoint için)
+    // token eklemeyelim - bu parent login gibi public endpoint'ler için gerekli
+    if (config.headers?.Authorization === '') {
+      delete config.headers.Authorization;
+    }
     // Eğer token mevcutsa ve Authorization başlığı henüz eklenmemişse, Bearer token olarak ekle
-    if (token && config.headers && !config.headers.Authorization) {
+    else if (token && config.headers && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
