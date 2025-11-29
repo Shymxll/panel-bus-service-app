@@ -68,9 +68,12 @@ class StudentService {
    * @throws Error - Öğrenci bulunamazsa veya istek başarısız olursa hata fırlatır
    */
   async getStudentByQrCode(qrCode: string): Promise<Student> {
+    // QR kod'u temizle ve encode et (URL güvenliği için)
+    const cleanQrCode = encodeURIComponent(qrCode.trim());
+    
     // GET isteği gönder - QR kod ile öğrenciyi getir
     const response = await axiosInstance.get<ApiResponse<Student>>(
-      `/api/students/qr/${qrCode}`
+      API_ENDPOINTS.students.byQrCode(cleanQrCode)
     );
     // Yanıt başarılı ve veri varsa, veriyi döndür
     if (response.data.success && response.data.data) {

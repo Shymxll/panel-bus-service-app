@@ -17,6 +17,11 @@ export const ParentLoginPage = () => {
   const [parentPhone, setParentPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Telefon numarasını normalize et (boşluk, tire, parantez temizle)
+  const normalizePhone = (phone: string): string => {
+    return phone.replace(/[\s\-\(\)]/g, '').trim();
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
@@ -28,11 +33,43 @@ export const ParentLoginPage = () => {
     setIsLoading(true);
 
     try {
-      // QR kod ilə öğrenciyi bul
-      const student = await studentService.getStudentByQrCode(qrCode);
+      // QR kod'u temizle
+      const cleanQrCode = qrCode.trim();
+      
+      // Telefon numarasını normalize et
+      const normalizedInputPhone = normalizePhone(parentPhone);
+      
+      console.log('🔍 Giriş denemesi:', {
+        qrCode: cleanQrCode,
+        phone: normalizedInputPhone,
+      });
 
-      // Telefon numarasını kontrol et
-      if (student.parentPhone !== parentPhone) {
+      // QR kod ilə öğrenciyi bul
+      const student = await studentService.getStudentByQrCode(cleanQrCode);
+      
+      console.log('✅ Öğrenci bulundu:', {
+        id: student.id,
+        name: `${student.firstName} ${student.lastName}`,
+        qrCode: student.qrCode,
+        parentPhone: student.parentPhone,
+      });
+
+      // Telefon numarasını kontrol et (normalize edilmiş)
+      const normalizedStudentPhone = student.parentPhone 
+        ? normalizePhone(student.parentPhone) 
+        : null;
+
+      if (!normalizedStudentPhone) {
+        toast.error('Bu şagird üçün valideyin telefon nömrəsi qeydiyyatda yoxdur');
+        setIsLoading(false);
+        return;
+      }
+
+      if (normalizedStudentPhone !== normalizedInputPhone) {
+        console.error('❌ Telefon uyumsuzluğu:', {
+          girilen: normalizedInputPhone,
+          kayitli: normalizedStudentPhone,
+        });
         toast.error('QR kod və ya telefon nömrəsi yanlışdır');
         setIsLoading(false);
         return;
@@ -47,11 +84,33 @@ export const ParentLoginPage = () => {
         loginTime: new Date().toISOString(),
       }));
 
+      console.log('✅ Giriş başarılı, localStorage kaydedildi');
       toast.success('Xoş gəlmisiniz!');
       navigate('/parent/dashboard');
-    } catch (error) {
-      toast.error('Giriş uğursuz oldu. Məlumatları yoxlayın.');
-      console.error('Parent login error:', error);
+    } catch (error: any) {
+      console.error('❌ Parent login error:', {
+        error,
+        message: error?.message,
+        response: error?.response,
+        status: error?.response?.status,
+        data: error?.response?.data,
+      });
+      
+      // Daha detaylı hata mesajları
+      if (error?.response?.status === 404) {
+        toast.error('QR kod tapılmadı. QR kodu düzgün daxil etdiyinizə əmin olun.');
+      } else if (error?.response?.status === 500) {
+        toast.error('Server xətası. Zəhmət olmasa bir az sonra yenidən cəhd edin.');
+      } else if (error?.request && !error?.response) {
+        // Network hatası - backend'e ulaşılamıyor
+        toast.error('Backend serverə qoşula bilmədi. Serverin işlədiyinə əmin olun.');
+        console.error('Network error - Backend erişilemiyor:', error.request);
+      } else if (error?.message?.includes('tapılmadı') || error?.message?.includes('not found')) {
+        toast.error('QR kod tapılmadı. QR kodu düzgün daxil etdiyinizə əmin olun.');
+      } else {
+        const errorMessage = error?.response?.data?.message || error?.message || 'Giriş uğursuz oldu';
+        toast.error(`${errorMessage}. Məlumatları yoxlayın.`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -85,9 +144,12 @@ export const ParentLoginPage = () => {
                   type="text"
                   placeholder="QR kodu daxil edin"
                   value={qrCode}
-                  onChange={(e) => setQrCode(e.target.value)}
+                  onChange={(e) => setQrCode(e.target.value.toUpperCase().trim())}
                   leftIcon={<User className="h-5 w-5" />}
                   disabled={isLoading}
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  autoCorrect="off"
                 />
               </div>
 
@@ -99,9 +161,15 @@ export const ParentLoginPage = () => {
                   type="tel"
                   placeholder="+994501234567"
                   value={parentPhone}
-                  onChange={(e) => setParentPhone(e.target.value)}
+                  onChange={(e) => {
+                    // Sadece rakam, + ve boşluk karakterlerine izin ver
+                    const value = e.target.value.replace(/[^\d+\s\-\(\)]/g, '');
+                    setParentPhone(value);
+                  }}
                   leftIcon={<Lock className="h-5 w-5" />}
                   disabled={isLoading}
+                  autoComplete="tel"
+                  inputMode="tel"
                 />
               </div>
 
@@ -117,13 +185,25 @@ export const ParentLoginPage = () => {
         </Card>
 
         {/* Info */}
-        <div className="mt-6 text-center">
+        <div className="mt-6 space-y-3">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <p className="text-sm text-blue-800">
               <strong>Məlumat:</strong> QR kodu şagirdin kartından tapa bilərsiniz. 
               Telefon nömrəsi qeydiyyat zamanı daxil etdiyiniz nömrə olmalıdır.
             </p>
           </div>
+          
+          {/* Debug Info - Sadece development'ta göster */}
+          {import.meta.env.DEV && (
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+              <p className="text-xs text-gray-600 mb-1">
+                <strong>Debug:</strong> API Base URL: {import.meta.env.VITE_API_BASE_URL || 'localhost:3001 (proxy)'}
+              </p>
+              <p className="text-xs text-gray-600">
+                QR kod formatı: Boşluq olmadan, tam olaraq kartdakı kimi
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Back to Login */}

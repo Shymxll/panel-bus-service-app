@@ -44,6 +44,7 @@ export const API_ENDPOINTS = {
     update: (id: number) => `/api/students/${id}`,
     delete: (id: number) => `/api/students/${id}`,
     generateQR: (id: number) => `/api/students/${id}/qr`,
+    byQrCode: (qrCode: string) => `/api/students/qr/${qrCode}`,
   },
   // Servis guzergah planlari.
   routes: {

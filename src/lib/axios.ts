@@ -117,7 +117,12 @@ axiosInstance.interceptors.response.use(
           break;
         case 404:
           // Bulunamadı - istenen kaynak mevcut değil
-          toast.error('Məlumat tapılmadı.');
+          // Parent login sayfasında 404 hatası normal olabilir (QR kod bulunamadı)
+          // Bu yüzden interceptor'da toast göstermeyelim, çağrı yapan kod göstersin
+          const isParentLoginPage = window.location.pathname.includes('/parent/login');
+          if (!isParentLoginPage) {
+            toast.error('Məlumat tapılmadı.');
+          }
           break;
         case 409:
           // Çakışma - genellikle kayıt işlemlerinde çift kayıt gibi durumlar için
