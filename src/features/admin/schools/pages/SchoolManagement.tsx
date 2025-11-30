@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Card, CardBody, CardHeader } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
-import { Table } from '@/components/common/Table';
+import { RefreshCw as RefreshCwIcon } from 'lucide-react';
 import { 
   Plus, 
   Search, 
@@ -14,7 +14,9 @@ import {
   MapPin,
   RefreshCw,
   ToggleLeft,
-  ToggleRight
+  ToggleRight,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { useSchools, useSchoolMutations } from '@/hooks/useSchools';
 import { SchoolFormModal } from '../components/SchoolFormModal';
@@ -244,105 +246,137 @@ export const SchoolManagement = () => {
           </div>
         </CardHeader>
 
-        <CardBody>
-          <Table
-            columns={[
-              {
-                key: 'name',
-                label: 'Məktəb Adı',
-                sortable: true,
-                render: (school: School) => (
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                      <Building2 className="h-5 w-5 text-primary-600" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-secondary-900">{school.name}</p>
-                      {school.address && (
-                        <div className="flex items-center gap-1 mt-1">
-                          <MapPin className="h-3 w-3 text-secondary-400" />
-                          <p className="text-xs text-secondary-500">{school.address}</p>
+        <CardBody className="p-0">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <RefreshCwIcon className="h-8 w-8 animate-spin text-primary-500" />
+            </div>
+          ) : filteredSchools.length === 0 ? (
+            <div className="text-center py-12 text-secondary-500">
+              {schools.length === 0 ? (
+                <>
+                  <Building2 className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
+                  <p>Hələ ki məktəb əlavə edilməyib.</p>
+                  <p className="text-sm mt-1">Yeni məktəb əlavə etmək üçün yuxarıdakı düyməyə basın.</p>
+                </>
+              ) : (
+                <>
+                  <Search className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
+                  <p>Axtarış nəticəsi tapılmadı.</p>
+                  <p className="text-sm mt-1">Filtirləri dəyişdirməyi yoxlayın.</p>
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-secondary-50 border-b border-secondary-200">
+                  <tr>
+                    <th 
+                      className="px-4 py-3 text-left text-sm font-semibold text-secondary-700 cursor-pointer hover:bg-secondary-100"
+                      onClick={() => handleSort('name')}
+                    >
+                      <div className="flex items-center gap-1">
+                        Məktəb Adı
+                        {sortField === 'name' && (
+                          sortDirection === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
+                        )}
+                      </div>
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
+                      Əlaqə
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
+                      Status
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-secondary-700">
+                      Əməliyyatlar
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-secondary-100">
+                  {filteredSchools.map((school) => (
+                    <tr key={school.id} className="hover:bg-secondary-50 transition-colors">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                            <Building2 className="h-5 w-5 text-primary-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-secondary-900">{school.name}</p>
+                            {school.address && (
+                              <div className="flex items-center gap-1 mt-1">
+                                <MapPin className="h-3 w-3 text-secondary-400" />
+                                <p className="text-xs text-secondary-500">{school.address}</p>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  </div>
-                ),
-              },
-              {
-                key: 'phone',
-                label: 'Əlaqə',
-                render: (school: School) => (
-                  <div className="space-y-1">
-                    {school.phone && (
-                      <div className="flex items-center gap-2 text-sm text-secondary-600">
-                        <Phone className="h-4 w-4" />
-                        {school.phone}
-                      </div>
-                    )}
-                    {school.email && (
-                      <div className="flex items-center gap-2 text-sm text-secondary-600">
-                        <Mail className="h-4 w-4" />
-                        {school.email}
-                      </div>
-                    )}
-                  </div>
-                ),
-              },
-              {
-                key: 'isActive',
-                label: 'Status',
-                render: (school: School) => (
-                  <button
-                    onClick={() => handleToggleStatus(school)}
-                    disabled={isUpdating}
-                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                      school.isActive
-                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                        : 'bg-red-100 text-red-700 hover:bg-red-200'
-                    }`}
-                  >
-                    {school.isActive ? (
-                      <ToggleRight className="h-4 w-4" />
-                    ) : (
-                      <ToggleLeft className="h-4 w-4" />
-                    )}
-                    {school.isActive ? 'Aktiv' : 'Deaktiv'}
-                  </button>
-                ),
-              },
-              {
-                key: 'actions',
-                label: 'Əməliyyatlar',
-                render: (school: School) => (
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEditClick(school)}
-                      leftIcon={<Edit2 className="h-4 w-4" />}
-                    >
-                      Redaktə
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDeleteClick(school)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      leftIcon={<Trash2 className="h-4 w-4" />}
-                    >
-                      Sil
-                    </Button>
-                  </div>
-                ),
-              },
-            ]}
-            data={filteredSchools}
-            isLoading={isLoading}
-            emptyMessage="Məktəb tapılmadı"
-            onSort={handleSort}
-            sortField={sortField}
-            sortDirection={sortDirection}
-          />
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="space-y-1">
+                          {school.phone && (
+                            <div className="flex items-center gap-2 text-sm text-secondary-600">
+                              <Phone className="h-4 w-4" />
+                              {school.phone}
+                            </div>
+                          )}
+                          {school.email && (
+                            <div className="flex items-center gap-2 text-sm text-secondary-600">
+                              <Mail className="h-4 w-4" />
+                              {school.email}
+                            </div>
+                          )}
+                          {!school.phone && !school.email && (
+                            <span className="text-secondary-400 text-sm">-</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <button
+                          onClick={() => handleToggleStatus(school)}
+                          disabled={isUpdating}
+                          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium transition-colors cursor-pointer hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed ${
+                            school.isActive
+                              ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                              : 'bg-red-100 text-red-700 hover:bg-red-200'
+                          }`}
+                        >
+                          {school.isActive ? (
+                            <ToggleRight className="h-4 w-4" />
+                          ) : (
+                            <ToggleLeft className="h-4 w-4" />
+                          )}
+                          {school.isActive ? 'Aktiv' : 'Deaktiv'}
+                        </button>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditClick(school)}
+                            leftIcon={<Edit2 className="h-4 w-4" />}
+                          >
+                            Redaktə
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteClick(school)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            leftIcon={<Trash2 className="h-4 w-4" />}
+                          >
+                            Sil
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </CardBody>
       </Card>
 

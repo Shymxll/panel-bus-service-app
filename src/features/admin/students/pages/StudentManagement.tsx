@@ -279,9 +279,9 @@ export const StudentManagement = () => {
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')}
               >
-                <option value="all">Bütün statuslar</option>
-                <option value="active">Aktiv</option>
-                <option value="inactive">Deaktiv</option>
+                <option key="all" value="all">Bütün statuslar</option>
+                <option key="active" value="active">Aktiv</option>
+                <option key="inactive" value="inactive">Deaktiv</option>
               </select>
 
               <select
@@ -289,7 +289,7 @@ export const StudentManagement = () => {
                 value={schoolFilter}
                 onChange={(e) => setSchoolFilter(e.target.value)}
               >
-                <option value="all">Bütün məktəblər</option>
+                <option key="all" value="all">Bütün məktəblər</option>
                 {schools.map(school => (
                   <option key={school} value={school}>{school}</option>
                 ))}
@@ -300,7 +300,7 @@ export const StudentManagement = () => {
                 value={gradeFilter}
                 onChange={(e) => setGradeFilter(e.target.value)}
               >
-                <option value="all">Bütün siniflər</option>
+                <option key="all" value="all">Bütün siniflər</option>
                 {grades.map(grade => (
                   <option key={grade} value={grade}>{grade}</option>
                 ))}

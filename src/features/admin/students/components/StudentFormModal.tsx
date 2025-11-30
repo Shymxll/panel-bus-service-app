@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { X, QrCode, RefreshCw } from 'lucide-react';
+import { X, QrCode, RefreshCw, Building2 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { useStudents } from '@/hooks/useStudents';
+import { useSchools } from '@/hooks/useSchools';
 import { studentService } from '@/services/student.service';
 import type { Student } from '@/types';
 
@@ -33,6 +34,7 @@ interface StudentFormModalProps {
 // Yeni şagird oluşturma veya mevcut kaydı güncelleme modalı.
 export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalProps) => {
   const { createStudent, updateStudent, isCreating, isUpdating } = useStudents();
+  const { data: schools = [], isLoading: isSchoolsLoading } = useSchools();
   const isEditing = !!student; // Modal başlığı ve submit aksiyonunu belirler.
 
   const {
@@ -183,12 +185,41 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
 
           {/* Okul ve sınıf detayları */}
           <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="Məktəb"
-              placeholder="Məktəb adı"
-              error={errors.school?.message}
-              {...register('school')}
-            />
+            {/* Okul Seçimi - Dropdown */}
+            <div>
+              <label className="block text-sm font-medium text-secondary-700 mb-1">
+                Məktəb <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary-400 pointer-events-none" />
+                <select
+                  {...register('school')}
+                  disabled={isSchoolsLoading}
+                  className={`w-full pl-10 pr-3 py-2 rounded-lg border ${
+                    errors.school
+                      ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                      : 'border-secondary-300 focus:border-primary-500 focus:ring-primary-500'
+                  } text-sm focus:outline-none focus:ring-1 disabled:bg-secondary-50 disabled:text-secondary-500`}
+                >
+                  <option value="">Məktəb seçin...</option>
+                  {schools
+                    .filter(school => school.isActive)
+                    .sort((a, b) => a.name.localeCompare(b.name, 'az'))
+                    .map((school) => (
+                      <option key={school.id} value={school.name}>
+                        {school.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              {errors.school && (
+                <p className="mt-1 text-xs text-red-600">{errors.school.message}</p>
+              )}
+              {isSchoolsLoading && (
+                <p className="mt-1 text-xs text-secondary-500">Məktəblər yüklənir...</p>
+              )}
+            </div>
+            
             <Input
               label="Sinif"
               placeholder="Sinif (məs: 5-A)"

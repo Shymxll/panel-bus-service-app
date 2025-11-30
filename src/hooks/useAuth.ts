@@ -16,8 +16,14 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginCredentials) => authService.login(credentials),
     onSuccess: (data) => {
-      // Backend stores token in httpOnly cookie automatically
-      const token = 'cookie-based';
+      // Token'ı response'dan al (backend artık token'ı response body'de de döndürüyor)
+      // Eğer token yoksa cookie-based kullan (geriye dönük uyumluluk)
+      const token = data.token || localStorage.getItem('auth_token') || 'cookie-based';
+      
+      // Token'ı localStorage'a kaydet (axios interceptor için)
+      if (token && token !== 'cookie-based') {
+        localStorage.setItem('auth_token', token);
+      }
       
       if (data.data) {
         setAuth(data.data, token);
@@ -88,9 +94,14 @@ export const useAuth = () => {
   const adminLoginMutation = useMutation({
     mutationFn: (credentials: LoginCredentials) => authService.adminLogin(credentials),
     onSuccess: (data) => {
-      // Backend stores token in httpOnly cookie automatically
-      // We use 'cookie-based' as token identifier since we can't access httpOnly cookies from JS
-      const token = 'cookie-based';
+      // Token'ı response'dan al (backend artık token'ı response body'de de döndürüyor)
+      // Eğer token yoksa cookie-based kullan (geriye dönük uyumluluk)
+      const token = data.token || localStorage.getItem('auth_token') || 'cookie-based';
+      
+      // Token'ı localStorage'a kaydet (axios interceptor için)
+      if (token && token !== 'cookie-based') {
+        localStorage.setItem('auth_token', token);
+      }
       
       // Store user data in localStorage for persistence
       if (data.data) {

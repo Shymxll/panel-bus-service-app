@@ -5,7 +5,7 @@ import { QUERY_KEYS } from '@/config/constants';
 import type { CreateSchoolData, UpdateSchoolData } from '@/types';
 
 // Query key - React Query cache yönetimi için
-const QUERY_KEY = [QUERY_KEYS.schools];
+const QUERY_KEY = QUERY_KEYS.schools;
 
 /**
  * Tüm okulları getiren hook
@@ -41,9 +41,10 @@ export const useSchoolMutations = () => {
   // Yeni okul oluşturma mutation'ı
   const createSchool = useMutation({
     mutationFn: (data: CreateSchoolData) => schoolService.createSchool(data),
-    onSuccess: () => {
-      // Cache'i invalidate et - liste yeniden yüklenecek
-      queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+    onSuccess: async () => {
+      // Cache'i invalidate et ve aktif query'leri hemen refetch et
+      await queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+      await queryClient.refetchQueries({ queryKey: QUERY_KEY });
       toast.success('Məktəb uğurla yaradıldı');
     },
     onError: (error: Error) => {
@@ -55,9 +56,10 @@ export const useSchoolMutations = () => {
   const updateSchool = useMutation({
     mutationFn: ({ id, data }: { id: number; data: UpdateSchoolData }) =>
       schoolService.updateSchool(id, data),
-    onSuccess: () => {
-      // Cache'i invalidate et
-      queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+    onSuccess: async () => {
+      // Cache'i invalidate et ve aktif query'leri hemen refetch et
+      await queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+      await queryClient.refetchQueries({ queryKey: QUERY_KEY });
       toast.success('Məktəb uğurla yeniləndi');
     },
     onError: (error: Error) => {
@@ -68,9 +70,10 @@ export const useSchoolMutations = () => {
   // Okul silme mutation'ı
   const deleteSchool = useMutation({
     mutationFn: (id: number) => schoolService.deleteSchool(id),
-    onSuccess: () => {
-      // Cache'i invalidate et
-      queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+    onSuccess: async () => {
+      // Cache'i invalidate et ve aktif query'leri hemen refetch et
+      await queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+      await queryClient.refetchQueries({ queryKey: QUERY_KEY });
       toast.success('Məktəb uğurla silindi');
     },
     onError: (error: Error) => {

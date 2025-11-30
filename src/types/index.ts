@@ -54,6 +54,7 @@ export interface AuthResponse {
   success: boolean; // İşlemin başarılı olup olmadığı
   message: string; // İşlem hakkında mesaj (başarı veya hata mesajı)
   data: User; // İşlem sonrası kullanıcı bilgileri
+  token?: string; // Kimlik doğrulama token'ı (opsiyonel, backend'den dönebilir)
 }
 
 /**

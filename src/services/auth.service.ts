@@ -68,14 +68,17 @@ class AuthService {
       // Konsola driver giriş yanıtı yazdır (debug için)
       console.log('Driver login response:', response.data);
 
-      // Backend'den gelen yanıt: { success: true, message: "...", data: user }
+      // Backend'den gelen yanıt: { success: true, message: "...", data: user, token: "..." }
       // Yanıt başarılı ve kullanıcı verisi varsa
       if (response.data.success && response.data.data) {
+        // Token'ı response'dan al (backend artık token'ı response body'de de döndürüyor)
+        const token = (response.data as any).token || 'cookie-based';
         // AuthResponse formatında döndür
         return {
           success: true,
           message: response.data.message || 'Login successful',
           data: response.data.data,
+          token, // Token'ı da döndür
         };
       }
       // Başarısız ise hata fırlat
@@ -152,14 +155,17 @@ class AuthService {
       // Konsola admin giriş yanıtı yazdır (debug için)
       console.log('Admin login response:', response.data);
 
-      // Backend'den gelen yanıt: { success: true, message: "...", data: user }
+      // Backend'den gelen yanıt: { success: true, message: "...", data: user, token: "..." }
       // Yanıt başarılı ve kullanıcı verisi varsa
       if (response.data.success && response.data.data) {
+        // Token'ı response'dan al (backend artık token'ı response body'de de döndürüyor)
+        const token = (response.data as any).token || 'cookie-based';
         // AuthResponse formatında döndür
         return {
           success: true,
           message: response.data.message || 'Admin login successful',
           data: response.data.data,
+          token, // Token'ı da döndür
         };
       }
       // Başarısız ise hata fırlat
