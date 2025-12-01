@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { MapPin, Plus, Search, ToggleLeft, ToggleRight, Trash2, Edit, Map } from 'lucide-react';
-import { Card, CardBody, CardHeader } from '@/components/common/Card';
+import { Card, CardBody } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { useStops } from '@/hooks/useStops';
@@ -195,14 +195,16 @@ export const StopManagement = () => {
                         <button
                           type="button"
                           onClick={() => handleToggleActive(stop)}
-                          className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${stop.isActive
+                          className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${
+                            stop.isActive
                               ? 'bg-green-50 text-green-700'
                               : 'bg-secondary-100 text-secondary-600'
-                            }`}
+                          }`}
                         >
                           <span
-                            className={`h-2 w-2 rounded-full ${stop.isActive ? 'bg-green-500' : 'bg-secondary-400'
-                              }`}
+                            className={`h-2 w-2 rounded-full ${
+                              stop.isActive ? 'bg-green-500' : 'bg-secondary-400'
+                            }`}
                           />
                           {stop.isActive ? 'Aktiv' : 'Deaktiv'}
                         </button>
@@ -253,5 +255,3 @@ export const StopManagement = () => {
     </div>
   );
 };
-
-
