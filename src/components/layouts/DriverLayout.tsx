@@ -45,7 +45,7 @@ export const DriverLayout = () => {
           {/* Baslik ve mobil kapatma butonu */}
           <div className="flex h-16 items-center justify-between border-b border-secondary-200 px-6">
             <h1 className="text-xl font-bold text-primary-600">
-              Şoför Paneli
+              Sürücü Paneli
             </h1>
             <button
               onClick={() => setSidebarOpen(false)}

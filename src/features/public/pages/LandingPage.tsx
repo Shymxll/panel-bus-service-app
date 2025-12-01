@@ -106,7 +106,7 @@ export const LandingPage = () => {
     },
     {
       name: 'Əli Quliyev',
-      role: 'Şoför',
+      role: 'Sürücü',
       company: 'Məktəb Servisi',
       content: 'QR kod oxuma sistemi çox sürətli işləyir. Şagirdləri qeydə almaq artıq saniyələr ərzində baş verir.',
       rating: 5,
@@ -162,7 +162,7 @@ export const LandingPage = () => {
               </Link>
               <Link to="/driver/login">
                 <Button variant="outline" size="sm">
-                  Şoför
+                  Sürücü
                 </Button>
               </Link>
             </div>
@@ -217,7 +217,7 @@ export const LandingPage = () => {
                     variant="outline"
                     className="group bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm px-8 py-4 text-lg font-semibold"
                   >
-                    Şoför Girişi
+                    Sürücü Girişi
                   </Button>
                 </Link>
               </div>

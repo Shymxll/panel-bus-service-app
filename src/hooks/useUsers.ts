@@ -45,13 +45,13 @@ export const useUsers = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.all });
-      toast.success('Şoför əlavə edildi');
+      toast.success('Sürücü əlavə edildi');
     },
     onError: (error: any) => {
       const message =
         error?.response?.data?.message ||
         error?.message ||
-        'Şoför əlavə edilərkən xəta baş verdi';
+        'Sürücü əlavə edilərkən xəta baş verdi';
       toast.error(message);
     },
   });

@@ -14,7 +14,7 @@ import type {
 } from '@/types';
 
 /**
- * Şoför için özel hook - tüm şoför işlemlerini yönetir
+ * Sürücü için özel hook - tüm sürücü işlemlerini yönetir
  * Biniş/iniş kayıtları, günlük planlar, öğrenci araması vb.
  */
 export const useDriverData = () => {
@@ -58,7 +58,7 @@ export const useDriverData = () => {
     staleTime: 1000 * 60, // 1 dakika
   });
 
-  // Şoförün otobüsleri
+  // Sürücünün otobüsleri
   const {
     data: buses = [],
     isLoading: isLoadingBuses,
@@ -78,7 +78,7 @@ export const useDriverData = () => {
     staleTime: 1000 * 60 * 5, // 5 dakika
   });
 
-  // Şoförün otobüsü (driverId'ye göre filtrele)
+  // Sürücünün otobüsü (driverId'ye göre filtrele)
   const myBus = buses.find((bus) => bus.driverId === user?.id);
 
   // ============ MUTATIONS ============

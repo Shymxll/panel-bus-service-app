@@ -10,7 +10,7 @@ import { useDriverData } from '@/hooks/useDriverData';
 import { useAuthStore } from '@/store/auth-store';
 
 /**
- * Şoför Dashboard Sayfası
+ * Sürücü Dashboard Sayfası
  * Günlük aktivite özeti, istatistikler ve hızlı erişim kartlarını gösterir
  */
 export const DriverDashboard = () => {

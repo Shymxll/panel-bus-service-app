@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 
 /**
  * Biniş (Boarding) Sayfası
- * Şoförün QR kod okuyarak öğrenci biniş kaydı oluşturduğu sayfa
+ * Sürücünün QR kod okuyarak öğrenci biniş kaydı oluşturduğu sayfa
  */
 export const BoardingPage = () => {
   const { user } = useAuthStore();

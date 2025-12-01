@@ -117,7 +117,7 @@ export const AdminDashboard = () => {
       .slice(0, 2)
       .forEach(driver => {
         items.push({
-          type: 'Şoför',
+          type: 'Sürücü',
           title: driver.name,
           subtitle: driver.email,
           icon: UserCircle,
@@ -220,7 +220,7 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-600">Cəmi Şoför</p>
+                <p className="text-sm font-medium text-green-600">Cəmi Sürücü</p>
                 <p className="mt-1 text-2xl font-bold text-green-900">
                   {stats.totalDrivers}
                 </p>
@@ -493,7 +493,7 @@ export const AdminDashboard = () => {
                 <div className="rounded-full bg-green-100 p-3">
                   <UserCircle className="h-6 w-6 text-green-600" />
                 </div>
-                <p className="text-sm font-medium text-secondary-900">Şoförlər</p>
+                <p className="text-sm font-medium text-secondary-900">Sürücülər</p>
                 <p className="text-xs text-secondary-500">İdarə et</p>
               </button>
               <button

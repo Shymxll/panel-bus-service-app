@@ -8,7 +8,7 @@ import { Input } from '@/components/common/Input';
 import type { User, RegisterData } from '@/types';
 import type { UseMutateFunction } from '@tanstack/react-query';
 
-// Şoför formu için geçerli alanları tanımlar.
+// Sürücü formu için geçerli alanları tanımlar.
 const driverSchema = z.object({
   name: z.string().min(2, 'Ad ən az 2 simvol olmalıdır'),
   email: z.string().email('Düzgün email daxil edin'),
@@ -34,7 +34,7 @@ interface DriverFormModalProps {
   isUpdating: boolean;
 }
 
-// Şoför ekleme/düzenleme işlemlerini yöneten modal.
+// Sürücü ekleme/düzenleme işlemlerini yöneten modal.
 export const DriverFormModal = ({
   isOpen,
   onClose,
@@ -145,10 +145,10 @@ export const DriverFormModal = ({
         <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-200">
           <div>
             <p className="text-sm text-secondary-500">
-              {isEditing ? 'Şoför məlumatlarını yenilə' : 'Yeni şoför əlavə et'}
+              {isEditing ? 'Sürücü məlumatlarını yenilə' : 'Yeni sürücü əlavə et'}
             </p>
             <h2 className="text-xl font-semibold text-secondary-900">
-              {isEditing ? driver?.name : 'Şoför formu'}
+              {isEditing ? driver?.name : 'Sürücü formu'}
             </h2>
           </div>
           <button
@@ -166,7 +166,7 @@ export const DriverFormModal = ({
         >
           <Input
             label="Ad Soyad"
-            placeholder="Şoförün tam adı"
+            placeholder="Sürücünün tam adı"
             error={errors.name?.message}
             {...register('name')}
           />

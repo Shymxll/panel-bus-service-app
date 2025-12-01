@@ -211,7 +211,7 @@ export const BusManagement = () => {
         <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-purple-100">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-purple-600">Şoför təyin edilmiş</p>
+              <p className="text-sm text-purple-600">Sürücü təyin edilmiş</p>
               <p className="text-3xl font-bold text-purple-900">{stats.assigned}</p>
             </div>
             <div className="rounded-full bg-purple-500 p-3 text-white">
@@ -268,9 +268,9 @@ export const BusManagement = () => {
                 )
               }
             >
-              <option value="all">Bütün şoförlər</option>
-              <option value="assigned">Şoför təyin edilmiş</option>
-              <option value="unassigned">Şoför təyin edilməmiş</option>
+              <option value="all">Bütün sürücülər</option>
+              <option value="assigned">Sürücü təyin edilmiş</option>
+              <option value="unassigned">Sürücü təyin edilməmiş</option>
               {drivers.map((driver) => (
                 <option key={driver.id} value={driver.id}>
                   {driver.name}
@@ -315,7 +315,7 @@ export const BusManagement = () => {
                       Tutum
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Şoför
+                      Sürücü
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
                       Status
@@ -354,7 +354,7 @@ export const BusManagement = () => {
                         {bus.driverId ? (
                           <div className="space-y-1 text-sm">
                             <p className="font-medium text-secondary-900">
-                              {driverMap.get(bus.driverId)?.name || 'Şoför tapılmadı'}
+                              {driverMap.get(bus.driverId)?.name || 'Sürücü tapılmadı'}
                             </p>
                             {driverMap.get(bus.driverId)?.email && (
                               <div className="flex items-center gap-2 text-xs text-secondary-600">
@@ -370,7 +370,7 @@ export const BusManagement = () => {
                             )}
                           </div>
                         ) : (
-                          <span className="text-sm text-secondary-400">Şoför təyin edilməyib</span>
+                          <span className="text-sm text-secondary-400">Sürücü təyin edilməyib</span>
                         )}
                       </td>
                       <td className="px-4 py-3">

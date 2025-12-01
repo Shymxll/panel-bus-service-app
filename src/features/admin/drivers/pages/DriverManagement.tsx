@@ -27,7 +27,7 @@ import type { User } from '@/types';
 type StatusFilter = 'all' | 'active' | 'inactive';
 type SortOption = 'name-asc' | 'name-desc' | 'date-desc' | 'date-asc';
 
-// Şoför kadrosunu yönetme, filtreleme ve durum değiştirme ekranı.
+// Sürücü kadrosunu yönetme, filtreleme ve durum değiştirme ekranı.
 export const DriverManagement = () => {
   const {
     drivers,
@@ -144,9 +144,9 @@ export const DriverManagement = () => {
       {/* Baslik ve hizli aksiyonlar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-secondary-900">Şoförlər</h1>
+          <h1 className="text-3xl font-bold text-secondary-900">Sürücülər</h1>
           <p className="mt-1 text-secondary-600">
-            Şoför heyətini idarə edin, statuslarını dəyişin və yeni sürücülər əlavə edin
+            Sürücü heyətini idarə edin, statuslarını dəyişin və yeni sürücülər əlavə edin
           </p>
         </div>
         <div className="flex gap-2">
@@ -158,17 +158,17 @@ export const DriverManagement = () => {
             Yenilə
           </Button>
           <Button leftIcon={<Plus className="h-4 w-4" />} onClick={handleAddDriver}>
-            Yeni Şoför
+            Yeni Sürücü
           </Button>
         </div>
       </div>
 
-      {/* Şoför kadrosu özet kartları */}
+      {/* Sürücü kadrosu özet kartları */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-blue-600">Cəmi Şoför</p>
+              <p className="text-sm text-blue-600">Cəmi Sürücü</p>
               <p className="text-3xl font-bold text-blue-900">{stats.total}</p>
             </div>
             <div className="rounded-full bg-blue-500 p-3 text-white">
@@ -235,17 +235,17 @@ export const DriverManagement = () => {
         </CardBody>
       </Card>
 
-      {/* Şoför tablo görünümü */}
+      {/* Sürücü tablo görünümü */}
       <Card>
         <CardHeader className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Şoförlər ({filteredDrivers.length})</h2>
+          <h2 className="text-lg font-semibold">Sürücülər ({filteredDrivers.length})</h2>
         </CardHeader>
         <CardBody className="p-0">
           {filteredDrivers.length === 0 ? (
             <div className="text-center py-12 text-secondary-500">
               {drivers.length === 0
-                ? 'Hələ ki şoför əlavə edilməyib.'
-                : 'Axtarış kriteriyalarına uyğun şoför tapılmadı.'}
+                ? 'Hələ ki sürücü əlavə edilməyib.'
+                : 'Axtarış kriteriyalarına uyğun sürücü tapılmadı.'}
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -253,7 +253,7 @@ export const DriverManagement = () => {
                 <thead className="bg-secondary-50 border-b border-secondary-200">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Şoför
+                      Sürücü
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
                       Əlaqə
@@ -369,7 +369,7 @@ export const DriverManagement = () => {
         }}
         onConfirm={handleConfirmDelete}
         isLoading={isDeleting && deletingId === selectedDriver?.id}
-        title="Şoförü sil"
+        title="Sürücünü sil"
         message={
           selectedDriver
             ? `${selectedDriver.name} adlı şoförü silmək istədiyinizə əminsiniz?`

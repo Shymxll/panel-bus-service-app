@@ -9,7 +9,7 @@ import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 
 /**
- * Şoför Giriş Sayfası (Driver Login Page)
+ * Sürücü Giriş Sayfası (Driver Login Page)
  * Modern ve kullanıcı dostu tasarımla şoförlerin sisteme giriş yapabildiği sayfa
  */
 export const DriverLoginPage = () => {
@@ -52,7 +52,7 @@ export const DriverLoginPage = () => {
           <div className="mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
               <Sparkles className="w-4 h-4 text-yellow-300" />
-              <span className="text-sm font-medium">Şoför Paneli</span>
+              <span className="text-sm font-medium">Sürücü Paneli</span>
             </div>
             
             <h1 className="text-4xl xl:text-5xl font-bold mb-6 leading-tight">
@@ -109,7 +109,7 @@ export const DriverLoginPage = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 shadow-lg mb-4">
               <Bus className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Şoför Girişi</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Sürücü Girişi</h1>
           </div>
 
           {/* Desktop başlık */}

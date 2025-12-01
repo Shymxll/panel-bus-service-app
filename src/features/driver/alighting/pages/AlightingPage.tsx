@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 
 /**
  * Düşmə (Alighting/Disembarking) Sayfası
- * Şoförün QR kod okuyarak öğrenci iniş kaydı oluşturduğu sayfa
+ * Sürücünün QR kod okuyarak öğrenci iniş kaydı oluşturduğu sayfa
  */
 export const AlightingPage = () => {
   const { user } = useAuthStore();

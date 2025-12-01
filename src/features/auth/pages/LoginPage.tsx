@@ -32,7 +32,7 @@ export const LoginPage = () => {
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-600">
             <Bus className="h-8 w-8 text-white" />
           </div>
-          <h1 className="mt-4 text-3xl font-bold text-secondary-900">Şoför Girişi</h1>
+          <h1 className="mt-4 text-3xl font-bold text-secondary-900">Sürücü Girişi</h1>
           <p className="mt-2 text-sm text-secondary-600">
             Hesabınıza daxil olun və şagirdləri izləyin
           </p>

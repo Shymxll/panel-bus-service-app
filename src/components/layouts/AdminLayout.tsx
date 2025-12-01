@@ -23,7 +23,7 @@ const navigation = [
   { name: 'İdarə Paneli', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Məktəblər', href: '/admin/schools', icon: Building2 },
   { name: 'Şagirdlər', href: '/admin/students', icon: Users },
-  { name: 'Şoförlər', href: '/admin/drivers', icon: UserCircle },
+  { name: 'Sürücülər', href: '/admin/drivers', icon: UserCircle },
   { name: 'Avtobuslar', href: '/admin/buses', icon: Bus },
   { name: 'Marşrutlar', href: '/admin/routes', icon: RouteIcon },
   { name: 'Dayanacaqlar', href: '/admin/stops', icon: MapPin },

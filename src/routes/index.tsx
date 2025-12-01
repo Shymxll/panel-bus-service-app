@@ -11,7 +11,7 @@ import { DriverLayout } from '@/components/layouts/DriverLayout'; // Sürücü p
 // Genel erişime açık sayfalar
 import { LandingPage } from '@/features/public/pages/LandingPage'; // Ana sayfa (landing page)
 import { AdminLoginPage } from '@/features/auth/pages/AdminLoginPage'; // Admin giriş sayfası
-import { DriverLoginPage } from '@/features/auth/pages/DriverLoginPage'; // Şoför giriş sayfası
+import { DriverLoginPage } from '@/features/auth/pages/DriverLoginPage'; // Sürücü giriş sayfası
 
 // Admin paneli sayfaları
 import { AdminDashboard } from '@/features/admin/dashboard/pages/AdminDashboard'; // Admin ana kontrol paneli
@@ -100,7 +100,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
  * Route yapısı:
  * 1. Public Routes (Genel Erişim) - Login gerektirmez
  * 2. Admin Routes (Admin Paneli) - Admin rolü gerekir
- * 3. Driver Routes (Sürücü Paneli) - Driver rolü gerekir
+ * 3. Driver Routes (Sürücü Paneli) - Sürücü rolü gerekir
  * 4. 404 Route - Bulunamayan sayfalar için
  */
 export const AppRoutes = () => {
@@ -138,7 +138,7 @@ export const AppRoutes = () => {
         />
         
         {/* 
-          Şoför giriş sayfası
+          Sürücü giriş sayfası
           PublicRoute ile sarılmıştır - zaten giriş yapmış kullanıcılar dashboard'a yönlendirilir
         */}
         <Route
