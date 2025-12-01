@@ -249,13 +249,6 @@ export const LeafletMap = ({
               </div>
             )}
           </div>
-          
-          {/* İpucu */}
-          {enableClickToAdd && (
-            <div className="mt-2 px-3 py-2 bg-blue-500 text-white rounded-lg shadow-lg text-xs">
-              💡 Harita üzerinde bir yere tıklayarak da konum seçebilirsiniz
-            </div>
-          )}
         </div>
       )}
       
