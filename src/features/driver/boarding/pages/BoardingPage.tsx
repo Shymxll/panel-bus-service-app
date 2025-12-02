@@ -54,7 +54,7 @@ export const BoardingPage = () => {
     }
   }, [showManualInput]);
 
-  // QR kod ile öğrenci ara
+  // QR kod ile öğrenci ara (öğrenci bilgilerini göster)
   const handleQrSearch = async (qrCode?: string): Promise<Student | null> => {
     const codeToSearch = qrCode || qrInput.trim();
     if (!codeToSearch) {
@@ -73,14 +73,29 @@ export const BoardingPage = () => {
     }
   };
 
+  // QR kod ile öğrenci ara (öğrenci bilgilerini gösterme, sadece döndür)
+  const searchStudentWithoutDisplay = async (qrCode: string): Promise<Student | null> => {
+    if (!qrCode.trim()) {
+      return null;
+    }
+
+    try {
+      const student = await searchStudentByQr(qrCode);
+      return student;
+    } catch (error) {
+      return null;
+    }
+  };
+
   // Manuel buton tıklaması için handler
   const handleManualSearch = () => {
     handleQrSearch();
   };
 
-  // Kamera ile QR kod tarandığında - otomatik onayla
+  // Kamera ile QR kod tarandığında - otomatik onayla (öğrenci bilgilerini gösterme)
   const handleQrScan = async (decodedText: string) => {
-    const student = await handleQrSearch(decodedText);
+    // Öğrenciyi ara ama ekranda gösterme
+    const student = await searchStudentWithoutDisplay(decodedText);
     
     // Öğrenci bulunamadıysa işlemi durdur
     if (!student) {
@@ -100,7 +115,6 @@ export const BoardingPage = () => {
 
     if (alreadyBoarded) {
       toast.error('Bu şagird artıq bugün minib!');
-      setScannedStudent(null);
       return;
     }
 
@@ -122,11 +136,9 @@ export const BoardingPage = () => {
       });
       
       toast.success(`${student.firstName} ${student.lastName} uğurla minmə qeydində qeyd edildi`);
-      setScannedStudent(null);
       refetchBoarding();
     } catch (error) {
       // Hata zaten hook içinde gösteriliyor
-      setScannedStudent(null);
     }
   };
 
