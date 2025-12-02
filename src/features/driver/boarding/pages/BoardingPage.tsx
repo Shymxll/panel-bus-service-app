@@ -55,19 +55,21 @@ export const BoardingPage = () => {
   }, [showManualInput]);
 
   // QR kod ile öğrenci ara
-  const handleQrSearch = async (qrCode?: string) => {
+  const handleQrSearch = async (qrCode?: string): Promise<Student | null> => {
     const codeToSearch = qrCode || qrInput.trim();
     if (!codeToSearch) {
       toast.error('QR kod daxil edin');
-      return;
+      return null;
     }
 
     try {
       const student = await searchStudentByQr(codeToSearch);
       setScannedStudent(student);
       setQrInput('');
+      return student;
     } catch (error) {
       setScannedStudent(null);
+      return null;
     }
   };
 
@@ -76,9 +78,56 @@ export const BoardingPage = () => {
     handleQrSearch();
   };
 
-  // Kamera ile QR kod tarandığında
+  // Kamera ile QR kod tarandığında - otomatik onayla
   const handleQrScan = async (decodedText: string) => {
-    await handleQrSearch(decodedText);
+    const student = await handleQrSearch(decodedText);
+    
+    // Öğrenci bulunamadıysa işlemi durdur
+    if (!student) {
+      return;
+    }
+
+    // Gerekli kontroller
+    if (!selectedTripId || !myBus) {
+      toast.error('Sefer və ya avtobus seçilməyib');
+      return;
+    }
+
+    // Bu öğrenci zaten bugün bindi mi kontrol et
+    const alreadyBoarded = todayBoardingRecords.some(
+      (record) => record.studentId === student.id
+    );
+
+    if (alreadyBoarded) {
+      toast.error('Bu şagird artıq bugün minib!');
+      setScannedStudent(null);
+      return;
+    }
+
+    // Planlanmış mı kontrol et
+    const studentPlan = todayPlans.find(
+      (plan) => plan.studentId === student.id && plan.isBoarding
+    );
+
+    // Otomatik olarak biniş kaydı oluştur
+    try {
+      await createBoarding({
+        studentId: student.id,
+        tripId: selectedTripId,
+        busId: myBus.id,
+        recordDate: today,
+        driverId: user?.id || 0,
+        wasPlanned: !!studentPlan,
+        dailyPlanId: studentPlan?.id,
+      });
+      
+      toast.success(`${student.firstName} ${student.lastName} uğurla minmə qeydində qeyd edildi`);
+      setScannedStudent(null);
+      refetchBoarding();
+    } catch (error) {
+      // Hata zaten hook içinde gösteriliyor
+      setScannedStudent(null);
+    }
   };
 
   // Enter tuşu ile arama
