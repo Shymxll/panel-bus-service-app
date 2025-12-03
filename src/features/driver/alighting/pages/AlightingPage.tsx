@@ -51,12 +51,31 @@ export const AlightingPage = () => {
   // Son okutulan QR kodları takip et (tekrar okutmayı engellemek için)
   // Map<qrCode, timestamp> formatında
   const recentScannedQrCodesRef = useRef<Map<string, number>>(new Map());
+  
+  // İşlenmiş QR kodları takip et (başarıyla disembarking kaydı oluşturulan QR kodlar)
+  // Bugün için kalıcı olarak işaretlenir
+  const processedQrCodesRef = useRef<Set<string>>(new Set());
 
   // Ses bildirimleri için Audio referansları
   const successSoundRef = useRef<HTMLAudioElement | null>(null);
   const errorSoundRef = useRef<HTMLAudioElement | null>(null);
 
   const today: string = new Date().toISOString().split('T')[0]!;
+
+  // Gün değiştiğinde işlenmiş QR kodlarını temizle
+  useEffect(() => {
+    const checkDateChange = () => {
+      const currentDate = new Date().toISOString().split('T')[0];
+      if (currentDate !== today) {
+        // Gün değişti, işlenmiş QR kodlarını temizle
+        processedQrCodesRef.current.clear();
+      }
+    };
+
+    // Her dakika kontrol et
+    const interval = setInterval(checkDateChange, 60000);
+    return () => clearInterval(interval);
+  }, [today]);
 
   // Ses dosyalarını yükle
   useEffect(() => {
@@ -110,6 +129,12 @@ export const AlightingPage = () => {
     const codeToSearch = (qrCode || qrInput.trim()).trim();
     if (!codeToSearch) {
       toast.error('QR kod daxil edin');
+      return null;
+    }
+
+    // Bu QR kod daha önce başarıyla işlendi mi kontrol et
+    if (processedQrCodesRef.current.has(codeToSearch)) {
+      toast.error('Bu QR kod artıq bugün işlənib!');
       return null;
     }
 
@@ -172,6 +197,15 @@ export const AlightingPage = () => {
     
     // Boş QR kod kontrolü
     if (!qrCode) {
+      return;
+    }
+
+    // Bu QR kod daha önce başarıyla işlendi mi kontrol et
+    if (processedQrCodesRef.current.has(qrCode)) {
+      // Bu QR kod bugün zaten başarıyla işlenmiş, tekrar okutmayı engelle
+      console.log('⚠️ Bu QR kod daha önce işlənib, yoksayılıyor:', qrCode);
+      playErrorSound();
+      toast.error('Bu QR kod artıq bugün işlənib!');
       return;
     }
 
@@ -243,7 +277,10 @@ export const AlightingPage = () => {
       playSuccessSound();
       toast.success(`${student.firstName} ${student.lastName} uğurla düşmə qeydində qeyd edildi`);
       
-      // Başarılı okutma sonrası QR kodunu kaydet (tekrar okutmayı engellemek için)
+      // Başarılı okutma sonrası QR kodunu kalıcı olarak işaretle (bugün için tekrar okutmayı engellemek için)
+      processedQrCodesRef.current.add(qrCode);
+      
+      // Başarılı okutma sonrası QR kodunu kaydet (kısa süreli cooldown için)
       recentScannedQrCodesRef.current.set(qrCode, now);
       
       // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
@@ -312,9 +349,10 @@ export const AlightingPage = () => {
         dailyPlanId: studentPlan?.id,
       });
 
-      // Başarılı okutma sonrası QR kodunu kaydet (tekrar okutmayı engellemek için)
+      // Başarılı okutma sonrası QR kodunu kalıcı olarak işaretle (bugün için tekrar okutmayı engellemek için)
       const now = Date.now();
       if (scannedStudent.qrCode) {
+        processedQrCodesRef.current.add(scannedStudent.qrCode);
         recentScannedQrCodesRef.current.set(scannedStudent.qrCode, now);
         
         // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
