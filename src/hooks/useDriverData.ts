@@ -7,6 +7,7 @@ import { studentService } from '@/services/student.service';
 import { busService } from '@/services/bus.service';
 import { tripService } from '@/services/trip.service';
 import { useAuthStore } from '@/store/auth-store';
+import { QUERY_KEYS } from '@/config/constants';
 import type {
   CreateBoardingRecordData,
   CreateDisembarkingRecordData,
@@ -63,7 +64,7 @@ export const useDriverData = () => {
     data: buses = [],
     isLoading: isLoadingBuses,
   } = useQuery({
-    queryKey: ['buses'],
+    queryKey: QUERY_KEYS.buses.all,
     queryFn: () => busService.getAll(),
     staleTime: 1000 * 60 * 5, // 5 dakika
   });

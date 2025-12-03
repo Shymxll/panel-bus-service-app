@@ -142,6 +142,20 @@ export const BoardingPage = () => {
 
   // Kamera ile QR kod tarandığında - otomatik onayla (öğrenci bilgilerini gösterme)
   const handleQrScan = async (decodedText: string) => {
+    // Veriler yükleniyor mu kontrol et
+    if (isLoadingBuses || isLoadingTrips) {
+      playErrorSound();
+      toast.error('Məlumatlar hələ yüklənir, zəhmət olmasa gözləyin');
+      return;
+    }
+
+    // Kullanıcı bilgisi yüklendi mi kontrol et
+    if (!user?.id) {
+      playErrorSound();
+      toast.error('Sürücü məlumatı yüklənməyib. Zəhmət olmasa səhifəni yeniləyin');
+      return;
+    }
+
     // Öğrenciyi ara ama ekranda gösterme
     const student = await searchStudentWithoutDisplay(decodedText);
 
@@ -166,14 +180,31 @@ export const BoardingPage = () => {
       isLoadingTrips: isLoadingTrips,
     });
 
+    // Avtobus kontrolü - daha detaylı hata mesajları
     if (!myBus) {
       playErrorSound();
-      const reason = !user?.id
-        ? 'Sürücü məlumatı yüklənməyib'
-        : buses.length === 0
-          ? 'Heç bir avtobus tapılmadı'
-          : `Sürücüyə avtobus təyin edilməyib (Sürücü ID: ${user.id}, Tapılan avtobuslar: ${buses.map((b) => `ID:${b.id}, Sürücü:${b.driverId || 'yox'}`).join(', ')})`;
-      toast.error(`Avtobus seçilməyib: ${reason}`);
+      let reason = '';
+
+      if (buses.length === 0) {
+        reason = 'Heç bir avtobus tapılmadı. Sistemdə avtobus yoxdur.';
+      } else {
+        // Sürücüye atanmış otobüs var mı kontrol et
+        const assignedBuses = buses.filter((b) => b.driverId);
+        if (assignedBuses.length === 0) {
+          reason = 'Heç bir avtobusa sürücü təyin edilməyib. Admin paneldən sürücü təyin edin.';
+        } else {
+          const myBusCandidate = buses.find((b) => b.driverId === user.id);
+          if (!myBusCandidate) {
+            reason = `Sizə avtobus təyin edilməyib. Sürücü ID: ${user.id}. Admin paneldən sürücü təyin edin.`;
+          } else {
+            reason = 'Avtobus məlumatı tapılmadı. Zəhmət olmasa səhifəni yeniləyin.';
+          }
+        }
+      }
+
+      toast.error(`Avtobus seçilməyib: ${reason}`, {
+        duration: 8000,
+      });
       return;
     }
 
@@ -298,6 +329,39 @@ export const BoardingPage = () => {
           </Button>
         </div>
       </div>
+
+      {/* Uyarı: Veriler yükleniyor */}
+      {(isLoadingBuses || isLoadingTrips) && (
+        <Card>
+          <CardBody className="py-3">
+            <div className="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
+              <RefreshCw className="h-5 w-5 animate-spin text-amber-600" />
+              <p className="text-sm font-medium text-amber-800">
+                Məlumatlar yüklənir, zəhmət olmasa gözləyin...
+              </p>
+            </div>
+          </CardBody>
+        </Card>
+      )}
+
+      {/* Uyarı: Avtobus təyin edilməyib */}
+      {!isLoadingBuses && !isLoadingTrips && !myBus && user?.id && (
+        <Card>
+          <CardBody className="py-3">
+            <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-3">
+              <AlertCircle className="h-5 w-5 text-red-600" />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-red-800">Avtobus seçilməyib</p>
+                <p className="mt-1 text-xs text-red-700">
+                  {buses.length === 0
+                    ? 'Sistemdə heç bir avtobus yoxdur. Admin paneldən avtobus əlavə edin.'
+                    : 'Sizə avtobus təyin edilməyib. Admin paneldən sürücü təyin edin.'}
+                </p>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+      )}
 
       {/* Sefer seçimi */}
       {trips.length > 0 && (
