@@ -31,6 +31,7 @@ export const BoardingPage = () => {
     todayPlans,
     pendingBoardingStudents,
     myBus,
+    buses,
     trips,
     searchStudentByQr,
     createBoarding,
@@ -38,6 +39,8 @@ export const BoardingPage = () => {
     isCreatingBoarding,
     refetchBoarding,
     isLoadingBoarding,
+    isLoadingBuses,
+    isLoadingTrips,
   } = useDriverData();
 
   const [qrInput, setQrInput] = useState('');
@@ -149,10 +152,35 @@ export const BoardingPage = () => {
       return;
     }
 
-    // Gerekli kontroller
-    if (!selectedTripId || !myBus) {
+    // Gerekli kontroller - Detaylı debug
+    console.log('🔍 QR Scan Debug:', {
+      user: user,
+      userId: user?.id,
+      busesCount: buses.length,
+      buses: buses.map((b) => ({ id: b.id, plateNumber: b.plateNumber, driverId: b.driverId })),
+      myBus: myBus,
+      tripsCount: trips.length,
+      trips: trips.map((t) => ({ id: t.id, departureTime: t.departureTime })),
+      selectedTripId: selectedTripId,
+      isLoadingBuses: isLoadingBuses,
+      isLoadingTrips: isLoadingTrips,
+    });
+
+    if (!myBus) {
       playErrorSound();
-      toast.error('Sefer və ya avtobus seçilməyib');
+      const reason = !user?.id
+        ? 'Sürücü məlumatı yüklənməyib'
+        : buses.length === 0
+          ? 'Heç bir avtobus tapılmadı'
+          : `Sürücüyə avtobus təyin edilməyib (Sürücü ID: ${user.id}, Tapılan avtobuslar: ${buses.map((b) => `ID:${b.id}, Sürücü:${b.driverId || 'yox'}`).join(', ')})`;
+      toast.error(`Avtobus seçilməyib: ${reason}`);
+      return;
+    }
+
+    if (!selectedTripId) {
+      playErrorSound();
+      const reason = trips.length === 0 ? 'Heç bir sefer tapılmadı' : 'Sefer seçilməyib';
+      toast.error(`Sefer seçilməyib: ${reason}`);
       return;
     }
 
