@@ -95,9 +95,9 @@ export const QrCodeScanner = ({
           aspectRatio: 1.0,
         },
         (decodedText) => {
-          // QR kod başarıyla okundu
+          // QR kod başarıyla okundu - kamera açık kalsın
           onScanSuccess(decodedText);
-          stopScanner();
+          // stopScanner() çağrısını kaldırdık - kamera açık kalacak
         },
         (errorMessage) => {
           // Hata mesajlarını sessizce yok say (sürekli hata mesajları gelir)
