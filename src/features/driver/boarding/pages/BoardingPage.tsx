@@ -38,6 +38,7 @@ export const BoardingPage = () => {
     isSearchingStudent,
     isCreatingBoarding,
     refetchBoarding,
+    refetchBuses,
     isLoadingBoarding,
     isLoadingBuses,
     isLoadingTrips,
@@ -94,6 +95,19 @@ export const BoardingPage = () => {
       setSelectedTripId(trips[0].id);
     }
   }, [trips, selectedTripId]);
+
+  // Sayfa yüklendiğinde veya window focus olduğunda bus verilerini yenile
+  useEffect(() => {
+    const handleFocus = () => {
+      // Sadece veriler yüklenmişse ve myBus yoksa yenile
+      if (!isLoadingBuses && !myBus && user?.id) {
+        refetchBuses();
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [isLoadingBuses, myBus, user?.id, refetchBuses]);
 
   // Input'a odaklan
   useEffect(() => {
@@ -170,14 +184,33 @@ export const BoardingPage = () => {
     console.log('🔍 QR Scan Debug:', {
       user: user,
       userId: user?.id,
+      userIdType: typeof user?.id,
       busesCount: buses.length,
-      buses: buses.map((b) => ({ id: b.id, plateNumber: b.plateNumber, driverId: b.driverId })),
+      buses: buses.map((b) => ({
+        id: b.id,
+        plateNumber: b.plateNumber,
+        driverId: b.driverId,
+        driverIdType: typeof b.driverId,
+        driverIdString: String(b.driverId),
+        driverIdNumber: Number(b.driverId),
+      })),
       myBus: myBus,
+      myBusDriverId: myBus?.driverId,
       tripsCount: trips.length,
       trips: trips.map((t) => ({ id: t.id, departureTime: t.departureTime })),
       selectedTripId: selectedTripId,
       isLoadingBuses: isLoadingBuses,
       isLoadingTrips: isLoadingTrips,
+      // Tip karşılaştırması testi
+      comparisonTest: buses.map((b) => ({
+        busId: b.id,
+        busDriverId: b.driverId,
+        userDriverId: user?.id,
+        strictEqual: b.driverId === user?.id,
+        looseEqual: b.driverId == user?.id,
+        numberEqual: Number(b.driverId) === Number(user?.id),
+        stringEqual: String(b.driverId) === String(user?.id),
+      })),
     });
 
     // Avtobus kontrolü - daha detaylı hata mesajları
@@ -193,9 +226,21 @@ export const BoardingPage = () => {
         if (assignedBuses.length === 0) {
           reason = 'Heç bir avtobusa sürücü təyin edilməyib. Admin paneldən sürücü təyin edin.';
         } else {
-          const myBusCandidate = buses.find((b) => b.driverId === user.id);
+          // Tip güvenli karşılaştırma yap
+          const userId = typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
+          const myBusCandidate = buses.find((b) => {
+            if (!b.driverId) return false;
+            const busDriverId = typeof b.driverId === 'string' ? parseInt(b.driverId, 10) : b.driverId;
+            if (isNaN(userId) || isNaN(busDriverId)) return false;
+            return userId === busDriverId;
+          });
+          
           if (!myBusCandidate) {
-            reason = `Sizə avtobus təyin edilməyib. Sürücü ID: ${user.id}. Admin paneldən sürücü təyin edin.`;
+            const assignedDriverIds = assignedBuses
+              .map((b) => b.driverId)
+              .filter((id) => id != null)
+              .join(', ');
+            reason = `Sizə avtobus təyin edilməyib. Sürücü ID: ${user.id} (tip: ${typeof user.id}). Təyin edilmiş sürücü ID-ləri: ${assignedDriverIds}. Admin paneldən sürücü təyin edin.`;
           } else {
             reason = 'Avtobus məlumatı tapılmadı. Zəhmət olmasa səhifəni yeniləyin.';
           }
@@ -319,11 +364,18 @@ export const BoardingPage = () => {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => refetchBoarding()}
+            onClick={() => {
+              refetchBoarding();
+              refetchBuses();
+            }}
             leftIcon={
-              <RefreshCw className={`h-4 w-4 ${isLoadingBoarding ? 'animate-spin' : ''}`} />
+              <RefreshCw
+                className={`h-4 w-4 ${
+                  isLoadingBoarding || isLoadingBuses ? 'animate-spin' : ''
+                }`}
+              />
             }
-            disabled={isLoadingBoarding}
+            disabled={isLoadingBoarding || isLoadingBuses}
           >
             Yenilə
           </Button>

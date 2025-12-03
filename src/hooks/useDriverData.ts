@@ -63,10 +63,14 @@ export const useDriverData = () => {
   const {
     data: buses = [],
     isLoading: isLoadingBuses,
+    refetch: refetchBuses,
   } = useQuery({
     queryKey: QUERY_KEYS.buses.all,
     queryFn: () => busService.getAll(),
     staleTime: 1000 * 60 * 5, // 5 dakika
+    // Cache'den veri geldiğinde bile backend'den kontrol et (stale data için)
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
   });
 
   // Tüm seferler
@@ -80,7 +84,22 @@ export const useDriverData = () => {
   });
 
   // Sürücünün otobüsü (driverId'ye göre filtrele)
-  const myBus = buses.find((bus) => bus.driverId === user?.id);
+  // Tip güvenli karşılaştırma: hem number hem string karşılaştırması yap
+  const myBus = buses.find((bus) => {
+    if (!user?.id || !bus.driverId) {
+      return false;
+    }
+    // Hem number hem string karşılaştırması yap (backend'den string gelebilir)
+    const userId = typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
+    const busDriverId = typeof bus.driverId === 'string' ? parseInt(bus.driverId, 10) : bus.driverId;
+    
+    // NaN kontrolü
+    if (isNaN(userId) || isNaN(busDriverId)) {
+      return false;
+    }
+    
+    return userId === busDriverId;
+  });
 
   // ============ MUTATIONS ============
 
@@ -245,6 +264,7 @@ export const useDriverData = () => {
     // Refetch functions
     refetchBoarding,
     refetchDisembarking,
+    refetchBuses,
   };
 };
 
