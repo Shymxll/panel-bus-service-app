@@ -129,6 +129,12 @@ export const PlanningPage = () => {
         onSuccess: () => {
           setIsDeleteModalOpen(false);
           setSelectedPlan(null);
+          // Tarih bazlı query'yi de yenile
+          refetch();
+        },
+        onError: () => {
+          // Hata zaten hook içinde gösteriliyor
+          // Modal'ı kapatma, kullanıcı hatayı görebilsin
         },
       });
     }

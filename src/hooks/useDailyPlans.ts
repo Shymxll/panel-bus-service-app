@@ -49,11 +49,24 @@ export const useDailyPlans = () => {
   const deleteMutation = useMutation({
     mutationFn: (id: number) => dailyPlanService.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.dailyPlans.all });
+      // Tüm daily plan query'lerini invalidate et (tarih bazlı sorgular dahil)
+      queryClient.invalidateQueries({ 
+        queryKey: QUERY_KEYS.dailyPlans.all,
+        exact: false 
+      });
+      // Tarih bazlı query'leri de invalidate et
+      queryClient.invalidateQueries({ 
+        predicate: (query) => {
+          const key = query.queryKey;
+          return Array.isArray(key) && key[0] === 'dailyPlans';
+        }
+      });
+      // Başarı mesajı göster (axios interceptor hata mesajlarını gösteriyor)
       toast.success('Plan silindi');
     },
-    onError: (error: Error) => {
-      toast.error(error.message || 'Plan silinə bilmədi');
+    onError: () => {
+      // Hata mesajı zaten axios interceptor tarafından gösteriliyor
+      // Burada sadece log tutabiliriz veya ek işlem yapabiliriz
     },
   });
 

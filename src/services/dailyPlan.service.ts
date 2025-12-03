@@ -1,5 +1,6 @@
 // Axios instance'ını import ediyoruz (HTTP istekleri için)
 import axiosInstance from '@/lib/axios';
+import { AxiosError } from 'axios';
 // API endpoint URL'lerini içeren yapılandırmayı import ediyoruz
 import { API_ENDPOINTS } from '@/config/api.config';
 // TypeScript tip tanımlarını import ediyoruz
@@ -153,13 +154,28 @@ class DailyPlanService {
    * @throws Error - Silme başarısız olursa hata fırlatır
    */
   async delete(id: number): Promise<void> {
-    // DELETE isteği gönder - günlük planı sil
-    const response = await axiosInstance.delete<ApiResponse>(
-      API_ENDPOINTS.dailyPlans.delete(id)
-    );
-    // Başarısız ise hata fırlat
-    if (!response.data.success) {
-      throw new Error(response.data.message || 'Plan silinə bilmədi');
+    try {
+      // DELETE isteği gönder - günlük planı sil
+      const response = await axiosInstance.delete<ApiResponse>(
+        API_ENDPOINTS.dailyPlans.delete(id)
+      );
+      // Başarısız ise hata fırlat
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Plan silinə bilmədi');
+      }
+    } catch (error) {
+      // Axios hatası ise, daha detaylı hata mesajı oluştur
+      if (error instanceof AxiosError) {
+        const axiosError = error as AxiosError<ApiResponse>;
+        if (axiosError.response?.data?.message) {
+          throw new Error(axiosError.response.data.message);
+        }
+        if (axiosError.response?.status === 500) {
+          throw new Error('Server xətası. Plan silinə bilmədi. Zəhmət olmasa sonra yenidən cəhd edin.');
+        }
+      }
+      // Diğer hatalar için orijinal hatayı fırlat
+      throw error;
     }
   }
 }
