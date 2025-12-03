@@ -26,6 +26,10 @@ export const QrCodeScanner = ({
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const scanAreaRef = useRef<HTMLDivElement>(null);
   const scanAreaId = useId();
+  
+  // Son okunan QR kod ve zamanı (aynı QR kodun çok hızlı art arda okunmasını engellemek için)
+  const lastScannedCodeRef = useRef<string | null>(null);
+  const lastScanTimeRef = useRef<number>(0);
 
   // Scanner'ı başlat
   const startScanner = async () => {
@@ -95,7 +99,23 @@ export const QrCodeScanner = ({
           aspectRatio: 1.0,
         },
         (decodedText) => {
-          // QR kod başarıyla okundu - kamera açık kalsın
+          // Aynı QR kodun çok hızlı art arda okunmasını engelle (1 saniye)
+          const now = Date.now();
+          const isSameCode = decodedText === lastScannedCodeRef.current;
+          const timeSinceLastScan = now - lastScanTimeRef.current;
+          const DUPLICATE_SCAN_THRESHOLD = 1000; // 1 saniye
+
+          if (isSameCode && timeSinceLastScan < DUPLICATE_SCAN_THRESHOLD) {
+            // Aynı QR kod çok kısa süre içinde tekrar okundu, yoksay
+            console.log('⚠️ QR Scanner: Aynı kod çok hızlı okundu, yoksayılıyor:', decodedText);
+            return;
+          }
+
+          // Son okunan kodu ve zamanı kaydet
+          lastScannedCodeRef.current = decodedText;
+          lastScanTimeRef.current = now;
+
+          // QR kod başarıyla okundu - callback'i çağır
           onScanSuccess(decodedText);
           // stopScanner() çağrısını kaldırdık - kamera açık kalacak
         },

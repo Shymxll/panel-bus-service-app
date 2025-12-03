@@ -48,6 +48,10 @@ export const AlightingPage = () => {
   const [selectedTripId, setSelectedTripId] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   
+  // QR kod işleme durumu (aynı anda sadece bir QR kod işlenebilir)
+  const isProcessingQrRef = useRef<boolean>(false);
+  const currentProcessingQrRef = useRef<string | null>(null);
+  
   // Son okutulan QR kodları takip et (tekrar okutmayı engellemek için)
   // Map<qrCode, timestamp> formatında
   const recentScannedQrCodesRef = useRef<Map<string, number>>(new Map());
@@ -200,6 +204,12 @@ export const AlightingPage = () => {
       return;
     }
 
+    // Şu anda bir QR kod işleniyorsa, yeni QR okutmayı engelle
+    if (isProcessingQrRef.current) {
+      console.log('⚠️ Başqa QR kod işlənir, gözləyin:', currentProcessingQrRef.current);
+      return;
+    }
+
     // Bu QR kod daha önce başarıyla işlendi mi kontrol et
     if (processedQrCodesRef.current.has(qrCode)) {
       // Bu QR kod bugün zaten başarıyla işlenmiş, tekrar okutmayı engelle
@@ -216,9 +226,13 @@ export const AlightingPage = () => {
 
     if (lastScanTime && now - lastScanTime < SCAN_COOLDOWN) {
       // Aynı QR kod çok kısa süre önce okutulmuş, yoksay
-      console.log('⚠️ Aynı QR kod çok kısa süre önce okutuldu, yoksayılıyor:', qrCode);
+      console.log('⚠️ Aynı QR kod çox qısa müddət əvvəl oxundu, yoksayılıyor:', qrCode);
       return;
     }
+
+    // İşleme başlıyoruz - kilidi al
+    isProcessingQrRef.current = true;
+    currentProcessingQrRef.current = qrCode;
 
     // Öğrenciyi ara ama ekranda gösterme
     const student = await searchStudentWithoutDisplay(qrCode);
@@ -227,6 +241,9 @@ export const AlightingPage = () => {
     if (!student) {
       playErrorSound();
       toast.error('Şagird tapılmadı');
+      // Kilidi serbest bırak
+      isProcessingQrRef.current = false;
+      currentProcessingQrRef.current = null;
       return;
     }
 
@@ -240,6 +257,9 @@ export const AlightingPage = () => {
       processedQrCodesRef.current.add(qrCode);
       playErrorSound();
       toast.error('Bu şagird artıq bugün düşüb!');
+      // Kilidi serbest bırak
+      isProcessingQrRef.current = false;
+      currentProcessingQrRef.current = null;
       return;
     }
 
@@ -247,6 +267,9 @@ export const AlightingPage = () => {
     if (!selectedTripId || !myBus) {
       playErrorSound();
       toast.error('Sefer və ya avtobus seçilməyib');
+      // Kilidi serbest bırak
+      isProcessingQrRef.current = false;
+      currentProcessingQrRef.current = null;
       return;
     }
 
@@ -302,6 +325,10 @@ export const AlightingPage = () => {
       // Hata sesi çal
       playErrorSound();
       // Hata zaten hook içinde gösteriliyor
+    } finally {
+      // Her durumda kilidi serbest bırak
+      isProcessingQrRef.current = false;
+      currentProcessingQrRef.current = null;
     }
   };
 
