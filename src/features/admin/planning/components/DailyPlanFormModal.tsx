@@ -11,6 +11,7 @@ import { useTrips } from '@/hooks/useTrips';
 import { useBuses } from '@/hooks/useBuses';
 import { useRoutes } from '@/hooks/useRoutes';
 import { useStops } from '@/hooks/useStops';
+import { useUsers } from '@/hooks/useUsers';
 import type { DailyPlan } from '@/types';
 
 // Günlük plan kayıtları için doğrulama şeması.
@@ -46,7 +47,11 @@ export const DailyPlanFormModal = ({
   const { buses } = useBuses();
   const { routes } = useRoutes();
   const { stops } = useStops();
+  const { users } = useUsers();
   const isEditing = !!dailyPlan;
+
+  // Sürücü bilgilerini ID'ye göre eşleştirmek için map oluştur
+  const driverMap = new Map(users.map(user => [user.id, user]));
 
   // Modal açıldığında en güncel sefer listesini yeniden çek.
   useEffect(() => {
@@ -303,11 +308,16 @@ export const DailyPlanFormModal = ({
                 <option value={0}>Avtobus seçin</option>
                 {buses
                   .filter(b => b.isActive)
-                  .map(bus => (
-                    <option key={bus.id} value={bus.id}>
-                      {bus.plateNumber} - {bus.driver?.name || 'Sürücü yoxdur'}
-                    </option>
-                  ))}
+                  .map(bus => {
+                    // Sürücü bilgisini driverId'ye göre bul
+                    const driver = bus.driverId ? driverMap.get(bus.driverId) : null;
+                    const driverName = driver?.name || 'Sürücü yoxdur';
+                    return (
+                      <option key={bus.id} value={bus.id}>
+                        {bus.plateNumber} - {driverName}
+                      </option>
+                    );
+                  })}
               </select>
               {errors.busId && (
                 <p className="mt-1 text-sm text-red-500">{errors.busId.message}</p>
