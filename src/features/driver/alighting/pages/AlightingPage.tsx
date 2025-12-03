@@ -230,21 +230,23 @@ export const AlightingPage = () => {
       return;
     }
 
-    // Gerekli kontroller
-    if (!selectedTripId || !myBus) {
-      playErrorSound();
-      toast.error('Sefer və ya avtobus seçilməyib');
-      return;
-    }
-
-    // Bu öğrenci zaten bugün indi mi kontrol et
+    // Bu öğrenci zaten bugün indi mi kontrol et (öğrenci bulunduktan hemen sonra)
     const alreadyDisembarked = todayDisembarkingRecords.some(
       (record) => record.studentId === student.id
     );
 
     if (alreadyDisembarked) {
+      // Öğrenci zaten bugün indi, QR kodunu işaretle ve engelle
+      processedQrCodesRef.current.add(qrCode);
       playErrorSound();
       toast.error('Bu şagird artıq bugün düşüb!');
+      return;
+    }
+
+    // Gerekli kontroller
+    if (!selectedTripId || !myBus) {
+      playErrorSound();
+      toast.error('Sefer və ya avtobus seçilməyib');
       return;
     }
 
@@ -260,6 +262,11 @@ export const AlightingPage = () => {
     const studentPlan = todayPlans.find(
       (plan) => plan.studentId === student.id && !plan.isBoarding
     );
+
+    // ÖNEMLİ: Disembarking kaydı oluşturulmaya başlamadan ÖNCE QR kodunu işaretle
+    // Böylece aynı anda birden fazla istek gönderilmesini engelle
+    processedQrCodesRef.current.add(qrCode);
+    recentScannedQrCodesRef.current.set(qrCode, now);
 
     // Otomatik olarak iniş kaydı oluştur
     try {
@@ -277,12 +284,7 @@ export const AlightingPage = () => {
       playSuccessSound();
       toast.success(`${student.firstName} ${student.lastName} uğurla düşmə qeydində qeyd edildi`);
       
-      // Başarılı okutma sonrası QR kodunu kalıcı olarak işaretle (bugün için tekrar okutmayı engellemek için)
-      processedQrCodesRef.current.add(qrCode);
-      
-      // Başarılı okutma sonrası QR kodunu kaydet (kısa süreli cooldown için)
-      recentScannedQrCodesRef.current.set(qrCode, now);
-      
+      // QR kod zaten işaretlenmiş (disembarking kaydı oluşturulmadan önce işaretlendi)
       // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
       const fiveMinutesAgo = now - 5 * 60 * 1000;
       for (const [code, timestamp] of recentScannedQrCodesRef.current.entries()) {
@@ -293,6 +295,10 @@ export const AlightingPage = () => {
       
       refetchDisembarking();
     } catch (error) {
+      // Hata durumunda QR kodunu işaretten kaldır, böylece tekrar deneyebilir
+      processedQrCodesRef.current.delete(qrCode);
+      recentScannedQrCodesRef.current.delete(qrCode);
+      
       // Hata sesi çal
       playErrorSound();
       // Hata zaten hook içinde gösteriliyor
@@ -319,6 +325,10 @@ export const AlightingPage = () => {
     );
 
     if (alreadyDisembarked) {
+      // Öğrenci zaten bugün indi, QR kodunu işaretle ve engelle
+      if (scannedStudent.qrCode) {
+        processedQrCodesRef.current.add(scannedStudent.qrCode);
+      }
       toast.error('Bu şagird artıq bugün düşüb!');
       setScannedStudent(null);
       return;
@@ -338,6 +348,13 @@ export const AlightingPage = () => {
       (plan) => plan.studentId === scannedStudent.id && !plan.isBoarding
     );
 
+    // ÖNEMLİ: Disembarking kaydı oluşturulmaya başlamadan ÖNCE QR kodunu işaretle
+    const now = Date.now();
+    if (scannedStudent.qrCode) {
+      processedQrCodesRef.current.add(scannedStudent.qrCode);
+      recentScannedQrCodesRef.current.set(scannedStudent.qrCode, now);
+    }
+
     try {
       await createDisembarking({
         studentId: scannedStudent.id,
@@ -349,24 +366,23 @@ export const AlightingPage = () => {
         dailyPlanId: studentPlan?.id,
       });
 
-      // Başarılı okutma sonrası QR kodunu kalıcı olarak işaretle (bugün için tekrar okutmayı engellemek için)
-      const now = Date.now();
-      if (scannedStudent.qrCode) {
-        processedQrCodesRef.current.add(scannedStudent.qrCode);
-        recentScannedQrCodesRef.current.set(scannedStudent.qrCode, now);
-        
-        // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
-        const fiveMinutesAgo = now - 5 * 60 * 1000;
-        for (const [code, timestamp] of recentScannedQrCodesRef.current.entries()) {
-          if (timestamp < fiveMinutesAgo) {
-            recentScannedQrCodesRef.current.delete(code);
-          }
+      // QR kod zaten işaretlenmiş (disembarking kaydı oluşturulmadan önce işaretlendi)
+      // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
+      const fiveMinutesAgo = now - 5 * 60 * 1000;
+      for (const [code, timestamp] of recentScannedQrCodesRef.current.entries()) {
+        if (timestamp < fiveMinutesAgo) {
+          recentScannedQrCodesRef.current.delete(code);
         }
       }
       
       setScannedStudent(null);
       refetchDisembarking();
     } catch (error) {
+      // Hata durumunda QR kodunu işaretten kaldır, böylece tekrar deneyebilir
+      if (scannedStudent.qrCode) {
+        processedQrCodesRef.current.delete(scannedStudent.qrCode);
+        recentScannedQrCodesRef.current.delete(scannedStudent.qrCode);
+      }
       // Hata zaten hook içinde gösteriliyor
     }
   };
