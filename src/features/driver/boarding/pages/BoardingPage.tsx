@@ -49,6 +49,10 @@ export const BoardingPage = () => {
   const [showManualInput, setShowManualInput] = useState(true);
   const [selectedTripId, setSelectedTripId] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  
+  // Son okutulan QR kodları takip et (tekrar okutmayı engellemek için)
+  // Map<qrCode, timestamp> formatında
+  const recentScannedQrCodesRef = useRef<Map<string, number>>(new Map());
 
   // Ses bildirimleri için Audio referansları
   const successSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -118,14 +122,37 @@ export const BoardingPage = () => {
 
   // QR kod ile öğrenci ara (öğrenci bilgilerini göster)
   const handleQrSearch = async (qrCode?: string): Promise<Student | null> => {
-    const codeToSearch = qrCode || qrInput.trim();
+    const codeToSearch = (qrCode || qrInput.trim()).trim();
     if (!codeToSearch) {
       toast.error('QR kod daxil edin');
       return null;
     }
 
+    // Aynı QR kodun kısa süre içinde tekrar okutulmasını engelle (3 saniye)
+    const now = Date.now();
+    const lastScanTime = recentScannedQrCodesRef.current.get(codeToSearch);
+    const SCAN_COOLDOWN = 3000; // 3 saniye
+
+    if (lastScanTime && now - lastScanTime < SCAN_COOLDOWN) {
+      // Aynı QR kod çok kısa süre önce okutulmuş
+      toast.info('Bu QR kod çox qısa müddət əvvəl oxunub. Zəhmət olmasa gözləyin.');
+      return null;
+    }
+
     try {
       const student = await searchStudentByQr(codeToSearch);
+      if (student) {
+        // Başarılı arama sonrası QR kodunu kaydet (tekrar okutmayı engellemek için)
+        recentScannedQrCodesRef.current.set(codeToSearch, now);
+        
+        // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
+        const fiveMinutesAgo = now - 5 * 60 * 1000;
+        for (const [code, timestamp] of recentScannedQrCodesRef.current.entries()) {
+          if (timestamp < fiveMinutesAgo) {
+            recentScannedQrCodesRef.current.delete(code);
+          }
+        }
+      }
       setScannedStudent(student);
       setQrInput('');
       return student;
@@ -156,6 +183,24 @@ export const BoardingPage = () => {
 
   // Kamera ile QR kod tarandığında - otomatik onayla (öğrenci bilgilerini gösterme)
   const handleQrScan = async (decodedText: string) => {
+    const qrCode = decodedText.trim();
+    
+    // Boş QR kod kontrolü
+    if (!qrCode) {
+      return;
+    }
+
+    // Aynı QR kodun kısa süre içinde tekrar okutulmasını engelle (3 saniye)
+    const now = Date.now();
+    const lastScanTime = recentScannedQrCodesRef.current.get(qrCode);
+    const SCAN_COOLDOWN = 3000; // 3 saniye
+
+    if (lastScanTime && now - lastScanTime < SCAN_COOLDOWN) {
+      // Aynı QR kod çok kısa süre önce okutulmuş, yoksay
+      console.log('⚠️ Aynı QR kod çok kısa süre önce okutuldu, yoksayılıyor:', qrCode);
+      return;
+    }
+
     // Veriler yükleniyor mu kontrol et
     if (isLoadingBuses || isLoadingTrips) {
       playErrorSound();
@@ -171,7 +216,7 @@ export const BoardingPage = () => {
     }
 
     // Öğrenciyi ara ama ekranda gösterme
-    const student = await searchStudentWithoutDisplay(decodedText);
+    const student = await searchStudentWithoutDisplay(qrCode);
 
     // Öğrenci bulunamadıysa hata sesi çal ve işlemi durdur
     if (!student) {
@@ -287,6 +332,18 @@ export const BoardingPage = () => {
       // Başarı sesi çal
       playSuccessSound();
       toast.success(`${student.firstName} ${student.lastName} uğurla minmə qeydində qeyd edildi`);
+      
+      // Başarılı okutma sonrası QR kodunu kaydet (tekrar okutmayı engellemek için)
+      recentScannedQrCodesRef.current.set(qrCode, now);
+      
+      // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
+      const fiveMinutesAgo = now - 5 * 60 * 1000;
+      for (const [code, timestamp] of recentScannedQrCodesRef.current.entries()) {
+        if (timestamp < fiveMinutesAgo) {
+          recentScannedQrCodesRef.current.delete(code);
+        }
+      }
+      
       refetchBoarding();
     } catch (error) {
       // Hata sesi çal
@@ -335,6 +392,20 @@ export const BoardingPage = () => {
         wasPlanned: !!studentPlan,
         dailyPlanId: studentPlan?.id,
       });
+
+      // Başarılı okutma sonrası QR kodunu kaydet (tekrar okutmayı engellemek için)
+      const now = Date.now();
+      if (scannedStudent.qrCode) {
+        recentScannedQrCodesRef.current.set(scannedStudent.qrCode, now);
+        
+        // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
+        const fiveMinutesAgo = now - 5 * 60 * 1000;
+        for (const [code, timestamp] of recentScannedQrCodesRef.current.entries()) {
+          if (timestamp < fiveMinutesAgo) {
+            recentScannedQrCodesRef.current.delete(code);
+          }
+        }
+      }
 
       setScannedStudent(null);
       refetchBoarding();
