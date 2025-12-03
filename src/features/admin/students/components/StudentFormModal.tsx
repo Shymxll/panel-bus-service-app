@@ -15,7 +15,7 @@ const studentSchema = z.object({
   firstName: z.string().min(2, 'Ad ən az 2 simvol olmalıdır'),
   lastName: z.string().min(2, 'Soyad ən az 2 simvol olmalıdır'),
   qrCode: z.string().min(5, 'QR kod ən az 5 simvol olmalıdır'),
-  schoolId: z.string().min(1, 'Məktəb seçilməlidir').transform((val) => parseInt(val, 10)),
+  schoolId: z.coerce.number().min(1, 'Məktəb seçilməlidir'),
   grade: z.string().min(1, 'Sinif tələb olunur'),
   parentName: z.string().optional(),
   parentPhone: z.string().optional(),
@@ -50,7 +50,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
       firstName: '',
       lastName: '',
       qrCode: '',
-      schoolId: '',
+      schoolId: 0,
       grade: '',
       parentName: '',
       parentPhone: '',
@@ -70,7 +70,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
         firstName: student.firstName,
         lastName: student.lastName,
         qrCode: student.qrCode,
-        schoolId: studentSchool ? String(studentSchool.id) : '',
+        schoolId: studentSchool ? studentSchool.id : 0,
         grade: student.grade,
         parentName: student.parentName || '',
         parentPhone: student.parentPhone || '',
@@ -82,7 +82,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
         firstName: '',
         lastName: '',
         qrCode: studentService.generateQrCode(),
-        schoolId: '',
+        schoolId: 0,
         grade: '',
         parentName: '',
         parentPhone: '',
@@ -99,12 +99,11 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
 
   const onSubmit = (data: StudentFormData) => {
     // Backend'e gönderilecek veriyi hazırla
-    // schoolId'yi number'a çevir ve backend'in beklediği formata dönüştür
     const submitData = {
       firstName: data.firstName,
       lastName: data.lastName,
       qrCode: data.qrCode,
-      schoolId: typeof data.schoolId === 'string' ? parseInt(data.schoolId, 10) : data.schoolId,
+      schoolId: data.schoolId,
       grade: data.grade,
       parentName: data.parentName || undefined,
       parentPhone: data.parentPhone || undefined,
