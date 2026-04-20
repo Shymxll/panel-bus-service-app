@@ -358,7 +358,7 @@ export const StudentManagement = () => {
                       onClick={() => handleSort('school')}
                     >
                       <div className="flex items-center gap-1">
-                        Məktəb
+                        Okul
                         <SortIcon field="school" />
                       </div>
                     </th>
@@ -367,18 +367,18 @@ export const StudentManagement = () => {
                       onClick={() => handleSort('grade')}
                     >
                       <div className="flex items-center gap-1">
-                        Sinif
+                        Sınıf
                         <SortIcon field="grade" />
                       </div>
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Valideyn
+                      Veli
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Status
+                      Durum
                     </th>
                     <th className="px-4 py-3 text-right text-sm font-semibold text-secondary-700">
-                      Əməliyyatlar
+                      İşlemler
                     </th>
                   </tr>
                 </thead>
@@ -435,14 +435,14 @@ export const StudentManagement = () => {
                               ? 'bg-green-100 text-green-800 hover:bg-green-200' 
                               : 'bg-red-100 text-red-800 hover:bg-red-200'
                           }`}
-                          title={student.isActive ? 'Deaktiv etmək üçün klikləyin' : 'Aktiv etmək üçün klikləyin'}
+                          title={student.isActive ? 'Pasif etmek için tıklayın' : 'Aktif etmek için tıklayın'}
                         >
                           {student.isActive ? (
                             <ToggleRight className="h-3.5 w-3.5" />
                           ) : (
                             <ToggleLeft className="h-3.5 w-3.5" />
                           )}
-                          {student.isActive ? 'Aktiv' : 'Deaktiv'}
+                          {student.isActive ? 'Aktif' : 'Pasif'}
                         </button>
                       </td>
                       <td className="px-4 py-3">
@@ -451,7 +451,7 @@ export const StudentManagement = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleShowQr(student)}
-                            title="QR Kodu göstər"
+                            title="QR Kodu göster"
                           >
                             <QrCode className="h-4 w-4" />
                           </Button>
@@ -459,7 +459,7 @@ export const StudentManagement = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEdit(student)}
-                            title="Redaktə et"
+                            title="Düzenle"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -495,8 +495,8 @@ export const StudentManagement = () => {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         isLoading={isDeleting}
-        title="Şagirdi sil"
-        message={selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName} adlı şagirdi silmək istədiyinizə əminsiniz?` : ''}
+        title="Öğrenciyi sil"
+        message={selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName} adlı öğrenciyi silmek istediğinize emin misiniz?` : ''}
       />
 
       <StudentQrModal

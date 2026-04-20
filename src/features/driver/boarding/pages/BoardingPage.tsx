@@ -147,13 +147,13 @@ export const BoardingPage = () => {
   const handleQrSearch = async (qrCode?: string): Promise<Student | null> => {
     const codeToSearch = (qrCode || qrInput.trim()).trim();
     if (!codeToSearch) {
-      toast.error('QR kod daxil edin');
+      toast.error('QR kod girin');
       return null;
     }
 
     // Bu QR kod daha önce başarıyla işlendi mi kontrol et
     if (processedQrCodesRef.current.has(codeToSearch)) {
-      toast.error('Bu QR kod artıq bugün işlənib!');
+      toast.error('Bu QR kod bugün zaten işlendi!');
       return null;
     }
 
@@ -164,7 +164,7 @@ export const BoardingPage = () => {
 
     if (lastScanTime && now - lastScanTime < SCAN_COOLDOWN) {
       // Aynı QR kod çok kısa süre önce okutulmuş
-      toast.info('Bu QR kod çox qısa müddət əvvəl oxunub. Zəhmət olmasa gözləyin.');
+      toast.info('Bu QR kod az önce okundu. Lütfen bekleyin.');
       return null;
     }
 
@@ -230,7 +230,7 @@ export const BoardingPage = () => {
       // Bu QR kod bugün zaten başarıyla işlenmiş, tekrar okutmayı engelle
       console.log('⚠️ Bu QR kod daha önce işlənib, yoksayılıyor:', qrCode);
       playErrorSound();
-      toast.error('Bu QR kod artıq bugün işlənib!');
+      toast.error('Bu QR kod bugün zaten işlendi!');
       return;
     }
 
@@ -252,7 +252,7 @@ export const BoardingPage = () => {
     // Veriler yükleniyor mu kontrol et
     if (isLoadingBuses || isLoadingTrips) {
       playErrorSound();
-      toast.error('Məlumatlar hələ yüklənir, zəhmət olmasa gözləyin');
+      toast.error('Veriler hala yükleniyor, lütfen bekleyin');
       // Kilidi serbest bırak
       isProcessingQrRef.current = false;
       currentProcessingQrRef.current = null;
@@ -262,7 +262,7 @@ export const BoardingPage = () => {
     // Kullanıcı bilgisi yüklendi mi kontrol et
     if (!user?.id) {
       playErrorSound();
-      toast.error('Sürücü məlumatı yüklənməyib. Zəhmət olmasa səhifəni yeniləyin');
+      toast.error('Sürücü bilgisi yüklenmedi. Lütfen sayfayı yenileyin');
       // Kilidi serbest bırak
       isProcessingQrRef.current = false;
       currentProcessingQrRef.current = null;
@@ -275,7 +275,7 @@ export const BoardingPage = () => {
     // Öğrenci bulunamadıysa hata sesi çal ve işlemi durdur
     if (!student) {
       playErrorSound();
-      toast.error('Şagird tapılmadı');
+      toast.error('Öğrenci bulunamadı');
       // Kilidi serbest bırak
       isProcessingQrRef.current = false;
       currentProcessingQrRef.current = null;
@@ -289,7 +289,7 @@ export const BoardingPage = () => {
       // Öğrenci zaten bugün bindi, QR kodunu işaretle ve engelle
       processedQrCodesRef.current.add(qrCode);
       playErrorSound();
-      toast.error('Bu şagird artıq bugün minib!');
+      toast.error('Bu öğrenci bugün zaten bindi!');
       // Kilidi serbest bırak
       isProcessingQrRef.current = false;
       currentProcessingQrRef.current = null;
@@ -335,12 +335,12 @@ export const BoardingPage = () => {
       let reason = '';
 
       if (buses.length === 0) {
-        reason = 'Heç bir avtobus tapılmadı. Sistemdə avtobus yoxdur.';
+        reason = 'Hiç otobüs bulunamadı. Sistemde otobüs yok.';
       } else {
         // Sürücüye atanmış otobüs var mı kontrol et
         const assignedBuses = buses.filter((b) => b.driverId);
         if (assignedBuses.length === 0) {
-          reason = 'Heç bir avtobusa sürücü təyin edilməyib. Admin paneldən sürücü təyin edin.';
+          reason = 'Hiçbir otobüse sürücü atanmamış. Admin panelinden sürücü atayın.';
         } else {
           // Tip güvenli karşılaştırma yap
           const userId = typeof user.id === 'string' ? parseInt(user.id, 10) : user.id;
@@ -356,14 +356,14 @@ export const BoardingPage = () => {
               .map((b) => b.driverId)
               .filter((id) => id != null)
               .join(', ');
-            reason = `Sizə avtobus təyin edilməyib. Sürücü ID: ${user.id} (tip: ${typeof user.id}). Təyin edilmiş sürücü ID-ləri: ${assignedDriverIds}. Admin paneldən sürücü təyin edin.`;
+            reason = `Size otobüs atanmamış. Sürücü ID: ${user.id} (tip: ${typeof user.id}). Atanmış sürücü ID'leri: ${assignedDriverIds}. Admin panelinden sürücü atayın.`;
           } else {
-            reason = 'Avtobus məlumatı tapılmadı. Zəhmət olmasa səhifəni yeniləyin.';
+            reason = 'Otobüs bilgisi bulunamadı. Lütfen sayfayı yenileyin.';
           }
         }
       }
 
-      toast.error(`Avtobus seçilməyib: ${reason}`, {
+      toast.error(`Otobüs seçilmedi: ${reason}`, {
         duration: 8000,
       });
       // Kilidi serbest bırak
@@ -374,8 +374,8 @@ export const BoardingPage = () => {
 
     if (!selectedTripId) {
       playErrorSound();
-      const reason = trips.length === 0 ? 'Heç bir sefer tapılmadı' : 'Sefer seçilməyib';
-      toast.error(`Sefer seçilməyib: ${reason}`);
+      const reason = trips.length === 0 ? 'Hiç sefer bulunamadı' : 'Sefer seçilmedi';
+      toast.error(`Sefer seçilmedi: ${reason}`);
       // Kilidi serbest bırak
       isProcessingQrRef.current = false;
       currentProcessingQrRef.current = null;
@@ -404,7 +404,7 @@ export const BoardingPage = () => {
 
       // Başarı sesi çal
       playSuccessSound();
-      toast.success(`${student.firstName} ${student.lastName} uğurla minmə qeydində qeyd edildi`);
+      toast.success(`${student.firstName} ${student.lastName} başarıyla biniş kaydına eklendi`);
       
       // QR kod zaten işaretlenmiş (boarding kaydı oluşturulmadan önce işaretlendi)
       // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)

@@ -177,20 +177,20 @@ export const ReportsPage = () => {
     };
 
     const rows: string[] = [];
-    rows.push('Günlük Hesabat');
-    rows.push(`Tarix,${sanitize(formatDate(selectedDate || new Date()))}`);
+    rows.push('Günlük Rapor');
+    rows.push(`Tarih,${sanitize(formatDate(selectedDate || new Date()))}`);
     rows.push(
-      `Planlanmış Minmə,${stats.plannedBoarding},Faktiki Minmə,${stats.actualBoarding}`
+      `Planlanan Biniş,${stats.plannedBoarding},Gerçek Biniş,${stats.actualBoarding}`
     );
     rows.push(
-      `Planlanmış Düşmə,${stats.plannedDropoff},Faktiki Düşmə,${stats.actualDropoff}`
+      `Planlanan İniş,${stats.plannedDropoff},Gerçek İniş,${stats.actualDropoff}`
     );
     rows.push(
-      `İştirak edən şagirdlər,${dailyReport.totalStudents},İstifadə olunan avtobuslar,${dailyReport.totalBuses}`
+      `Katılan öğrenciler,${dailyReport.totalStudents},Kullanılan otobüsler,${dailyReport.totalBuses}`
     );
     rows.push('');
-    rows.push('Minmə Qeydləri');
-    rows.push('Şagird,Avtobus,Marşrut,Səfər Vaxtı,Qeyd Vaxtı,Planlanmış?');
+    rows.push('Biniş Kayıtları');
+    rows.push('Öğrenci,Otobüs,Güzergah,Sefer Saati,Kayıt Saati,Planlandı mı?');
 
     boardingRecords.forEach(record => {
       const student = studentMap.get(record.studentId);
@@ -200,19 +200,19 @@ export const ReportsPage = () => {
 
       rows.push(
         [
-          sanitize(student ? `${student.firstName} ${student.lastName}` : 'Bilinməyən'),
+          sanitize(student ? `${student.firstName} ${student.lastName}` : 'Bilinmiyor'),
           sanitize(bus?.plateNumber || '-'),
           sanitize(route?.name || '-'),
           sanitize(trip?.departureTime || '-'),
           sanitize(formatDateTime(record.recordTime)),
-          sanitize(record.wasPlanned ? 'Bəli' : 'Xeyr'),
+          sanitize(record.wasPlanned ? 'Evet' : 'Hayır'),
         ].join(',')
       );
     });
 
     rows.push('');
-    rows.push('Düşmə Qeydləri');
-    rows.push('Şagird,Avtobus,Marşrut,Səfər Vaxtı,Qeyd Vaxtı,Planlanmış?');
+    rows.push('İniş Kayıtları');
+    rows.push('Öğrenci,Otobüs,Güzergah,Sefer Saati,Kayıt Saati,Planlandı mı?');
 
     disembarkingRecords.forEach(record => {
       const student = studentMap.get(record.studentId);
@@ -222,12 +222,12 @@ export const ReportsPage = () => {
 
       rows.push(
         [
-          sanitize(student ? `${student.firstName} ${student.lastName}` : 'Bilinməyən'),
+          sanitize(student ? `${student.firstName} ${student.lastName}` : 'Bilinmiyor'),
           sanitize(bus?.plateNumber || '-'),
           sanitize(route?.name || '-'),
           sanitize(trip?.departureTime || '-'),
           sanitize(formatDateTime(record.recordTime)),
-          sanitize(record.wasPlanned ? 'Bəli' : 'Xeyr'),
+          sanitize(record.wasPlanned ? 'Evet' : 'Hayır'),
         ].join(',')
       );
     });
@@ -237,7 +237,7 @@ export const ReportsPage = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `hesabat-${selectedDate}.csv`);
+    link.setAttribute('download', `rapor-${selectedDate}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -245,7 +245,7 @@ export const ReportsPage = () => {
   };
 
   if (isLoading) {
-    return <Loading size="lg" text="Yüklənir..." className="py-20" />;
+    return <Loading size="lg" text="Yükleniyor..." className="py-20" />;
   }
 
   return (
@@ -253,9 +253,9 @@ export const ReportsPage = () => {
       {/* Sayfa başlığı ve yenileme */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-secondary-900">Hesabatlar</h1>
+          <h1 className="text-3xl font-bold text-secondary-900">Raporlar</h1>
           <p className="mt-1 text-secondary-600">
-            Günlük hesabatlar və şagird tarixçəsi
+            Günlük raporlar ve öğrenci geçmişi
           </p>
         </div>
         <Button
@@ -263,7 +263,7 @@ export const ReportsPage = () => {
           leftIcon={<RefreshCw className="h-4 w-4" />}
           onClick={() => window.location.reload()}
         >
-          Yenilə
+          Yenile
         </Button>
       </div>
 
@@ -284,7 +284,7 @@ export const ReportsPage = () => {
               leftIcon={<Download className="h-4 w-4" />}
               onClick={handleExportReport}
             >
-              Hesabatı Yüklə
+              Raporu İndir
             </Button>
           </div>
         </CardBody>
@@ -296,7 +296,7 @@ export const ReportsPage = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600">Planlanmış Minmə</p>
+                <p className="text-sm font-medium text-blue-600">Planlanan Biniş</p>
                 <p className="mt-1 text-2xl font-bold text-blue-900">
                   {stats.plannedBoarding}
                 </p>
@@ -312,12 +312,12 @@ export const ReportsPage = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-600">Faktiki Minmə</p>
+                <p className="text-sm font-medium text-green-600">Gerçek Biniş</p>
                 <p className="mt-1 text-2xl font-bold text-green-900">
                   {stats.actualBoarding}
                 </p>
                 <p className="text-xs text-green-700 mt-1">
-                  {stats.plannedBoardingRecords} planlanmış
+                  {stats.plannedBoardingRecords} planlanan
                 </p>
               </div>
               <div className="rounded-lg bg-green-500 p-3">
@@ -331,7 +331,7 @@ export const ReportsPage = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-orange-600">Planlanmış Düşmə</p>
+                <p className="text-sm font-medium text-orange-600">Planlanan İniş</p>
                 <p className="mt-1 text-2xl font-bold text-orange-900">
                   {stats.plannedDropoff}
                 </p>
@@ -347,12 +347,12 @@ export const ReportsPage = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-purple-600">Faktiki Düşmə</p>
+                <p className="text-sm font-medium text-purple-600">Gerçek İniş</p>
                 <p className="mt-1 text-2xl font-bold text-purple-900">
                   {stats.actualDropoff}
                 </p>
                 <p className="text-xs text-purple-700 mt-1">
-                  {stats.plannedDropoffRecords} planlanmış
+                  {stats.plannedDropoffRecords} planlanan
                 </p>
               </div>
               <div className="rounded-lg bg-purple-500 p-3">
@@ -370,13 +370,13 @@ export const ReportsPage = () => {
             <div className="flex items-start gap-3">
               <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
               <div className="flex-1">
-                <p className="font-medium text-red-900">Xəbərdarlıq</p>
+                <p className="font-medium text-red-900">Uyarı</p>
                 <p className="text-sm text-red-700 mt-1">
                   {stats.missedBoarding > 0 && (
-                    <span>{stats.missedBoarding} planlanmış minmə qeydə alınmayıb. </span>
+                    <span>{stats.missedBoarding} planlanan biniş kaydedilmedi. </span>
                   )}
                   {stats.missedDropoff > 0 && (
-                    <span>{stats.missedDropoff} planlanmış düşmə qeydə alınmayıb.</span>
+                    <span>{stats.missedDropoff} planlanan iniş kaydedilmedi.</span>
                   )}
                 </p>
               </div>
@@ -390,20 +390,20 @@ export const ReportsPage = () => {
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold text-secondary-900">
-              Günlük Hesabat Özəti
+              Günlük Rapor Özeti
             </h2>
           </CardHeader>
           <CardBody>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg">
-                <span className="text-sm font-medium text-secondary-700">Tarix</span>
+                <span className="text-sm font-medium text-secondary-700">Tarih</span>
                 <span className="text-sm text-secondary-900">
                   {formatDate(selectedDate || new Date())}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg">
                 <span className="text-sm font-medium text-secondary-700">
-                  İştirak edən şagirdlər
+                  Katılan öğrenciler
                 </span>
                 <span className="text-sm font-bold text-secondary-900">
                   {dailyReport.totalStudents}
@@ -411,7 +411,7 @@ export const ReportsPage = () => {
               </div>
               <div className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg">
                 <span className="text-sm font-medium text-secondary-700">
-                  İstifadə olunan avtobuslar
+                  Kullanılan otobüsler
                 </span>
                 <span className="text-sm font-bold text-secondary-900">
                   {dailyReport.totalBuses}
@@ -419,7 +419,7 @@ export const ReportsPage = () => {
               </div>
               <div className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg">
                 <span className="text-sm font-medium text-secondary-700">
-                  Minmə qeydləri
+                  Biniş kayıtları
                 </span>
                 <span className="text-sm font-bold text-secondary-900">
                   {dailyReport.boardingRecords}
@@ -427,7 +427,7 @@ export const ReportsPage = () => {
               </div>
               <div className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg">
                 <span className="text-sm font-medium text-secondary-700">
-                  Düşmə qeydləri
+                  İniş kayıtları
                 </span>
                 <span className="text-sm font-bold text-secondary-900">
                   {dailyReport.disembarkingRecords}
@@ -441,13 +441,13 @@ export const ReportsPage = () => {
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold text-secondary-900">
-              Şagird Tarixçəsi
+              Öğrenci Geçmişi
             </h2>
           </CardHeader>
           <CardBody>
             <div className="space-y-4">
               <Input
-                placeholder="Şagird axtar (ad, soyad, məktəb, QR kod)..."
+                placeholder="Öğrenci ara (ad, soyad, okul, QR kod)..."
                 leftIcon={<Search className="h-5 w-5" />}
                 value={studentSearch}
                 onChange={(e) => {
@@ -490,13 +490,13 @@ export const ReportsPage = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="p-2 bg-green-50 rounded text-center">
-                      <p className="text-xs text-green-600">Minmə</p>
+                      <p className="text-xs text-green-600">Biniş</p>
                       <p className="text-lg font-bold text-green-900">
                         {studentHistory.boarding.length}
                       </p>
                     </div>
                     <div className="p-2 bg-orange-50 rounded text-center">
-                      <p className="text-xs text-orange-600">Düşmə</p>
+                      <p className="text-xs text-orange-600">İniş</p>
                       <p className="text-lg font-bold text-orange-900">
                         {studentHistory.disembarking.length}
                       </p>
@@ -508,10 +508,10 @@ export const ReportsPage = () => {
                     className="w-full"
                     onClick={() => {
                       // TODO: Navigate to detailed student history page
-                      alert('Detallı tarixçə səhifəsi tezliklə əlavə ediləcək');
+                      alert('Detaylı geçmiş sayfası yakında eklenecek');
                     }}
                   >
-                    Detallı Tarixçə
+                    Detaylı Geçmiş
                   </Button>
                 </div>
               )}
@@ -524,7 +524,7 @@ export const ReportsPage = () => {
       <Card>
         <CardHeader>
           <h2 className="text-lg font-semibold text-secondary-900">
-            Son Qeydlər ({formatDate(selectedDate || new Date())})
+            Son Kayıtlar ({formatDate(selectedDate || new Date())})
           </h2>
         </CardHeader>
         <CardBody>
@@ -533,11 +533,11 @@ export const ReportsPage = () => {
             <div>
               <h3 className="text-sm font-semibold text-secondary-700 mb-2 flex items-center gap-2">
                 <ArrowUp className="h-4 w-4 text-green-600" />
-                Minmə Qeydləri ({boardingRecords.length})
+                Biniş Kayıtları ({boardingRecords.length})
               </h3>
               {boardingRecords.length === 0 ? (
                 <p className="text-sm text-secondary-500 p-3 bg-secondary-50 rounded">
-                  Bu tarix üçün minmə qeydi yoxdur
+                  Bu tarih için biniş kaydı yok
                 </p>
               ) : (
                 <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -575,11 +575,11 @@ export const ReportsPage = () => {
             <div>
               <h3 className="text-sm font-semibold text-secondary-700 mb-2 flex items-center gap-2">
                 <ArrowDown className="h-4 w-4 text-orange-600" />
-                Düşmə Qeydləri ({disembarkingRecords.length})
+                İniş Kayıtları ({disembarkingRecords.length})
               </h3>
               {disembarkingRecords.length === 0 ? (
                 <p className="text-sm text-secondary-500 p-3 bg-secondary-50 rounded">
-                  Bu tarix üçün düşmə qeydi yoxdur
+                  Bu tarih için iniş kaydı yok
                 </p>
               ) : (
                 <div className="space-y-2 max-h-64 overflow-y-auto">

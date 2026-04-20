@@ -31,7 +31,7 @@ export const DriverDashboard = () => {
 
   // Bugünün tarihi
   const today = new Date();
-  const formattedDate = today.toLocaleDateString('az-AZ', {
+  const formattedDate = today.toLocaleDateString('tr-TR', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -41,48 +41,48 @@ export const DriverDashboard = () => {
   // Saate göre selamlama
   const getGreeting = () => {
     const hour = today.getHours();
-    if (hour < 12) return 'Sabahınız xeyir';
-    if (hour < 18) return 'Günortanız xeyir';
-    return 'Axşamınız xeyir';
+    if (hour < 12) return 'Günaydın';
+    if (hour < 18) return 'İyi günler';
+    return 'İyi akşamlar';
   };
 
   // İstatistik kartları
   const stats = [
     {
-      title: 'Minən Şagird',
+      title: 'Binen Öğrenci',
       value: todayBoardedCount,
       icon: LogIn,
       color: 'from-emerald-500 to-teal-500',
       bgColor: 'bg-emerald-50',
       textColor: 'text-emerald-600',
-      description: 'Bugün minən',
+      description: 'Bugün binen',
     },
     {
-      title: 'Düşən Şagird',
+      title: 'İnen Öğrenci',
       value: todayDisembarkedCount,
       icon: LogOut,
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-50',
       textColor: 'text-blue-600',
-      description: 'Bugün düşən',
+      description: 'Bugün inen',
     },
     {
-      title: 'Gözlənilən',
+      title: 'Beklenen',
       value: pendingBoardingStudents.length,
       icon: Users,
       color: 'from-amber-500 to-orange-500',
       bgColor: 'bg-amber-50',
       textColor: 'text-amber-600',
-      description: 'Planlanmış',
+      description: 'Planlanan',
     },
     {
-      title: 'Avtobusda',
+      title: 'Otobüste',
       value: pendingDisembarkingStudents.length,
       icon: Bus,
       color: 'from-purple-500 to-pink-500',
       bgColor: 'bg-purple-50',
       textColor: 'text-purple-600',
-      description: 'Hələ düşməyib',
+      description: 'Henüz inmedi',
     },
   ];
 
@@ -91,7 +91,7 @@ export const DriverDashboard = () => {
     ...todayBoardingRecords.slice(-3).map((record) => ({
       type: 'boarding' as const,
       studentId: record.studentId,
-      time: new Date(record.recordTime).toLocaleTimeString('az-AZ', {
+      time: new Date(record.recordTime).toLocaleTimeString('tr-TR', {
         hour: '2-digit',
         minute: '2-digit',
       }),
@@ -100,7 +100,7 @@ export const DriverDashboard = () => {
     ...todayDisembarkingRecords.slice(-3).map((record) => ({
       type: 'disembarking' as const,
       studentId: record.studentId,
-      time: new Date(record.recordTime).toLocaleTimeString('az-AZ', {
+      time: new Date(record.recordTime).toLocaleTimeString('tr-TR', {
         hour: '2-digit',
         minute: '2-digit',
       }),
@@ -126,7 +126,7 @@ export const DriverDashboard = () => {
             {getGreeting()}, {user?.name?.split(' ')[0]}!
           </h1>
           <p className="mt-1 text-secondary-600">
-            Bugünkü fəaliyyətinizə baxış
+            Bugünkü aktivitenize genel bakış
           </p>
         </div>
         
@@ -137,7 +137,7 @@ export const DriverDashboard = () => {
           leftIcon={<RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />}
           disabled={isLoading}
         >
-          Yenilə
+          Yenile
         </Button>
       </div>
 
@@ -151,13 +151,13 @@ export const DriverDashboard = () => {
                   <Bus className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-sm text-white/80">Sizin Avtobusunuz</p>
+                  <p className="text-sm text-white/80">Sizin Otobüsünüz</p>
                   <p className="text-xl font-bold">{myBus.plateNumber}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm text-white/80">Tutum</p>
-                <p className="text-xl font-bold">{myBus.capacity} nəfər</p>
+                <p className="text-sm text-white/80">Kapasite</p>
+                <p className="text-xl font-bold">{myBus.capacity} kişi</p>
               </div>
             </div>
           </CardBody>
@@ -209,10 +209,10 @@ export const DriverDashboard = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold text-secondary-900 group-hover:text-emerald-600 transition-colors">
-                    Minənlər
+                    Biniş
                   </h3>
                   <p className="mt-1 text-sm text-secondary-600">
-                    QR kod oxuyaraq minmə qeydi yaradın
+                    QR kod okuyarak biniş kaydı oluşturun
                   </p>
                 </div>
                 <ArrowRight className="h-5 w-5 text-secondary-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
@@ -230,10 +230,10 @@ export const DriverDashboard = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold text-secondary-900 group-hover:text-blue-600 transition-colors">
-                    Düşənlər
+                    İniş
                   </h3>
                   <p className="mt-1 text-sm text-secondary-600">
-                    QR kod oxuyaraq düşmə qeydi yaradın
+                    QR kod okuyarak iniş kaydı oluşturun
                   </p>
                 </div>
                 <ArrowRight className="h-5 w-5 text-secondary-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
@@ -250,7 +250,7 @@ export const DriverDashboard = () => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-secondary-900">
-                Son Fəaliyyətlər
+                Son Aktiviteler
               </h2>
               <Clock className="h-5 w-5 text-secondary-400" />
             </div>
@@ -278,10 +278,10 @@ export const DriverDashboard = () => {
                     </div>
                     <div className="flex-1">
                       <p className="font-medium text-secondary-900">
-                        Şagird #{activity.studentId}
+                        Öğrenci #{activity.studentId}
                       </p>
                       <p className="text-sm text-secondary-500">
-                        {activity.type === 'boarding' ? 'Mindi' : 'Düşdü'}
+                        {activity.type === 'boarding' ? 'Bindi' : 'İndi'}
                       </p>
                     </div>
                     <div className="text-right">
@@ -291,7 +291,7 @@ export const DriverDashboard = () => {
                       {activity.wasPlanned ? (
                         <span className="inline-flex items-center gap-1 text-xs text-emerald-600">
                           <CheckCircle2 className="h-3 w-3" />
-                          Planlanmış
+                          Planlı
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-xs text-amber-600">
@@ -306,7 +306,7 @@ export const DriverDashboard = () => {
             ) : (
               <div className="text-center py-8 text-secondary-500">
                 <Clock className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                <p>Hələ fəaliyyət yoxdur</p>
+                <p>Henüz aktivite yok</p>
               </div>
             )}
           </CardBody>
@@ -317,7 +317,7 @@ export const DriverDashboard = () => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-secondary-900">
-                Gözlənilən Şagirdlər
+                Beklenen Öğrenciler
               </h2>
               <span className="px-2 py-1 text-xs font-medium text-emerald-700 bg-emerald-100 rounded-full">
                 {pendingBoardingStudents.length} nəfər
@@ -338,7 +338,7 @@ export const DriverDashboard = () => {
                       </div>
                       <div>
                         <p className="font-medium text-secondary-900">
-                          Şagird #{plan.studentId}
+                          Öğrenci #{plan.studentId}
                         </p>
                         {plan.notes && (
                           <p className="text-xs text-secondary-500">{plan.notes}</p>
@@ -346,20 +346,20 @@ export const DriverDashboard = () => {
                       </div>
                     </div>
                     <span className="px-2 py-1 text-xs font-medium text-amber-700 bg-amber-200 rounded">
-                      Gözlənilir
+                      Bekleniyor
                     </span>
                   </div>
                 ))}
                 {pendingBoardingStudents.length > 5 && (
                   <p className="text-center text-sm text-secondary-500 pt-2">
-                    +{pendingBoardingStudents.length - 5} daha çox
+                    +{pendingBoardingStudents.length - 5} daha fazla
                   </p>
                 )}
               </div>
             ) : (
               <div className="text-center py-8 text-secondary-500">
                 <CheckCircle2 className="h-12 w-12 mx-auto mb-3 text-emerald-500 opacity-50" />
-                <p>Bütün planlanmış şagirdlər mindi</p>
+                <p>Tüm planlanan öğrenciler bindi</p>
               </div>
             )}
           </CardBody>
@@ -385,7 +385,7 @@ export const DriverDashboard = () => {
                   : 0}%
               </div>
               <p className="mt-1 text-sm text-secondary-600">
-                Plan Tamamlanma
+                Plan Tamamlanması
               </p>
             </div>
             <div className="text-center">
@@ -393,7 +393,7 @@ export const DriverDashboard = () => {
                 {todayBoardedCount + todayDisembarkedCount}
               </div>
               <p className="mt-1 text-sm text-secondary-600">
-                Ümumi Əməliyyat
+                Toplam İşlem
               </p>
             </div>
             <div className="text-center">
@@ -401,7 +401,7 @@ export const DriverDashboard = () => {
                 {pendingDisembarkingStudents.length}
               </div>
               <p className="mt-1 text-sm text-secondary-600">
-                Avtobusda Hazırda
+                Şu An Otobüste
               </p>
             </div>
           </div>
