@@ -161,7 +161,7 @@ export const StopManagement = () => {
                 {filteredStops.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="px-4 py-6 text-center text-secondary-500">
-                      Heç bir dayanacaq tapılmadı
+                      Hiç durak bulunamadı
                     </td>
                   </tr>
                 ) : (
@@ -206,7 +206,7 @@ export const StopManagement = () => {
                               stop.isActive ? 'bg-green-500' : 'bg-secondary-400'
                             }`}
                           />
-                          {stop.isActive ? 'Aktiv' : 'Deaktiv'}
+                          {stop.isActive ? 'Aktif' : 'Pasif'}
                         </button>
                       </td>
                       <td className="px-4 py-3 text-right">
@@ -217,7 +217,7 @@ export const StopManagement = () => {
                             onClick={() => handleEdit(stop)}
                             leftIcon={<Edit className="h-4 w-4" />}
                           >
-                            Redaktə et
+                            Düzenle
                           </Button>
                           <Button
                             variant="ghost"
@@ -247,8 +247,8 @@ export const StopManagement = () => {
 
       <DeleteConfirmModal
         isOpen={deleteId !== null}
-        title="Dayanacağı sil"
-        message="Bu dayanacağı silmək istədiyinizdən əminsiniz? Bu dayanacaq marşrutlarda istifadə olunursa, oradan da çıxarılmalıdır."
+        title="Durağı sil"
+        message="Bu durağı silmek istediğinizden emin misiniz? Bu durak güzergahlarda kullanılıyorsa oradan da kaldırılmalıdır."
         onClose={() => setDeleteId(null)}
         onConfirm={handleDelete}
       />

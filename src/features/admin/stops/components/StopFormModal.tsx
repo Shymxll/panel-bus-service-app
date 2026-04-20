@@ -11,21 +11,21 @@ import { useStops } from '@/hooks/useStops';
 
 // Dayanacak formu icin dogrulama kurallari.
 const stopSchema = z.object({
-  name: z.string().min(1, 'Ad tələb olunur').max(255, 'Ad maksimum 255 simvol ola bilər'),
+  name: z.string().min(1, 'Ad gereklidir').max(255, 'Ad en fazla 255 karakter olabilir'),
   address: z.string().optional(),
   latitude: z
     .string()
     .optional()
     .refine(
       (val) => !val || /^-?\d+\.?\d*$/.test(val),
-      'Enlik düzgün formatda olmalıdır (məs: 40.4093)'
+      'Enlem doğru formatta olmalıdır (örn: 41.0082)'
     ),
   longitude: z
     .string()
     .optional()
     .refine(
       (val) => !val || /^-?\d+\.?\d*$/.test(val),
-      'Uzunluq düzgün formatda olmalıdır (məs: 49.8671)'
+      'Boylam doğru formatta olmalıdır (örn: 28.9784)'
     ),
   isActive: z.boolean().default(true),
 });
@@ -170,7 +170,7 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
       <div className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-xl flex flex-col max-h-[90vh]">
         <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4 flex-shrink-0">
           <h2 className="text-lg font-semibold text-secondary-900">
-            {isEditing ? 'Dayanacağı redaktə et' : 'Yeni dayanacaq əlavə et'}
+            {isEditing ? 'Durağı düzenle' : 'Yeni durak ekle'}
           </h2>
           <button onClick={onClose} className="rounded-lg p-2 hover:bg-secondary-100">
             <X className="h-5 w-5 text-secondary-500" />
@@ -183,13 +183,13 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <Input
                 label="Ad"
-                placeholder="Məs: Məktəb qarşısı"
+                placeholder="Örn: Okul önü"
                 {...register('name')}
                 error={errors.name?.message}
               />
               <Input
-                label="Ünvan"
-                placeholder="Ünvan daxil edin"
+                label="Adres"
+                placeholder="Adres girin"
                 {...register('address')}
                 error={errors.address?.message}
               />
@@ -198,14 +198,14 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
                 <label className="text-sm font-medium text-secondary-700">Koordinatlar</label>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <Input
-                    label="Enlik (latitude)"
-                    placeholder="40.4093"
+                    label="Enlem (latitude)"
+                    placeholder="41.0082"
                     {...register('latitude')}
                     error={errors.latitude?.message}
                   />
                   <Input
-                    label="Uzunluq (longitude)"
-                    placeholder="49.8671"
+                    label="Boylam (longitude)"
+                    placeholder="28.9784"
                     {...register('longitude')}
                     error={errors.longitude?.message}
                   />
@@ -218,7 +218,7 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
 
               <label className="inline-flex items-center gap-2 text-sm text-secondary-700">
                 <input type="checkbox" {...register('isActive')} className="h-4 w-4" />
-                Aktiv dayanacaq
+                Aktif durak
               </label>
             </form>
 
@@ -245,14 +245,14 @@ export const StopFormModal = ({ isOpen, onClose, stop }: StopFormModalProps) => 
         {/* Alt aksiyonlar */}
         <div className="border-t border-secondary-200 px-6 py-4 flex justify-end gap-3 flex-shrink-0">
           <Button type="button" variant="outline" onClick={onClose}>
-            Ləğv et
+            İptal
           </Button>
           <Button
             type="button"
             onClick={handleSubmit(onSubmit)}
             isLoading={isCreating || isUpdating}
           >
-            {isEditing ? 'Yenilə' : 'Əlavə et'}
+            {isEditing ? 'Güncelle' : 'Ekle'}
           </Button>
         </div>
       </div>
