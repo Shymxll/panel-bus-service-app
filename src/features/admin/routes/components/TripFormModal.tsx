@@ -10,7 +10,7 @@ import type { Trip, Route } from '@/types';
 
 // Sefere ait basit dogrulama kurallari.
 const tripSchema = z.object({
-  departureTime: z.string().regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Vaxt formatı düzgün deyil (HH:mm)'),
+  departureTime: z.string().regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, 'Saat formatı geçersiz (SS:dd)'),
   isActive: z.boolean().default(true),
 });
 
@@ -101,10 +101,10 @@ export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalPro
         <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4">
           <div>
             <h2 className="text-lg font-semibold text-secondary-900">
-              {isEditing ? 'Səfəri redaktə et' : 'Yeni səfər əlavə et'}
+              {isEditing ? 'Seferi düzenle' : 'Yeni sefer ekle'}
             </h2>
             <p className="text-sm text-secondary-500 mt-1">
-              Marşrut: {route.name}
+              Güzergah: {route.name}
             </p>
           </div>
           <button onClick={onClose} className="rounded-lg p-2 hover:bg-secondary-100">
@@ -115,7 +115,7 @@ export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalPro
         {/* Form alanlari */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-6 py-5">
           <Input
-            label="Yola çıxma vaxtı"
+            label="Kalkış saati"
             type="time"
             placeholder="08:00"
             leftIcon={<Clock className="h-5 w-5" />}
@@ -125,16 +125,16 @@ export const TripFormModal = ({ isOpen, onClose, route, trip }: TripFormModalPro
 
           <label className="inline-flex items-center gap-2 text-sm text-secondary-700">
             <input type="checkbox" {...register('isActive')} className="h-4 w-4" />
-            Aktiv səfər
+            Aktif sefer
           </label>
 
           {/* Alt aksiyonlar */}
           <div className="mt-4 flex justify-end gap-3">
             <Button type="button" variant="outline" onClick={onClose}>
-              Ləğv et
+              İptal
             </Button>
             <Button type="submit" isLoading={isCreating || isUpdating}>
-              {isEditing ? 'Yenilə' : 'Əlavə et'}
+              {isEditing ? 'Güncelle' : 'Ekle'}
             </Button>
           </div>
         </form>

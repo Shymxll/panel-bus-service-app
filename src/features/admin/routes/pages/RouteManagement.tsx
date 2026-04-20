@@ -186,9 +186,9 @@ export const RouteManagement = () => {
       {/* Baslik ve hizli aksiyonlar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-secondary-900">Marşrutlar</h1>
+          <h1 className="text-3xl font-bold text-secondary-900">Güzergahlar</h1>
           <p className="mt-1 text-secondary-600">
-            Marşrut və dayanacaqları idarə edin
+            Güzergah ve durakları yönetin
           </p>
         </div>
         <div className="flex gap-2">
@@ -198,13 +198,13 @@ export const RouteManagement = () => {
             onClick={() => refetch()}
             disabled={isLoading}
           >
-            Yenilə
+            Yenile
           </Button>
           <Button
             leftIcon={<Plus className="h-4 w-4" />}
             onClick={() => setIsFormModalOpen(true)}
           >
-            Yeni Marşrut
+            Yeni Güzergah
           </Button>
         </div>
       </div>
@@ -218,7 +218,7 @@ export const RouteManagement = () => {
                 <RouteIcon className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-blue-600">Cəmi</p>
+                <p className="text-sm text-blue-600">Toplam</p>
                 <p className="text-2xl font-bold text-blue-900">{stats.total}</p>
               </div>
             </div>
@@ -232,7 +232,7 @@ export const RouteManagement = () => {
                 <RouteIcon className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-green-600">Aktiv</p>
+                <p className="text-sm text-green-600">Aktif</p>
                 <p className="text-2xl font-bold text-green-900">{stats.active}</p>
               </div>
             </div>
@@ -246,7 +246,7 @@ export const RouteManagement = () => {
                 <RouteIcon className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-red-600">Deaktiv</p>
+                <p className="text-sm text-red-600">Pasif</p>
                 <p className="text-2xl font-bold text-red-900">{stats.inactive}</p>
               </div>
             </div>
@@ -260,7 +260,7 @@ export const RouteManagement = () => {
                 <Bus className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-purple-600">Təyin edilmiş</p>
+                <p className="text-sm text-purple-600">Atanmış</p>
                 <p className="text-2xl font-bold text-purple-900">{stats.assigned}</p>
               </div>
             </div>
@@ -275,7 +275,7 @@ export const RouteManagement = () => {
             {/* Arama alanı */}
             <div className="flex-1">
               <Input
-                placeholder="Marşrut adı, təsvir və ya plaka ilə axtar..."
+                placeholder="Güzergah adı, açıklama veya plaka ile ara..."
                 leftIcon={<Search className="h-5 w-5" />}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -289,9 +289,9 @@ export const RouteManagement = () => {
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')}
               >
-                <option value="all">Bütün statuslar</option>
-                <option value="active">Aktiv</option>
-                <option value="inactive">Deaktiv</option>
+                <option value="all">Tüm durumlar</option>
+                <option value="active">Aktif</option>
+                <option value="inactive">Pasif</option>
               </select>
 
               <select
@@ -299,9 +299,9 @@ export const RouteManagement = () => {
                 value={busFilter}
                 onChange={(e) => setBusFilter(e.target.value)}
               >
-                <option value="all">Bütün avtobuslar</option>
-                <option value="assigned">Təyin edilmiş</option>
-                <option value="unassigned">Təyin edilməmiş</option>
+                <option value="all">Tüm otobüsler</option>
+                <option value="assigned">Atanmış</option>
+                <option value="unassigned">Atanmamış</option>
                 {buses.map(bus => (
                   <option key={bus.id} value={bus.id}>
                     {bus.plateNumber}
@@ -317,7 +317,7 @@ export const RouteManagement = () => {
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">
-            Marşrutlar ({filteredRoutes.length})
+            Güzergahlar ({filteredRoutes.length})
           </h2>
         </CardHeader>
         <CardBody className="p-0">
@@ -330,14 +330,14 @@ export const RouteManagement = () => {
               {routes.length === 0 ? (
                 <>
                   <RouteIcon className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                  <p>Hələ ki marşrut əlavə edilməyib.</p>
-                  <p className="text-sm mt-1">Yeni marşrut əlavə etmək üçün yuxarıdakı düyməyə basın.</p>
+                  <p>Henüz güzergah eklenmemiş.</p>
+                  <p className="text-sm mt-1">Yeni güzergah eklemek için yukarıdaki butona basın.</p>
                 </>
               ) : (
                 <>
                   <Search className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                  <p>Axtarış nəticəsi tapılmadı.</p>
-                  <p className="text-sm mt-1">Filtirləri dəyişdirməyi yoxlayın.</p>
+                  <p>Arama sonucu bulunamadı.</p>
+                  <p className="text-sm mt-1">Filtreleri değiştirmeyi deneyin.</p>
                 </>
               )}
             </div>
@@ -351,21 +351,21 @@ export const RouteManagement = () => {
                       onClick={() => handleSort('name')}
                     >
                       <div className="flex items-center gap-1">
-                        Marşrut adı
+                        Güzergah adı
                         <SortIcon field="name" />
                       </div>
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Təsvir
+                      Açıklama
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Avtobus
+                      Otobüs
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Status
+                      Durum
                     </th>
                     <th className="px-4 py-3 text-right text-sm font-semibold text-secondary-700">
-                      Əməliyyatlar
+                      İşlemler
                     </th>
                   </tr>
                 </thead>
@@ -394,10 +394,10 @@ export const RouteManagement = () => {
                         {route.busId ? (
                           <div className="flex items-center gap-2 text-sm text-secondary-700">
                             <Bus className="h-4 w-4 text-secondary-400" />
-                            {busMap.get(route.busId)?.plateNumber || 'Avtobus tapılmadı'}
+                            {busMap.get(route.busId)?.plateNumber || 'Otobüs bulunamadı'}
                           </div>
                         ) : (
-                          <span className="text-sm text-secondary-400">Təyin edilməyib</span>
+                          <span className="text-sm text-secondary-400">Atanmamış</span>
                         )}
                       </td>
                       <td className="px-4 py-3">
@@ -411,8 +411,8 @@ export const RouteManagement = () => {
                           }`}
                           title={
                             route.isActive
-                              ? 'Deaktiv etmək üçün klikləyin'
-                              : 'Aktiv etmək üçün klikləyin'
+                              ? 'Pasif etmek için tıklayın'
+                              : 'Aktif etmek için tıklayın'
                           }
                         >
                           {route.isActive ? (
@@ -420,7 +420,7 @@ export const RouteManagement = () => {
                           ) : (
                             <ToggleLeft className="h-3.5 w-3.5" />
                           )}
-                          {route.isActive ? 'Aktiv' : 'Deaktiv'}
+                          {route.isActive ? 'Aktif' : 'Pasif'}
                         </button>
                       </td>
                       <td className="px-4 py-3">
@@ -429,7 +429,7 @@ export const RouteManagement = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleManageStops(route)}
-                            title="Dayanacaqları idarə et"
+                            title="Durakları yönet"
                           >
                             <MapPin className="h-4 w-4" />
                           </Button>
@@ -437,7 +437,7 @@ export const RouteManagement = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleManageTrips(route)}
-                            title="Səfərləri idarə et"
+                            title="Seferleri yönet"
                           >
                             <Clock className="h-4 w-4" />
                           </Button>
@@ -445,7 +445,7 @@ export const RouteManagement = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEdit(route)}
-                            title="Redaktə et"
+                            title="Düzenle"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -486,8 +486,8 @@ export const RouteManagement = () => {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         isLoading={isDeleting}
-        title="Marşrutu sil"
-        message={selectedRoute ? `${selectedRoute.name} adlı marşrutu silmək istədiyinizə əminsiniz?` : ''}
+        title="Güzergahı sil"
+        message={selectedRoute ? `${selectedRoute.name} adlı güzergahı silmek istediğinize emin misiniz?` : ''}
       />
 
       <RouteStopsModal

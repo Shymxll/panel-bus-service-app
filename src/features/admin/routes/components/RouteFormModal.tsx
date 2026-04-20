@@ -10,7 +10,7 @@ import type { UseMutateFunction } from '@tanstack/react-query';
 
 // Rota formunun dogrulama kurallari.
 const routeSchema = z.object({
-  name: z.string().min(2, 'Marşrut adı ən az 2 simvol olmalıdır'),
+  name: z.string().min(2, 'Güzergah adı en az 2 karakter olmalıdır'),
   description: z.string().optional(),
   busId: z.union([z.coerce.number(), z.nan()]).optional(),
   isActive: z.boolean().default(true),
@@ -131,11 +131,11 @@ export const RouteFormModal = ({
         <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4">
           <div>
             <p className="text-sm text-secondary-500">
-              {isEditing ? 'Marşrut məlumatlarını yenilə' : 'Yeni marşrut əlavə et'}
+              {isEditing ? 'Güzergah bilgilerini güncelle' : 'Yeni güzergah ekle'}
             </p>
             <h2 className="flex items-center gap-2 text-xl font-semibold text-secondary-900">
               <RouteIcon className="h-5 w-5 text-primary-600" />
-              {isEditing ? route?.name : 'Marşrut formu'}
+              {isEditing ? route?.name : 'Güzergah formu'}
             </h2>
           </div>
           <button
@@ -152,8 +152,8 @@ export const RouteFormModal = ({
           className="max-h-[calc(90vh-140px)] space-y-4 overflow-y-auto p-6"
         >
           <Input
-            label="Marşrut adı"
-            placeholder="Məs: Məktəb - Mərkəz"
+            label="Güzergah adı"
+            placeholder="Örn: Okul - Merkez"
             leftIcon={<RouteIcon className="h-5 w-5" />}
             error={errors.name?.message}
             {...register('name')}
@@ -161,19 +161,19 @@ export const RouteFormModal = ({
 
           <div>
             <label className="mb-1 block text-sm font-medium text-secondary-700">
-              Təsvir
+              Açıklama
             </label>
             <textarea
               className="w-full rounded-lg border border-secondary-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 resize-none"
               rows={3}
-              placeholder="Marşrut haqqında əlavə məlumat (ixtiyari)"
+              placeholder="Güzergah hakkında ek bilgi (isteğe bağlı)"
               {...register('description')}
             />
           </div>
 
           <div>
             <label className="mb-1 block text-sm font-medium text-secondary-700">
-              Avtobus
+              Otobüs
             </label>
             <div className="relative">
               <select
@@ -181,7 +181,7 @@ export const RouteFormModal = ({
                 value={selectedBusId ?? ''}
                 onChange={(e) => handleBusChange(e.target.value)}
               >
-                <option value="">Avtobus seçilməyib</option>
+                <option value="">Otobüs seçilmedi</option>
                 {buses.map((bus) => (
                   <option key={bus.id} value={bus.id}>
                     {bus.plateNumber} {bus.brand && bus.model ? `(${bus.brand} ${bus.model})` : ''}
@@ -200,7 +200,7 @@ export const RouteFormModal = ({
               {...register('isActive')}
             />
             <label htmlFor="route-is-active" className="text-sm text-secondary-700">
-              Aktiv marşrut
+              Aktif güzergah
             </label>
           </div>
         </form>
@@ -208,14 +208,14 @@ export const RouteFormModal = ({
         {/* Alt aksiyonlar */}
         <div className="flex items-center justify-end gap-3 border-t border-secondary-200 bg-secondary-50 px-6 py-4">
           <Button variant="outline" onClick={onClose}>
-            Ləğv et
+            İptal
           </Button>
           <Button
             type="submit"
             onClick={handleSubmit(onSubmit)}
             isLoading={isEditing ? isUpdating : isCreating}
           >
-            {isEditing ? 'Yadda saxla' : 'Əlavə et'}
+            {isEditing ? 'Kaydet' : 'Ekle'}
           </Button>
         </div>
       </div>

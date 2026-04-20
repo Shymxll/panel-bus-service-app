@@ -73,7 +73,7 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
   };
 
   const handleDeleteStop = (routeStopId: number) => {
-    if (confirm('Bu dayanacağı marşrutdan silmək istədiyinizdən əminsiniz?')) {
+    if (confirm('Bu durağı güzergahtan silmek istediğinizden emin misiniz?')) {
       deleteRouteStop(routeStopId, {
         onSuccess: () => {
           refetch();
@@ -94,7 +94,7 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
       <div className="relative mx-4 max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-xl bg-white shadow-xl">
         <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4">
           <div>
-            <p className="text-sm text-secondary-500">Marşrut dayanacaqları</p>
+            <p className="text-sm text-secondary-500">Güzergah durakları</p>
             <h2 className="flex items-center gap-2 text-xl font-semibold text-secondary-900">
               <MapPin className="h-5 w-5 text-primary-600" />
               {route.name}
@@ -111,11 +111,11 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
         <div className="max-h-[calc(90vh-180px)] overflow-y-auto p-6">
           {/* Yeni durak ekleme formu */}
           <div className="mb-6 rounded-lg border border-secondary-200 bg-secondary-50 p-4">
-            <h3 className="mb-3 text-sm font-semibold text-secondary-700">Yeni dayanacaq əlavə et</h3>
+            <h3 className="mb-3 text-sm font-semibold text-secondary-700">Yeni durak ekle</h3>
             <div className="grid gap-3 md:grid-cols-3">
               <div>
                 <label className="mb-1 block text-xs font-medium text-secondary-700">
-                  Dayanacaq
+                  Durak
                 </label>
                 <select
                   className="w-full rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
@@ -123,7 +123,7 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
                   onChange={(e) => setSelectedStopId(e.target.value ? Number(e.target.value) : '')}
                   disabled={isStopsLoading || availableStops.length === 0}
                 >
-                  <option value="">Dayanacaq seçin</option>
+                  <option value="">Durak seçin</option>
                   {availableStops.map((stop) => (
                     <option key={stop.id} value={stop.id}>
                       {stop.name}
@@ -145,7 +145,7 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium text-secondary-700">
-                  Təxmini vaxt
+                  Tahmini vakit
                 </label>
                 <Input
                   type="time"
@@ -162,20 +162,20 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
               className="mt-3"
               leftIcon={<Plus className="h-4 w-4" />}
             >
-              Əlavə et
+              Ekle
             </Button>
           </div>
 
           {/* Mevcut durak listesi */}
           <div>
             <h3 className="mb-3 text-sm font-semibold text-secondary-700">
-              Marşrut dayanacaqları ({sortedRouteStops.length})
+              Güzergah durakları ({sortedRouteStops.length})
             </h3>
             {isRouteStopsLoading ? (
-              <div className="py-8 text-center text-secondary-500">Yüklənir...</div>
+              <div className="py-8 text-center text-secondary-500">Yükleniyor...</div>
             ) : sortedRouteStops.length === 0 ? (
               <div className="py-8 text-center text-secondary-500">
-                Hələ ki dayanacaq əlavə edilməyib
+                Henüz durak eklenmemiş
               </div>
             ) : (
               <div className="space-y-2">
@@ -191,7 +191,7 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
                       </div>
                       <div className="flex-1">
                         <p className="font-medium text-secondary-900">
-                          {stop?.name || 'Dayanacaq tapılmadı'}
+                          {stop?.name || 'Durak bulunamadı'}
                         </p>
                         {stop?.address && (
                           <p className="text-xs text-secondary-500">{stop.address}</p>
@@ -223,7 +223,7 @@ export const RouteStopsModal = ({ isOpen, onClose, route }: RouteStopsModalProps
 
         <div className="flex items-center justify-end gap-3 border-t border-secondary-200 bg-secondary-50 px-6 py-4">
           <Button variant="outline" onClick={onClose}>
-            Bağla
+            Kapat
           </Button>
         </div>
       </div>

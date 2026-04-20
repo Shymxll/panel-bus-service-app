@@ -52,7 +52,7 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
         <div className="relative mx-4 max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-xl bg-white shadow-xl">
           <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4">
             <div>
-              <p className="text-sm text-secondary-500">Marşrut səfərləri</p>
+              <p className="text-sm text-secondary-500">Güzergah seferleri</p>
               <h2 className="flex items-center gap-2 text-xl font-semibold text-secondary-900">
                 <RouteIcon className="h-5 w-5 text-primary-600" />
                 {route.name}
@@ -74,18 +74,18 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
                 onClick={handleCreateTrip}
                 size="sm"
               >
-                Yeni səfər əlavə et
+                Yeni sefer ekle
               </Button>
             </div>
 
             {/* Sefere ait kart listesini goster */}
             {isLoading ? (
-              <div className="py-8 text-center text-secondary-500">Yüklənir...</div>
+              <div className="py-8 text-center text-secondary-500">Yükleniyor...</div>
             ) : routeTrips.length === 0 ? (
               <div className="py-8 text-center text-secondary-500">
                 <RouteIcon className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                <p>Hələ ki səfər əlavə edilməyib.</p>
-                <p className="text-sm mt-1">Yeni səfər əlavə etmək üçün yuxarıdakı düyməyə basın.</p>
+                <p>Henüz sefer eklenmemiş.</p>
+                <p className="text-sm mt-1">Yeni sefer eklemek için yukarıdaki butona basın.</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -102,7 +102,7 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
                         {trip.departureTime}
                       </p>
                       <p className="text-xs text-secondary-500">
-                        Səfər ID: {trip.id}
+                        Sefer ID: {trip.id}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -113,13 +113,13 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
                             : 'bg-secondary-100 text-secondary-600'
                         }`}
                       >
-                        {trip.isActive ? 'Aktiv' : 'Deaktiv'}
+                        {trip.isActive ? 'Aktif' : 'Pasif'}
                       </span>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEditTrip(trip)}
-                        title="Redaktə et"
+                        title="Düzenle"
                       >
                         <Edit2 className="h-4 w-4" />
                       </Button>
@@ -141,7 +141,7 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
 
           <div className="flex items-center justify-end gap-3 border-t border-secondary-200 bg-secondary-50 px-6 py-4">
             <Button variant="outline" onClick={onClose}>
-              Bağla
+              Kapat
             </Button>
           </div>
         </div>
@@ -162,8 +162,8 @@ export const RouteTripsModal = ({ isOpen, onClose, route }: RouteTripsModalProps
       {/* Silme onay modali */}
       <DeleteConfirmModal
         isOpen={deleteTripId !== null}
-        title="Səfəri sil"
-        message="Bu səfəri silmək istədiyinizdən əminsiniz? Bu səfər planlarda istifadə olunursa, oradan da çıxarılmalıdır."
+        title="Seferi sil"
+        message="Bu seferi silmek istediğinizden emin misiniz? Bu sefer planlarda kullanılıyorsa oradan da kaldırılmalıdır."
         onClose={() => setDeleteTripId(null)}
         onConfirm={handleDeleteTrip}
       />

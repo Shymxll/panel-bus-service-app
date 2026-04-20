@@ -147,18 +147,18 @@ export const PlanningPage = () => {
 
   const getStudentName = (studentId: number) => {
     const student = studentMap.get(studentId);
-    return student ? `${student.firstName} ${student.lastName}` : 'Bilinməyən';
+    return student ? `${student.firstName} ${student.lastName}` : 'Bilinmiyor';
   };
 
   const getBusPlate = (busId: number) => {
-    return busMap.get(busId)?.plateNumber || 'Bilinməyən';
+    return busMap.get(busId)?.plateNumber || 'Bilinmiyor';
   };
 
   const getTripInfo = (tripId: number) => {
     const trip = tripMap.get(tripId);
-    if (!trip) return 'Bilinməyən';
+    if (!trip) return 'Bilinmiyor';
     const route = routeMap.get(trip.routeId);
-    return `${route?.name || `Marşrut #${trip.routeId}`} - ${trip.departureTime}`;
+    return `${route?.name || `Güzergah #${trip.routeId}`} - ${trip.departureTime}`;
   };
 
   return (
@@ -168,7 +168,7 @@ export const PlanningPage = () => {
         <div>
           <h1 className="text-3xl font-bold text-secondary-900">Günlük Planlama</h1>
           <p className="mt-1 text-secondary-600">
-            Növbəti gün üçün servis planı yaradın və idarə edin
+            Sonraki gün için servis planı oluşturun ve yönetin
           </p>
         </div>
         <div className="flex gap-2">
@@ -178,7 +178,7 @@ export const PlanningPage = () => {
             onClick={() => refetch()}
             disabled={isLoading}
           >
-            Yenilə
+            Yenile
           </Button>
           <Button
             leftIcon={<Plus className="h-4 w-4" />}
@@ -198,7 +198,7 @@ export const PlanningPage = () => {
                 <Calendar className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-blue-600">Cəmi Planlar</p>
+                <p className="text-sm text-blue-600">Toplam Plan</p>
                 <p className="text-2xl font-bold text-blue-900">{stats.total}</p>
               </div>
             </div>
@@ -212,7 +212,7 @@ export const PlanningPage = () => {
                 <ArrowUp className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-green-600">Minmə</p>
+                <p className="text-sm text-green-600">Biniş</p>
                 <p className="text-2xl font-bold text-green-900">{stats.boarding}</p>
               </div>
             </div>
@@ -226,7 +226,7 @@ export const PlanningPage = () => {
                 <ArrowDown className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-orange-600">Düşmə</p>
+                <p className="text-sm text-orange-600">İniş</p>
                 <p className="text-2xl font-bold text-orange-900">{stats.dropoff}</p>
               </div>
             </div>
@@ -240,7 +240,7 @@ export const PlanningPage = () => {
                 <Calendar className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-purple-600">Şagirdlər</p>
+                <p className="text-sm text-purple-600">Öğrenciler</p>
                 <p className="text-2xl font-bold text-purple-900">{stats.students}</p>
               </div>
             </div>
@@ -254,7 +254,7 @@ export const PlanningPage = () => {
                 <Calendar className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-indigo-600">Avtobuslar</p>
+                <p className="text-sm text-indigo-600">Otobüsler</p>
                 <p className="text-2xl font-bold text-indigo-900">{stats.buses}</p>
               </div>
             </div>
@@ -280,7 +280,7 @@ export const PlanningPage = () => {
             {/* Arama alanı */}
             <div className="flex-1">
               <Input
-                placeholder="Şagird, avtobus, marşrut və ya vaxt ilə axtar..."
+                placeholder="Öğrenci, otobüs, güzergah veya saat ile ara..."
                 leftIcon={<Search className="h-5 w-5" />}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -294,9 +294,9 @@ export const PlanningPage = () => {
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value as 'all' | 'boarding' | 'dropoff')}
               >
-                <option value="all">Bütün planlar</option>
-                <option value="boarding">Minmə planları</option>
-                <option value="dropoff">Düşmə planları</option>
+                <option value="all">Tüm planlar</option>
+                <option value="boarding">Biniş planları</option>
+                <option value="dropoff">İniş planları</option>
               </select>
             </div>
           </div>
@@ -319,14 +319,14 @@ export const PlanningPage = () => {
               {dailyPlans.length === 0 ? (
                 <>
                   <Calendar className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                  <p>Bu tarix üçün plan yoxdur.</p>
-                  <p className="text-sm mt-1">Yeni plan əlavə etmək üçün yuxarıdakı düyməyə basın.</p>
+                  <p>Bu tarih için plan yok.</p>
+                  <p className="text-sm mt-1">Yeni plan eklemek için yukarıdaki butona basın.</p>
                 </>
               ) : (
                 <>
                   <Search className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                  <p>Axtarış nəticəsi tapılmadı.</p>
-                  <p className="text-sm mt-1">Filtirləri dəyişdirməyi yoxlayın.</p>
+                  <p>Arama sonucu bulunamadı.</p>
+                  <p className="text-sm mt-1">Filtreleri değiştirmeyi deneyin.</p>
                 </>
               )}
             </div>
@@ -340,14 +340,14 @@ export const PlanningPage = () => {
               <div className="flex items-center gap-2">
                 <ArrowUp className="h-5 w-5 text-green-600" />
                 <h2 className="text-lg font-semibold text-secondary-900">
-                  Minmə Planları ({boardingPlans.length})
+                  Biniş Planları ({boardingPlans.length})
                 </h2>
               </div>
             </CardHeader>
             <CardBody className="p-0">
               {boardingPlans.length === 0 ? (
                 <div className="text-center py-8 text-secondary-500">
-                  Minmə planı yoxdur
+                  Biniş planı yok
                 </div>
               ) : (
                 <div className="divide-y divide-secondary-100">
@@ -365,7 +365,7 @@ export const PlanningPage = () => {
                             {getTripInfo(plan.tripId)}
                           </p>
                           <p className="text-xs text-secondary-500 mt-1">
-                            Avtobus: {getBusPlate(plan.busId)}
+                            Otobüs: {getBusPlate(plan.busId)}
                           </p>
                           {plan.notes && (
                             <p className="text-xs text-secondary-400 mt-1 italic">
@@ -378,7 +378,7 @@ export const PlanningPage = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEdit(plan)}
-                            title="Redaktə et"
+                            title="Düzenle"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -406,14 +406,14 @@ export const PlanningPage = () => {
               <div className="flex items-center gap-2">
                 <ArrowDown className="h-5 w-5 text-orange-600" />
                 <h2 className="text-lg font-semibold text-secondary-900">
-                  Düşmə Planları ({dropoffPlans.length})
+                  İniş Planları ({dropoffPlans.length})
                 </h2>
               </div>
             </CardHeader>
             <CardBody className="p-0">
               {dropoffPlans.length === 0 ? (
                 <div className="text-center py-8 text-secondary-500">
-                  Düşmə planı yoxdur
+                  İniş planı yok
                 </div>
               ) : (
                 <div className="divide-y divide-secondary-100">
@@ -431,7 +431,7 @@ export const PlanningPage = () => {
                             {getTripInfo(plan.tripId)}
                           </p>
                           <p className="text-xs text-secondary-500 mt-1">
-                            Avtobus: {getBusPlate(plan.busId)}
+                            Otobüs: {getBusPlate(plan.busId)}
                           </p>
                           {plan.notes && (
                             <p className="text-xs text-secondary-400 mt-1 italic">
@@ -444,7 +444,7 @@ export const PlanningPage = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEdit(plan)}
-                            title="Redaktə et"
+                            title="Düzenle"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -484,7 +484,7 @@ export const PlanningPage = () => {
         title="Planı sil"
         message={
           selectedPlan
-            ? `${getStudentName(selectedPlan.studentId)} üçün planı silmək istədiyinizə əminsiniz?`
+            ? `${getStudentName(selectedPlan.studentId)} için planı silmek istediğinize emin misiniz?`
             : ''
         }
       />
