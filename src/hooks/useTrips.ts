@@ -36,8 +36,8 @@ export const useTrips = () => {
   useEffect(() => {
     if (error) {
       console.error('❌ useTrips - Query error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Səfərlər yüklənə bilmədi';
-      toast.error(`Səfərlər yüklənə bilmədi: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Seferler yüklenemedi';
+      toast.error(`Seferler yüklenemedi: ${errorMessage}`);
     }
   }, [error]);
 
@@ -46,10 +46,10 @@ export const useTrips = () => {
     mutationFn: (data: CreateTripData) => tripService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.trips.all });
-      toast.success('Səfər əlavə edildi');
+      toast.success('Sefer eklendi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Səfər əlavə edilə bilmədi');
+      toast.error(error.message || 'Sefer eklenemedi');
     },
   });
 
@@ -59,10 +59,10 @@ export const useTrips = () => {
       tripService.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.trips.all });
-      toast.success('Səfər yeniləndi');
+      toast.success('Sefer güncellendi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Səfər yenilənə bilmədi');
+      toast.error(error.message || 'Sefer güncellenemedi');
     },
   });
 
@@ -71,10 +71,10 @@ export const useTrips = () => {
     mutationFn: (id: number) => tripService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.trips.all });
-      toast.success('Səfər silindi');
+      toast.success('Sefer silindi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Səfər silinə bilmədi');
+      toast.error(error.message || 'Sefer silinemedi');
     },
   });
 

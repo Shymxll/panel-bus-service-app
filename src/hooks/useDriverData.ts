@@ -107,7 +107,7 @@ export const useDriverData = () => {
   const searchStudentByQrMutation = useMutation({
     mutationFn: (qrCode: string) => studentService.getStudentByQrCode(qrCode),
     onError: (error: Error) => {
-      toast.error(error.message || 'Şagird tapılmadı');
+      toast.error(error.message || 'Öğrenci bulunamadı');
     },
   });
 
@@ -115,11 +115,11 @@ export const useDriverData = () => {
   const createBoardingMutation = useMutation({
     mutationFn: (data: CreateBoardingRecordData) => boardingRecordService.create(data),
     onSuccess: () => {
-      toast.success('Minmə qeydi uğurla yaradıldı!');
+      toast.success('Biniş kaydı başarıyla oluşturuldu!');
       queryClient.invalidateQueries({ queryKey: ['boarding-records'] });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Minmə qeydi yaradıla bilmədi');
+      toast.error(error.message || 'Biniş kaydı oluşturulamadı');
     },
   });
 
@@ -127,11 +127,11 @@ export const useDriverData = () => {
   const createDisembarkingMutation = useMutation({
     mutationFn: (data: CreateDisembarkingRecordData) => disembarkingRecordService.create(data),
     onSuccess: () => {
-      toast.success('Düşmə qeydi uğurla yaradıldı!');
+      toast.success('İniş kaydı başarıyla oluşturuldu!');
       queryClient.invalidateQueries({ queryKey: ['disembarking-records'] });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Düşmə qeydi yaradıla bilmədi');
+      toast.error(error.message || 'İniş kaydı oluşturulamadı');
     },
   });
 
@@ -145,7 +145,7 @@ export const useDriverData = () => {
       const student = await searchStudentByQrMutation.mutateAsync(qrCode);
       
       if (!student) {
-        throw new Error('Şagird tapılmadı');
+        throw new Error('Öğrenci bulunamadı');
       }
 
       // Bugün bu öğrenci için plan var mı kontrol et
@@ -178,7 +178,7 @@ export const useDriverData = () => {
       const student = await searchStudentByQrMutation.mutateAsync(qrCode);
       
       if (!student) {
-        throw new Error('Şagird tapılmadı');
+        throw new Error('Öğrenci bulunamadı');
       }
 
       // Bugün bu öğrenci için plan var mı kontrol et

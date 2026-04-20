@@ -320,7 +320,7 @@ export const DriverDashboard = () => {
                 Beklenen Öğrenciler
               </h2>
               <span className="px-2 py-1 text-xs font-medium text-emerald-700 bg-emerald-100 rounded-full">
-                {pendingBoardingStudents.length} nəfər
+                {pendingBoardingStudents.length} kişi
               </span>
             </div>
           </CardHeader>

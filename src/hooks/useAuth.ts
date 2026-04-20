@@ -27,10 +27,10 @@ export const useAuth = () => {
       
       if (data.data) {
         setAuth(data.data, token);
-        toast.success('Uğurla daxil oldunuz!');
+        toast.success('Başarıyla giriş yaptınız!');
         navigate('/driver/dashboard');
       } else {
-        toast.error('Giriş zamanı xəta baş verdi');
+        toast.error('Giriş sırasında hata oluştu');
       }
     },
     onError: (error: any) => {
@@ -42,7 +42,7 @@ export const useAuth = () => {
       console.error('Error message:', error?.message);
       
       // Response data'yı düzgün parse et
-      let errorMessage = 'Email və ya şifrə yanlışdır.';
+      let errorMessage = 'E-posta veya şifre yanlış.';
       
       if (error?.response?.data) {
         const responseData = error.response.data;
@@ -61,17 +61,17 @@ export const useAuth = () => {
       }
       
       // Eğer hala varsayılan mesajsa, ek bilgi ekle
-      if (errorMessage === 'Email və ya şifrə yanlışdır.') {
-        errorMessage += ' Zəhmət olmasa admin panelindən şoför hesabı yaradıldığından əmin olun.';
+      if (errorMessage === 'E-posta veya şifre yanlış.') {
+        errorMessage += ' Lütfen admin panelinden sürücü hesabı oluşturulduğundan emin olun.';
       }
       
       // Check for database initialization error
       if (errorMessage.includes('Database not initialized') || errorMessage.includes('migrations')) {
-        toast.error('Database hazır deyil. Zəhmət olmasa backend-də "npm run db:migrate" komutunu çalıştırın.', {
+        toast.error('Veritabanı hazır değil. Lütfen backend\'de "npm run db:migrate" komutunu çalıştırın.', {
           duration: 10000,
         });
       } else if (errorMessage.includes('Failed query') || errorMessage.includes('does not exist')) {
-        toast.error('Database cədvəlləri yoxdur. Zəhmət olmasa backend-də "npm run db:migrate" komutunu çalıştırın.', {
+        toast.error('Veritabanı tabloları yok. Lütfen backend\'de "npm run db:migrate" komutunu çalıştırın.', {
           duration: 10000,
         });
       } else if (error?.response?.status === 401) {
@@ -79,7 +79,7 @@ export const useAuth = () => {
           duration: 8000,
         });
       } else if (error?.response?.status === 403) {
-        toast.error('Bu hesab şoför hesabı deyil. Zəhmət olmasa /admin/login istifadə edin.', {
+        toast.error('Bu hesap sürücü hesabı değil. Lütfen /admin/login kullanın.', {
           duration: 8000,
         });
       } else {
@@ -106,10 +106,10 @@ export const useAuth = () => {
       // Store user data in localStorage for persistence
       if (data.data) {
         setAuth(data.data, token);
-        toast.success('Admin panelə xoş gəlmisiniz!');
+        toast.success('Admin paneline hoş geldiniz!');
         navigate('/admin/dashboard');
       } else {
-        toast.error('Giriş zamanı xəta baş verdi');
+        toast.error('Giriş sırasında hata oluştu');
       }
     },
     onError: (error: any) => {
@@ -121,15 +121,15 @@ export const useAuth = () => {
       const errorMessage = 
         error?.response?.data?.message || 
         error?.message || 
-        'Email və ya şifrə yanlışdır.';
+        'E-posta veya şifre yanlış.';
       
       // Check for database initialization error
       if (errorMessage.includes('Database not initialized') || errorMessage.includes('migrations')) {
-        toast.error('Database hazır deyil. Zəhmət olmasa backend-də "npm run db:migrate" komutunu çalıştırın.', {
+        toast.error('Veritabanı hazır değil. Lütfen backend\'de "npm run db:migrate" komutunu çalıştırın.', {
           duration: 10000,
         });
       } else if (errorMessage.includes('Failed query') || errorMessage.includes('does not exist')) {
-        toast.error('Database cədvəlləri yoxdur. Zəhmət olmasa backend-də "npm run db:migrate" komutunu çalıştırın.', {
+        toast.error('Veritabanı tabloları yok. Lütfen backend\'de "npm run db:migrate" komutunu çalıştırın.', {
           duration: 10000,
         });
       } else {
@@ -144,11 +144,11 @@ export const useAuth = () => {
     onSuccess: (data) => {
       const token = localStorage.getItem('auth_token') || 'cookie-based';
       setAuth(data.data, token);
-      toast.success('Qeydiyyat uğurla tamamlandı!');
+      toast.success('Kayıt başarıyla tamamlandı!');
       navigate('/driver/dashboard');
     },
     onError: () => {
-      toast.error('Qeydiyyat zamanı xəta baş verdi');
+      toast.error('Kayıt sırasında hata oluştu');
     },
   });
 
@@ -158,7 +158,7 @@ export const useAuth = () => {
     onSuccess: () => {
       clearAuth();
       queryClient.clear();
-      toast.success('Çıxış edildi');
+      toast.success('Çıkış yapıldı');
       navigate('/login');
     },
   });

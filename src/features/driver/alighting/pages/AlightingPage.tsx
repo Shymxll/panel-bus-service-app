@@ -132,13 +132,13 @@ export const AlightingPage = () => {
   const handleQrSearch = async (qrCode?: string): Promise<Student | null> => {
     const codeToSearch = (qrCode || qrInput.trim()).trim();
     if (!codeToSearch) {
-      toast.error('QR kod daxil edin');
+      toast.error('QR kod girin');
       return null;
     }
 
     // Bu QR kod daha önce başarıyla işlendi mi kontrol et
     if (processedQrCodesRef.current.has(codeToSearch)) {
-      toast.error('Bu QR kod artıq bugün işlənib!');
+      toast.error('Bu QR kod bugün zaten işlendi!');
       return null;
     }
 
@@ -149,7 +149,7 @@ export const AlightingPage = () => {
 
     if (lastScanTime && now - lastScanTime < SCAN_COOLDOWN) {
       // Aynı QR kod çok kısa süre önce okutulmuş
-      toast.info('Bu QR kod çox qısa müddət əvvəl oxunub. Zəhmət olmasa gözləyin.');
+      toast.info('Bu QR kod az önce okundu. Lütfen bekleyin.');
       return null;
     }
 
@@ -215,7 +215,7 @@ export const AlightingPage = () => {
       // Bu QR kod bugün zaten başarıyla işlenmiş, tekrar okutmayı engelle
       console.log('⚠️ Bu QR kod daha önce işlənib, yoksayılıyor:', qrCode);
       playErrorSound();
-      toast.error('Bu QR kod artıq bugün işlənib!');
+      toast.error('Bu QR kod bugün zaten işlendi!');
       return;
     }
 
@@ -240,7 +240,7 @@ export const AlightingPage = () => {
     // Öğrenci bulunamadıysa hata sesi çal ve işlemi durdur
     if (!student) {
       playErrorSound();
-      toast.error('Şagird tapılmadı');
+      toast.error('Öğrenci bulunamadı');
       // Kilidi serbest bırak
       isProcessingQrRef.current = false;
       currentProcessingQrRef.current = null;
@@ -256,7 +256,7 @@ export const AlightingPage = () => {
       // Öğrenci zaten bugün indi, QR kodunu işaretle ve engelle
       processedQrCodesRef.current.add(qrCode);
       playErrorSound();
-      toast.error('Bu şagird artıq bugün düşüb!');
+      toast.error('Bu öğrenci bugün zaten indi!');
       // Kilidi serbest bırak
       isProcessingQrRef.current = false;
       currentProcessingQrRef.current = null;
@@ -266,7 +266,7 @@ export const AlightingPage = () => {
     // Gerekli kontroller
     if (!selectedTripId || !myBus) {
       playErrorSound();
-      toast.error('Sefer və ya avtobus seçilməyib');
+      toast.error('Sefer veya otobüs seçilmedi');
       // Kilidi serbest bırak
       isProcessingQrRef.current = false;
       currentProcessingQrRef.current = null;
@@ -278,7 +278,7 @@ export const AlightingPage = () => {
 
     if (!hasBoarded) {
       // Uyarı ver ama devam et
-      toast.warning('Diqqət: Bu şagird bugün minməyib!');
+      toast.warning('Dikkat: Bu öğrenci bugün binmedi!');
     }
 
     // Planlanmış mı kontrol et
@@ -305,7 +305,7 @@ export const AlightingPage = () => {
 
       // Başarı sesi çal
       playSuccessSound();
-      toast.success(`${student.firstName} ${student.lastName} uğurla düşmə qeydində qeyd edildi`);
+      toast.success(`${student.firstName} ${student.lastName} başarıyla iniş kaydına eklendi`);
       
       // QR kod zaten işaretlenmiş (disembarking kaydı oluşturulmadan önce işaretlendi)
       // Eski kayıtları temizle (5 dakikadan eski kayıtları sil)
@@ -342,7 +342,7 @@ export const AlightingPage = () => {
   // İniş kaydı oluştur
   const handleCreateDisembarking = async () => {
     if (!scannedStudent || !selectedTripId || !myBus) {
-      toast.error('Şagird, sefer və ya avtobus seçilməyib');
+      toast.error('Öğrenci, sefer veya otobüs seçilmedi');
       return;
     }
 
@@ -356,7 +356,7 @@ export const AlightingPage = () => {
       if (scannedStudent.qrCode) {
         processedQrCodesRef.current.add(scannedStudent.qrCode);
       }
-      toast.error('Bu şagird artıq bugün düşüb!');
+      toast.error('Bu öğrenci bugün zaten indi!');
       setScannedStudent(null);
       return;
     }
@@ -367,7 +367,7 @@ export const AlightingPage = () => {
     );
 
     if (!hasBoarded) {
-      toast.warning('Diqqət: Bu şagird bugün minməyib!');
+      toast.warning('Dikkat: Bu öğrenci bugün binmedi!');
     }
 
     // Planlanmış mı kontrol et
@@ -426,10 +426,10 @@ export const AlightingPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900">
-            Düşənlər
+            İniş
           </h1>
           <p className="mt-1 text-secondary-600">
-            QR kod oxuyaraq şagirdlərin düşmə qeydini yaradın
+            QR kod okuyarak öğrencilerin iniş kaydını oluşturun
           </p>
         </div>
         
@@ -441,7 +441,7 @@ export const AlightingPage = () => {
             leftIcon={<RefreshCw className={`h-4 w-4 ${isLoadingDisembarking ? 'animate-spin' : ''}`} />}
             disabled={isLoadingDisembarking}
           >
-            Yenilə
+            Yenile
           </Button>
         </div>
       </div>
@@ -451,7 +451,7 @@ export const AlightingPage = () => {
         <Card>
           <CardBody className="py-3">
             <div className="flex items-center gap-4 flex-wrap">
-              <span className="text-sm font-medium text-secondary-700">Səfər:</span>
+              <span className="text-sm font-medium text-secondary-700">Sefer:</span>
               <div className="flex gap-2 flex-wrap">
                 {trips.map((trip) => (
                   <button
@@ -479,7 +479,7 @@ export const AlightingPage = () => {
         <Card className="lg:row-span-2">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">QR Kod Oxuyucu</h2>
+              <h2 className="text-lg font-semibold">QR Kod Okuyucu</h2>
               <button
                 onClick={() => setShowManualInput(!showManualInput)}
                 className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
@@ -497,14 +497,14 @@ export const AlightingPage = () => {
                   <div className="flex aspect-square max-h-64 items-center justify-center rounded-lg border-2 border-dashed border-secondary-300 bg-gradient-to-br from-blue-50 to-cyan-50">
                     <div className="p-6 text-center">
                       <QrCode className="mx-auto h-16 w-16 text-blue-500" />
-                      <p className="mt-4 text-sm text-secondary-600">QR kodu daxil edin</p>
+                      <p className="mt-4 text-sm text-secondary-600">QR kodu girin</p>
                     </div>
                   </div>
 
                   <div className="flex gap-2">
                     <Input
                       ref={inputRef}
-                      placeholder="QR kod daxil edin..."
+                      placeholder="QR kod girin..."
                       value={qrInput}
                       onChange={(e) => setQrInput(e.target.value)}
                       onKeyDown={handleKeyDown}
@@ -516,7 +516,7 @@ export const AlightingPage = () => {
                       isLoading={isSearchingStudent}
                       disabled={!qrInput.trim()}
                     >
-                      Axtar
+                      Ara
                     </Button>
                   </div>
                 </div>
@@ -526,9 +526,9 @@ export const AlightingPage = () => {
                   <div className="flex gap-3">
                     <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
                     <div className="text-sm text-blue-800">
-                      <p className="font-medium">Məlumat</p>
+                      <p className="font-medium">Bilgi</p>
                       <p className="mt-1">
-                        Şagirdin QR kodunu daxil edin. Sistem avtomatik olaraq şagirdi tanıyacaq.
+                        Öğrencinin QR kodunu girin. Sistem otomatik olarak öğrenciyi tanıyacak.
                       </p>
                     </div>
                   </div>
@@ -550,10 +550,10 @@ export const AlightingPage = () => {
                   <div className="flex gap-3">
                     <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
                     <div className="text-sm text-blue-800">
-                      <p className="font-medium">Məlumat</p>
+                      <p className="font-medium">Bilgi</p>
                       <p className="mt-1">
-                        Şagirdin QR kodunu kameraya göstərin. Sistem avtomatik olaraq düşməni
-                        təsdiqləyəcək.
+                        Öğrencinin QR kodunu kameraya gösterin. Sistem otomatik olarak inişi
+                        onaylayacak.
                       </p>
                     </div>
                   </div>
@@ -591,7 +591,7 @@ export const AlightingPage = () => {
                     <p className="font-medium text-secondary-900">{scannedStudent.qrCode}</p>
                   </div>
                   <div className="p-3 rounded-lg bg-secondary-50">
-                    <p className="text-xs text-secondary-500">Əlaqə Şəxsi</p>
+                    <p className="text-xs text-secondary-500">Veli</p>
                     <p className="font-medium text-secondary-900">
                       {scannedStudent.parentName || '-'}
                     </p>
@@ -603,14 +603,14 @@ export const AlightingPage = () => {
                   <div className="flex items-center gap-2 p-3 rounded-lg bg-emerald-50 border border-emerald-200">
                     <CheckCircle className="h-5 w-5 text-emerald-600" />
                     <span className="text-sm text-emerald-800 font-medium">
-                      Bu şagird bugün mindiydi
+                      Bu öğrenci bugün bindi
                     </span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 p-3 rounded-lg bg-amber-50 border border-amber-200">
                     <AlertCircle className="h-5 w-5 text-amber-600" />
                     <span className="text-sm text-amber-800 font-medium">
-                      Diqqət: Bu şagird bugün minməyib!
+                      Dikkat: Bu öğrenci bugün binmedi!
                     </span>
                   </div>
                 )}
@@ -620,7 +620,7 @@ export const AlightingPage = () => {
                   <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200">
                     <XCircle className="h-5 w-5 text-red-600" />
                     <span className="text-sm text-red-800 font-medium">
-                      Bu şagird artıq bugün düşüb!
+                      Bu öğrenci bugün zaten indi!
                     </span>
                   </div>
                 )}
@@ -632,7 +632,7 @@ export const AlightingPage = () => {
                     className="flex-1"
                     onClick={handleCancelScan}
                   >
-                    Ləğv et
+                    İptal
                   </Button>
                   <Button
                     className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
@@ -641,7 +641,7 @@ export const AlightingPage = () => {
                     disabled={todayDisembarkingRecords.some((r) => r.studentId === scannedStudent.id)}
                     leftIcon={<CheckCircle className="h-5 w-5" />}
                   >
-                    Düşməni Təsdiqlə
+                    İnişi Onayla
                   </Button>
                 </div>
               </div>
@@ -654,9 +654,9 @@ export const AlightingPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Bugün Düşən Şagirdlər</h2>
+              <h2 className="text-lg font-semibold">Bugün İnen Öğrenciler</h2>
               <span className="px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full">
-                {todayDisembarkingRecords.length} nəfər
+                {todayDisembarkingRecords.length} kişi
               </span>
             </div>
           </CardHeader>
@@ -674,10 +674,10 @@ export const AlightingPage = () => {
                       </div>
                       <div>
                         <p className="font-medium text-secondary-900">
-                          Şagird #{record.studentId}
+                          Öğrenci #{record.studentId}
                         </p>
                         <p className="text-xs text-secondary-500">
-                          {new Date(record.recordTime).toLocaleTimeString('az-AZ', {
+                          {new Date(record.recordTime).toLocaleTimeString('tr-TR', {
                             hour: '2-digit',
                             minute: '2-digit',
                           })}
@@ -685,7 +685,7 @@ export const AlightingPage = () => {
                       </div>
                     </div>
                     {record.wasPlanned ? (
-                      <span className="text-xs text-blue-600 font-medium">Planlanmış</span>
+                      <span className="text-xs text-blue-600 font-medium">Planlı</span>
                     ) : (
                       <span className="text-xs text-amber-600 font-medium">Plansız</span>
                     )}
@@ -695,7 +695,7 @@ export const AlightingPage = () => {
             ) : (
               <div className="text-center py-8 text-secondary-500">
                 <QrCode className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                <p>Hələ ki düşmə qeydi yoxdur</p>
+                <p>Henüz iniş kaydı yok</p>
               </div>
             )}
           </CardBody>
@@ -705,9 +705,9 @@ export const AlightingPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Avtobusda Olan Şagirdlər</h2>
+              <h2 className="text-lg font-semibold">Otobüste Olan Öğrenciler</h2>
               <span className="px-2 py-1 text-xs font-medium text-purple-700 bg-purple-100 rounded-full">
-                {pendingDisembarkingStudents.length} nəfər
+                {pendingDisembarkingStudents.length} kişi
               </span>
             </div>
           </CardHeader>
@@ -725,24 +725,24 @@ export const AlightingPage = () => {
                       </div>
                       <div>
                         <p className="font-medium text-secondary-900">
-                          Şagird #{record.studentId}
+                          Öğrenci #{record.studentId}
                         </p>
                         <p className="text-xs text-secondary-500">
-                          Mindi: {new Date(record.recordTime).toLocaleTimeString('az-AZ', {
+                          Bindi: {new Date(record.recordTime).toLocaleTimeString('tr-TR', {
                             hour: '2-digit',
                             minute: '2-digit',
                           })}
                         </p>
                       </div>
                     </div>
-                    <span className="text-xs text-purple-700 font-medium">Avtobusda</span>
+                    <span className="text-xs text-purple-700 font-medium">Otobüste</span>
                   </div>
                 ))}
               </div>
             ) : (
               <div className="text-center py-8 text-secondary-500">
                 <CheckCircle className="h-12 w-12 mx-auto mb-3 text-blue-500 opacity-50" />
-                <p>Avtobusda şagird yoxdur</p>
+                <p>Otobüste öğrenci yok</p>
               </div>
             )}
           </CardBody>

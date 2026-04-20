@@ -24,10 +24,10 @@ export const useBuses = () => {
     mutationFn: (data: CreateBusData) => busService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.buses.all });
-      toast.success('Avtobus uğurla əlavə edildi');
+      toast.success('Otobüs başarıyla eklendi');
     },
     onError: () => {
-      toast.error('Avtobus əlavə edilərkən xəta baş verdi');
+      toast.error('Otobüs eklenirken hata oluştu');
     },
   });
 
@@ -37,10 +37,10 @@ export const useBuses = () => {
       busService.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.buses.all });
-      toast.success('Avtobus məlumatları yeniləndi');
+      toast.success('Otobüs bilgileri güncellendi');
     },
     onError: () => {
-      toast.error('Yeniləmə zamanı xəta baş verdi');
+      toast.error('Güncelleme sırasında hata oluştu');
     },
   });
 
@@ -49,10 +49,10 @@ export const useBuses = () => {
     mutationFn: (id: number) => busService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.buses.all });
-      toast.success('Avtobus silindi');
+      toast.success('Otobüs silindi');
     },
     onError: () => {
-      toast.error('Silinmə zamanı xəta baş verdi');
+      toast.error('Silme sırasında hata oluştu');
     },
   });
 

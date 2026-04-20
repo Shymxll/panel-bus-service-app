@@ -45,10 +45,10 @@ export const useSchoolMutations = () => {
       // Cache'i invalidate et ve aktif query'leri hemen refetch et
       await queryClient.invalidateQueries({ queryKey: QUERY_KEY });
       await queryClient.refetchQueries({ queryKey: QUERY_KEY });
-      toast.success('Məktəb uğurla yaradıldı');
+      toast.success('Okul başarıyla oluşturuldu');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Məktəb yaradılarkən xəta baş verdi');
+      toast.error(error.message || 'Okul oluşturulurken hata oluştu');
     },
   });
 
@@ -60,10 +60,10 @@ export const useSchoolMutations = () => {
       // Cache'i invalidate et ve aktif query'leri hemen refetch et
       await queryClient.invalidateQueries({ queryKey: QUERY_KEY });
       await queryClient.refetchQueries({ queryKey: QUERY_KEY });
-      toast.success('Məktəb uğurla yeniləndi');
+      toast.success('Okul başarıyla güncellendi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Məktəb yenilənərkən xəta baş verdi');
+      toast.error(error.message || 'Okul güncellenirken hata oluştu');
     },
   });
 
@@ -74,10 +74,10 @@ export const useSchoolMutations = () => {
       // Cache'i invalidate et ve aktif query'leri hemen refetch et
       await queryClient.invalidateQueries({ queryKey: QUERY_KEY });
       await queryClient.refetchQueries({ queryKey: QUERY_KEY });
-      toast.success('Məktəb uğurla silindi');
+      toast.success('Okul başarıyla silindi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Məktəb silinərkən xəta baş verdi');
+      toast.error(error.message || 'Okul silinirken hata oluştu');
     },
   });
 

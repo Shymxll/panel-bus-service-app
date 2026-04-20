@@ -26,10 +26,10 @@ export const useStops = () => {
     mutationFn: (data: CreateStopData) => stopService.create(data),
     onSuccess: (stop) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-      toast.success(`${stop.name} dayanacağı əlavə edildi`);
+      toast.success(`${stop.name} durağı eklendi`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Dayanacaq əlavə edilə bilmədi');
+      toast.error(error.message || 'Durak eklenemedi');
     },
   });
 
@@ -39,10 +39,10 @@ export const useStops = () => {
       stopService.update(id, data),
     onSuccess: (stop) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-      toast.success(`${stop.name} dayanacağı yeniləndi`);
+      toast.success(`${stop.name} durağı güncellendi`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Dayanacaq yenilənə bilmədi');
+      toast.error(error.message || 'Durak güncellenemedi');
     },
   });
 
@@ -51,10 +51,10 @@ export const useStops = () => {
     mutationFn: (id: number) => stopService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-      toast.success('Dayanacaq silindi');
+      toast.success('Durak silindi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Dayanacaq silinə bilmədi');
+      toast.error(error.message || 'Durak silinemedi');
     },
   });
 

@@ -34,7 +34,7 @@ export const LoginPage = () => {
           </div>
           <h1 className="mt-4 text-3xl font-bold text-secondary-900">Sürücü Girişi</h1>
           <p className="mt-2 text-sm text-secondary-600">
-            Hesabınıza daxil olun və şagirdləri izləyin
+            Hesabınıza giriş yapın ve öğrencileri takip edin
           </p>
         </div>
 
@@ -52,7 +52,7 @@ export const LoginPage = () => {
               />
 
               <Input
-                label="Şifrə"
+                label="Şifre"
                 type="password"
                 placeholder="••••••••"
                 leftIcon={<Lock className="h-5 w-5" />}
@@ -67,7 +67,7 @@ export const LoginPage = () => {
                 isLoading={isLoggingIn}
                 className="w-full"
               >
-                Daxil ol
+                Giriş Yap
               </Button>
             </form>
 
@@ -85,7 +85,7 @@ export const LoginPage = () => {
         {/* Ana sayfaya geri baglantisi */}
         <div className="mt-4 text-center">
           <Link to="/" className="text-sm text-secondary-600 hover:text-secondary-900">
-            ← Ana səhifəyə qayıt
+            ← Ana sayfaya dön
           </Link>
         </div>
       </div>

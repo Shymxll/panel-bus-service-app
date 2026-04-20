@@ -42,7 +42,7 @@ export const QrCodeScanner = ({
       // Kamera izni kontrolü
       const devices = await Html5Qrcode.getCameras();
       if (devices.length === 0) {
-        setError('Kamera tapılmadı. Zəhmət olmasa kameranızın işlədiyindən əmin olun.');
+        setError('Kamera bulunamadı. Lütfen kameranızın çalıştığından emin olun.');
         setHasPermission(false);
         return;
       }
@@ -123,7 +123,7 @@ export const QrCodeScanner = ({
           // Hata mesajlarını sessizce yok say (sürekli hata mesajları gelir)
           // Sadece kritik hataları göster
           if (errorMessage.includes('No MultiFormat Readers')) {
-            setError('QR kod oxunmur. Zəhmət olmasa QR kodu kameraya düzgün göstərin.');
+            setError('QR kod okunamıyor. Lütfen QR kodu kameraya düzgün gösterin.');
           }
         }
       );
@@ -132,16 +132,16 @@ export const QrCodeScanner = ({
       setHasPermission(true);
       setError(null);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Naməlum xəta';
+      const errorMessage = err instanceof Error ? err.message : 'Bilinmeyen hata';
       
       if (errorMessage.includes('Permission denied') || errorMessage.includes('NotAllowedError')) {
-        setError('Kamera icazəsi verilməyib. Zəhmət olmasa brauzer ayarlarından kamera icazəsi verin.');
+        setError('Kamera izni verilmedi. Lütfen tarayıcı ayarlarından kamera iznini verin.');
         setHasPermission(false);
       } else if (errorMessage.includes('NotFoundError') || errorMessage.includes('DevicesNotFoundError')) {
-        setError('Kamera tapılmadı. Zəhmət olmasa kameranızın işlədiyindən əmin olun.');
+        setError('Kamera bulunamadı. Lütfen kameranızın çalıştığından emin olun.');
         setHasPermission(false);
       } else {
-        setError(`Kamera başlatıla bilmədi: ${errorMessage}`);
+        setError(`Kamera başlatılamadı: ${errorMessage}`);
         setHasPermission(false);
       }
       
@@ -199,7 +199,7 @@ export const QrCodeScanner = ({
           <div className="flex gap-3">
             <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-red-800">
-              <p className="font-medium">Xəta</p>
+              <p className="font-medium">Hata</p>
               <p className="mt-1">{error}</p>
             </div>
           </div>
@@ -215,7 +215,7 @@ export const QrCodeScanner = ({
             onClick={handleStop}
             leftIcon={<X className="h-4 w-4" />}
           >
-            Dayandır
+            Durdur
           </Button>
         )}
         {!isScanning && !error && (
@@ -224,7 +224,7 @@ export const QrCodeScanner = ({
             onClick={startScanner}
             leftIcon={<Camera className="h-4 w-4" />}
           >
-            Kameranı Başlat
+            Kamerayı Başlat
           </Button>
         )}
         {onClose && (
@@ -232,7 +232,7 @@ export const QrCodeScanner = ({
             variant="outline"
             onClick={handleStop}
           >
-            Bağla
+            Kapat
           </Button>
         )}
       </div>
@@ -242,7 +242,7 @@ export const QrCodeScanner = ({
         <div className="mt-2 text-center">
           <p className="text-sm text-secondary-600 flex items-center justify-center gap-2">
             <Camera className="h-4 w-4 animate-pulse" />
-            QR kodu kameraya göstərin...
+            QR kodu kameraya gösterin...
           </p>
         </div>
       )}

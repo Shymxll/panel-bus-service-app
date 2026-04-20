@@ -347,7 +347,7 @@ export const BusManagement = () => {
                       <td className="px-4 py-3">
                         <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">
                           <GaugeCircle className="h-3.5 w-3.5" />
-                          {bus.capacity} nəfər
+                          {bus.capacity} kişi
                         </span>
                       </td>
                       <td className="px-4 py-3">
@@ -370,7 +370,7 @@ export const BusManagement = () => {
                             )}
                           </div>
                         ) : (
-                          <span className="text-sm text-secondary-400">Sürücü təyin edilməyib</span>
+                          <span className="text-sm text-secondary-400">Sürücü atanmamış</span>
                         )}
                       </td>
                       <td className="px-4 py-3">

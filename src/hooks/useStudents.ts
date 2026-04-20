@@ -26,10 +26,10 @@ export const useStudents = () => {
     mutationFn: (data: CreateStudentData) => studentService.createStudent(data),
     onSuccess: (student) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-      toast.success(`${student.firstName} ${student.lastName} əlavə edildi`);
+      toast.success(`${student.firstName} ${student.lastName} eklendi`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Şagird əlavə edilə bilmədi');
+      toast.error(error.message || 'Öğrenci eklenemedi');
     },
   });
 
@@ -39,10 +39,10 @@ export const useStudents = () => {
       studentService.updateStudent(id, data),
     onSuccess: (student) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-      toast.success(`${student.firstName} ${student.lastName} yeniləndi`);
+      toast.success(`${student.firstName} ${student.lastName} güncellendi`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Şagird yenilənə bilmədi');
+      toast.error(error.message || 'Öğrenci güncellenemedi');
     },
   });
 
@@ -51,10 +51,10 @@ export const useStudents = () => {
     mutationFn: (id: number) => studentService.deleteStudent(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-      toast.success('Şagird silindi');
+      toast.success('Öğrenci silindi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Şagird silinə bilmədi');
+      toast.error(error.message || 'Öğrenci silinemedi');
     },
   });
 

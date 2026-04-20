@@ -25,10 +25,10 @@ export const useDailyPlans = () => {
     mutationFn: (data: CreateDailyPlanData) => dailyPlanService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.dailyPlans.all });
-      toast.success('Plan əlavə edildi');
+      toast.success('Plan eklendi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Plan əlavə edilə bilmədi');
+      toast.error(error.message || 'Plan eklenemedi');
     },
   });
 
@@ -38,10 +38,10 @@ export const useDailyPlans = () => {
       dailyPlanService.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.dailyPlans.all });
-      toast.success('Plan yeniləndi');
+      toast.success('Plan güncellendi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Plan yenilənə bilmədi');
+      toast.error(error.message || 'Plan güncellenemedi');
     },
   });
 

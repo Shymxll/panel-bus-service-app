@@ -94,7 +94,7 @@ interface LeafletMapProps {
 }
 
 export const LeafletMap = ({
-  center = [40.4093, 49.8671], // Bakı
+  center = [41.0082, 28.9784], // İstanbul
   zoom = 12,
   markers = [],
   onMapClick,
@@ -130,12 +130,12 @@ export const LeafletMap = ({
         `https://nominatim.openstreetmap.org/search?` +
         `format=json&` +
         `q=${encodeURIComponent(query)}&` +
-        `countrycodes=az&` + // Azərbaycan ile sınırla
+        `countrycodes=tr&` + // Türkiye ile sınırla
         `limit=5&` +
         `addressdetails=1`,
         {
           headers: {
-            'Accept-Language': 'az,en',
+            'Accept-Language': 'tr,en',
           },
         }
       );
@@ -203,7 +203,7 @@ export const LeafletMap = ({
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] w-full max-w-md px-4">
           <div className="relative">
             <Input
-              placeholder="Yer və ya ünvan axtar..."
+              placeholder="Yer veya adres ara..."
               leftIcon={<Search className="h-4 w-4" />}
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
@@ -238,14 +238,14 @@ export const LeafletMap = ({
             {/* Arama yapılıyor göstergesi */}
             {isSearching && (
               <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-xl border border-secondary-200 px-4 py-3 text-center text-sm text-secondary-600">
-                Axtarılır...
+                Aranıyor...
               </div>
             )}
             
             {/* Sonuç bulunamadı */}
             {showResults && !isSearching && searchResults.length === 0 && searchQuery.length >= 3 && (
               <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-xl border border-secondary-200 px-4 py-3 text-center text-sm text-secondary-600">
-                Heç bir nəticə tapılmadı
+                Hiç sonuç bulunamadı
               </div>
             )}
           </div>

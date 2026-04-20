@@ -29,10 +29,10 @@ export const useUsers = () => {
       userService.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.all });
-      toast.success('İstifadəçi məlumatları yeniləndi');
+      toast.success('Kullanıcı bilgileri güncellendi');
     },
     onError: () => {
-      toast.error('Yeniləmə zamanı xəta baş verdi');
+      toast.error('Güncelleme sırasında hata oluştu');
     },
   });
 
@@ -45,13 +45,13 @@ export const useUsers = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.all });
-      toast.success('Sürücü əlavə edildi');
+      toast.success('Sürücü eklendi');
     },
     onError: (error: any) => {
       const message =
         error?.response?.data?.message ||
         error?.message ||
-        'Sürücü əlavə edilərkən xəta baş verdi';
+        'Sürücü eklenirken hata oluştu';
       toast.error(message);
     },
   });
@@ -61,10 +61,10 @@ export const useUsers = () => {
     mutationFn: (id: number) => userService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users.all });
-      toast.success('İstifadəçi silindi');
+      toast.success('Kullanıcı silindi');
     },
     onError: () => {
-      toast.error('Silinmə zamanı xəta baş verdi');
+      toast.error('Silme sırasında hata oluştu');
     },
   });
 

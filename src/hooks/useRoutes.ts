@@ -25,10 +25,10 @@ export const useRoutes = () => {
     mutationFn: (data: CreateRouteData) => routeService.create(data),
     onSuccess: (route) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.routes.all });
-      toast.success(`${route.name} marşrutu əlavə edildi`);
+      toast.success(`${route.name} güzergahı eklendi`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Marşrut əlavə edilə bilmədi');
+      toast.error(error.message || 'Güzergah eklenemedi');
     },
   });
 
@@ -39,10 +39,10 @@ export const useRoutes = () => {
     onSuccess: (route) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.routes.all });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.routes.detail(route.id)] });
-      toast.success(`${route.name} marşrutu yeniləndi`);
+      toast.success(`${route.name} güzergahı güncellendi`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Marşrut yenilənə bilmədi');
+      toast.error(error.message || 'Güzergah güncellenemedi');
     },
   });
 
@@ -51,10 +51,10 @@ export const useRoutes = () => {
     mutationFn: (id: number) => routeService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.routes.all });
-      toast.success('Marşrut silindi');
+      toast.success('Güzergah silindi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Marşrut silinə bilmədi');
+      toast.error(error.message || 'Güzergah silinemedi');
     },
   });
 
@@ -64,10 +64,10 @@ export const useRoutes = () => {
     mutationFn: (data: CreateRouteStopData) => routeService.addRouteStop(data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: [...QUERY_KEYS.routes.all, variables.routeId, 'stops'] });
-      toast.success('Dayanacaq əlavə edildi');
+      toast.success('Durak eklendi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Dayanacaq əlavə edilə bilmədi');
+      toast.error(error.message || 'Durak eklenemedi');
     },
   });
 
@@ -76,10 +76,10 @@ export const useRoutes = () => {
       routeService.updateRouteStop(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.routes.all });
-      toast.success('Dayanacaq yeniləndi');
+      toast.success('Durak güncellendi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Dayanacaq yenilənə bilmədi');
+      toast.error(error.message || 'Durak güncellenemedi');
     },
   });
 
@@ -87,10 +87,10 @@ export const useRoutes = () => {
     mutationFn: (routeStopId: number) => routeService.deleteRouteStop(routeStopId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.routes.all });
-      toast.success('Dayanacaq silindi');
+      toast.success('Durak silindi');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Dayanacaq silinə bilmədi');
+      toast.error(error.message || 'Durak silinemedi');
     },
   });
 

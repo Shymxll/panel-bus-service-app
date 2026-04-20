@@ -7,7 +7,7 @@ import { z } from 'zod';
  * Email Validasyon Şeması
  * Geçerli bir email adresi formatını kontrol eder
  */
-export const emailSchema = z.string().email('Düzgün email daxil edin');
+export const emailSchema = z.string().email('Geçerli bir e-posta girin');
 
 /**
  * Şifre Validasyon Şeması
@@ -15,8 +15,8 @@ export const emailSchema = z.string().email('Düzgün email daxil edin');
  */
 export const passwordSchema = z
   .string()
-  .min(6, 'Şifrə ən azı 6 simvol olmalıdır')
-  .max(50, 'Şifrə maksimum 50 simvol ola bilər');
+  .min(6, 'Şifre en az 6 karakter olmalıdır')
+  .max(50, 'Şifre en fazla 50 karakter olabilir');
 
 /**
  * Telefon Numarası Validasyon Şeması
@@ -26,7 +26,7 @@ export const passwordSchema = z
  */
 export const phoneSchema = z
   .string()
-  .regex(/^(\+994|0)?[1-9]\d{8}$/, 'Düzgün telefon nömrəsi daxil edin')
+  .regex(/^(\+90|0)?[1-9]\d{9}$/, 'Geçerli bir telefon numarası girin')
   .optional()
   .or(z.literal(''));
 
@@ -34,13 +34,13 @@ export const phoneSchema = z
  * Zorunlu String Validasyon Şeması
  * Boş olmayan bir string değeri zorunlu kılar
  */
-export const requiredStringSchema = z.string().min(1, 'Bu sahə məcburidir');
+export const requiredStringSchema = z.string().min(1, 'Bu alan zorunludur');
 
 /**
  * Pozitif Sayı Validasyon Şeması
  * Sıfırdan büyük bir sayı değeri zorunlu kılar
  */
-export const positiveNumberSchema = z.number().positive('Müsbət ədəd daxil edin');
+export const positiveNumberSchema = z.number().positive('Pozitif bir sayı girin');
 
 // ========== Kimlik Doğrulama Validasyon Şemaları (Auth Validation Schemas) ==========
 
@@ -58,7 +58,7 @@ export const loginSchema = z.object({
  * Yeni kullanıcı kaydı için gerekli alanları doğrular
  */
 export const registerSchema = z.object({
-  name: requiredStringSchema.min(2, 'Ad ən azı 2 simvol olmalıdır'), // Minimum 2 karakter
+  name: requiredStringSchema.min(2, 'Ad en az 2 karakter olmalıdır'), // Minimum 2 karakter
   email: emailSchema, // Email formatı kontrol edilir
   password: passwordSchema, // Şifre kurallarına uygun olmalı
   phone: phoneSchema, // Telefon numarası (isteğe bağlı)
@@ -74,11 +74,11 @@ export const busSchema = z.object({
   plateNumber: requiredStringSchema.regex(
     // Plaka numarası formatı: 2 rakam + 1-3 harf + 2-4 rakam (örn: 34ABC123)
     /^[0-9]{2}[A-Z]{1,3}[0-9]{2,4}$/,
-    'Düzgün plaka nömrəsi daxil edin (məs: 34ABC123)'
+    'Geçerli bir plaka numarası girin (örn: 34ABC123)'
   ),
   brand: z.string().optional(), // Marka (isteğe bağlı)
   model: z.string().optional(), // Model (isteğe bağlı)
-  capacity: positiveNumberSchema.min(1, 'Tutum ən azı 1 olmalıdır'), // Kapasite pozitif ve en az 1
+  capacity: positiveNumberSchema.min(1, 'Kapasite en az 1 olmalıdır'), // Kapasite pozitif ve en az 1
   driverId: z.number().optional(), // Sürücü ID (isteğe bağlı)
 });
 
@@ -89,11 +89,11 @@ export const busSchema = z.object({
  * Öğrenci oluşturma/güncelleme için gerekli alanları doğrular
  */
 export const studentSchema = z.object({
-  name: requiredStringSchema.min(2, 'Ad ən azı 2 simvol olmalıdır'), // Minimum 2 karakter
+  name: requiredStringSchema.min(2, 'Ad en az 2 karakter olmalıdır'), // Minimum 2 karakter
   studentNumber: requiredStringSchema, // Öğrenci numarası zorunlu
   grade: z.string().optional(), // Sınıf (isteğe bağlı)
-  parentName: z.string().optional(), // Əlaqə şəxsinin adı (isteğe bağlı)
-  parentPhone: phoneSchema, // Əlaqə şəxsinin telefonu (isteğe bağlı)
+  parentName: z.string().optional(), // Veli adı (isteğe bağlı)
+  parentPhone: phoneSchema, // Veli telefonu (isteğe bağlı)
   address: z.string().optional(), // Adres (isteğe bağlı)
 });
 
@@ -104,7 +104,7 @@ export const studentSchema = z.object({
  * Sürücü oluşturma/güncelleme için gerekli alanları doğrular
  */
 export const driverSchema = z.object({
-  name: requiredStringSchema.min(2, 'Ad ən azı 2 simvol olmalıdır'), // Minimum 2 karakter
+  name: requiredStringSchema.min(2, 'Ad en az 2 karakter olmalıdır'), // Minimum 2 karakter
   email: emailSchema, // Email formatı kontrol edilir
   password: passwordSchema, // Şifre kurallarına uygun olmalı
   phone: phoneSchema, // Telefon numarası (isteğe bağlı)

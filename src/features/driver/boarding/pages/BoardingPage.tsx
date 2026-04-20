@@ -758,7 +758,7 @@ export const BoardingPage = () => {
                   {/* Aksiyon butonları */}
                   <div className="flex gap-3">
                     <Button variant="outline" className="flex-1" onClick={handleCancelScan}>
-                      Ləğv et
+                      İptal
                     </Button>
                     <Button
                       className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
@@ -767,7 +767,7 @@ export const BoardingPage = () => {
                       disabled={todayBoardingRecords.some((r) => r.studentId === scannedStudent.id)}
                       leftIcon={<CheckCircle className="h-5 w-5" />}
                     >
-                      Minməni Təsdiqlə
+                      Binişi Onayla
                     </Button>
                   </div>
                 </div>
@@ -780,9 +780,9 @@ export const BoardingPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Bugün Minən Şagirdlər</h2>
+              <h2 className="text-lg font-semibold">Bugün Binen Öğrenciler</h2>
               <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
-                {todayBoardingRecords.length} nəfər
+                {todayBoardingRecords.length} kişi
               </span>
             </div>
           </CardHeader>
@@ -799,9 +799,9 @@ export const BoardingPage = () => {
                         <CheckCircle className="h-4 w-4 text-emerald-700" />
                       </div>
                       <div>
-                        <p className="font-medium text-secondary-900">Şagird #{record.studentId}</p>
+                        <p className="font-medium text-secondary-900">Öğrenci #{record.studentId}</p>
                         <p className="text-xs text-secondary-500">
-                          {new Date(record.recordTime).toLocaleTimeString('az-AZ', {
+                          {new Date(record.recordTime).toLocaleTimeString('tr-TR', {
                             hour: '2-digit',
                             minute: '2-digit',
                           })}
@@ -819,7 +819,7 @@ export const BoardingPage = () => {
             ) : (
               <div className="py-8 text-center text-secondary-500">
                 <QrCode className="mx-auto mb-3 h-12 w-12 opacity-50" />
-                <p>Hələ ki minmə qeydi yoxdur</p>
+                <p>Henüz biniş kaydı yok</p>
               </div>
             )}
           </CardBody>
@@ -829,9 +829,9 @@ export const BoardingPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Gözlənilən Şagirdlər</h2>
+              <h2 className="text-lg font-semibold">Beklenen Öğrenciler</h2>
               <span className="rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700">
-                {pendingBoardingStudents.length} nəfər
+                {pendingBoardingStudents.length} kişi
               </span>
             </div>
           </CardHeader>
@@ -848,18 +848,18 @@ export const BoardingPage = () => {
                         <Clock className="h-4 w-4 text-amber-700" />
                       </div>
                       <div>
-                        <p className="font-medium text-secondary-900">Şagird #{plan.studentId}</p>
+                        <p className="font-medium text-secondary-900">Öğrenci #{plan.studentId}</p>
                         {plan.notes && <p className="text-xs text-secondary-500">{plan.notes}</p>}
                       </div>
                     </div>
-                    <span className="text-xs font-medium text-amber-700">Gözlənilir</span>
+                    <span className="text-xs font-medium text-amber-700">Bekleniyor</span>
                   </div>
                 ))}
               </div>
             ) : (
               <div className="py-8 text-center text-secondary-500">
                 <CheckCircle className="mx-auto mb-3 h-12 w-12 text-emerald-500 opacity-50" />
-                <p>Bütün planlanmış şagirdlər mindi</p>
+                <p>Tüm planlanan öğrenciler bindi</p>
               </div>
             )}
           </CardBody>

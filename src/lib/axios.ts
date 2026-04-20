@@ -90,7 +90,7 @@ axiosInstance.interceptors.response.use(
       }
       
       // Hata mesajını belirle: önce message, yoksa error, yoksa varsayılan mesaj
-      const message = responseData?.message || responseData?.error || 'Bir xəta baş verdi';
+      const message = responseData?.message || responseData?.error || 'Bir hata oluştu';
 
       // HTTP durum koduna göre uygun işlemleri yap
       switch (status) {
@@ -106,18 +106,18 @@ axiosInstance.interceptors.response.use(
             // Kimlik doğrulama token'ını ve kullanıcı verilerini temizle
             localStorage.removeItem('auth_token');
             localStorage.removeItem('user_data');
-            toast.error('Sessiya bitdi. Yenidən daxil olun.');
+            toast.error('Oturum sona erdi. Tekrar giriş yapın.');
             window.location.href = '/login';
           }
           // Login sayfalarında hata mesajını sadece çağrı yapan kod göstersin (toast göstermeyelim)
           break;
         case 403:
           // Yasak - kullanıcının bu işlem için yetkisi yok
-          toast.error('Bu əməliyyat üçün icazəniz yoxdur.');
+          toast.error('Bu işlem için yetkiniz yok.');
           break;
         case 404:
           // Bulunamadı - istenen kaynak mevcut değil
-          toast.error('Məlumat tapılmadı.');
+          toast.error('Veri bulunamadı.');
           break;
         case 409:
           // Çakışma - genellikle kayıt işlemlerinde çift kayıt gibi durumlar için
@@ -125,7 +125,7 @@ axiosInstance.interceptors.response.use(
           break;
         case 500:
           // Sunucu hatası - backend'de beklenmeyen bir hata oluştu
-          toast.error('Server xətası. Zəhmət olmasa sonra yenidən cəhd edin.');
+          toast.error('Sunucu hatası. Lütfen daha sonra tekrar deneyin.');
           break;
         default:
           // Diğer tüm hata durumları için genel mesaj göster
@@ -133,10 +133,10 @@ axiosInstance.interceptors.response.use(
       }
     } else if (error.request) {
       // Ağ hatası - sunucuya istek ulaşamadı (internet bağlantısı yok, sunucu erişilemez)
-      toast.error('Şəbəkə xətası. İnternet bağlantınızı yoxlayın.');
+      toast.error('Ağ hatası. İnternet bağlantınızı kontrol edin.');
     } else {
       // Beklenmeyen hata - istek hazırlanırken bir sorun oluştu
-      toast.error('Gözlənilməz xəta baş verdi.');
+      toast.error('Beklenmeyen bir hata oluştu.');
     }
 
     // Hatayı reddet (reject) - çağrı yapan kodu bilgilendir
