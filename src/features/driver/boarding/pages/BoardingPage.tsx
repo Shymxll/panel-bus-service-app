@@ -550,7 +550,7 @@ export const BoardingPage = () => {
             <div className="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
               <RefreshCw className="h-5 w-5 animate-spin text-amber-600" />
               <p className="text-sm font-medium text-amber-800">
-                Məlumatlar yüklənir, zəhmət olmasa gözləyin...
+                Veriler yükleniyor, lütfen bekleyin...
               </p>
             </div>
           </CardBody>
@@ -564,11 +564,11 @@ export const BoardingPage = () => {
             <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-3">
               <AlertCircle className="h-5 w-5 text-red-600" />
               <div className="flex-1">
-                <p className="text-sm font-medium text-red-800">Avtobus seçilməyib</p>
+                <p className="text-sm font-medium text-red-800">Otobüs seçilmedi</p>
                 <p className="mt-1 text-xs text-red-700">
                   {buses.length === 0
-                    ? 'Sistemdə heç bir avtobus yoxdur. Admin paneldən avtobus əlavə edin.'
-                    : 'Sizə avtobus təyin edilməyib. Admin paneldən sürücü təyin edin.'}
+                    ? 'Sistemde hiç otobüs yok. Admin panelinden otobüs ekleyin.'
+                    : 'Size otobüs atanmamış. Admin panelinden sürücü atayın.'}
                 </p>
               </div>
             </div>
@@ -581,7 +581,7 @@ export const BoardingPage = () => {
         <Card>
           <CardBody className="py-3">
             <div className="flex flex-wrap items-center gap-4">
-              <span className="text-sm font-medium text-secondary-700">Səfər:</span>
+              <span className="text-sm font-medium text-secondary-700">Sefer:</span>
               <div className="flex flex-wrap gap-2">
                 {trips.map((trip) => (
                   <button
@@ -609,7 +609,7 @@ export const BoardingPage = () => {
         <Card className="lg:row-span-2">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">QR Kod Oxuyucu</h2>
+              <h2 className="text-lg font-semibold">QR Kod Okuyucu</h2>
               <button
                 onClick={() => setShowManualInput(!showManualInput)}
                 className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"
@@ -627,14 +627,14 @@ export const BoardingPage = () => {
                   <div className="flex aspect-square max-h-64 items-center justify-center rounded-lg border-2 border-dashed border-secondary-300 bg-gradient-to-br from-emerald-50 to-teal-50">
                     <div className="p-6 text-center">
                       <QrCode className="mx-auto h-16 w-16 text-emerald-500" />
-                      <p className="mt-4 text-sm text-secondary-600">QR kodu daxil edin</p>
+                      <p className="mt-4 text-sm text-secondary-600">QR kodu girin</p>
                     </div>
                   </div>
 
                   <div className="flex gap-2">
                     <Input
                       ref={inputRef}
-                      placeholder="QR kod daxil edin..."
+                      placeholder="QR kod girin..."
                       value={qrInput}
                       onChange={(e) => setQrInput(e.target.value)}
                       onKeyDown={handleKeyDown}
@@ -646,7 +646,7 @@ export const BoardingPage = () => {
                       isLoading={isSearchingStudent}
                       disabled={!qrInput.trim()}
                     >
-                      Axtar
+                      Ara
                     </Button>
                   </div>
                 </div>
@@ -656,9 +656,9 @@ export const BoardingPage = () => {
                   <div className="flex gap-3">
                     <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-600" />
                     <div className="text-sm text-emerald-800">
-                      <p className="font-medium">Məlumat</p>
+                      <p className="font-medium">Bilgi</p>
                       <p className="mt-1">
-                        Şagirdin QR kodunu daxil edin. Sistem avtomatik olaraq şagirdi tanıyacaq.
+                        Öğrencinin QR kodunu girin. Sistem otomatik olarak öğrenciyi tanıyacak.
                       </p>
                     </div>
                   </div>
@@ -680,10 +680,10 @@ export const BoardingPage = () => {
                   <div className="flex gap-3">
                     <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-600" />
                     <div className="text-sm text-emerald-800">
-                      <p className="font-medium">Məlumat</p>
+                      <p className="font-medium">Bilgi</p>
                       <p className="mt-1">
-                        Şagirdin QR kodunu kameraya göstərin. Sistem avtomatik olaraq minməni
-                        təsdiqləyəcək.
+                        Öğrencinin QR kodunu kameraya gösterin. Sistem otomatik olarak binişi
+                        onaylayacak.
                       </p>
                     </div>
                   </div>
@@ -721,7 +721,7 @@ export const BoardingPage = () => {
                       <p className="font-medium text-secondary-900">{scannedStudent.qrCode}</p>
                     </div>
                     <div className="rounded-lg bg-secondary-50 p-3">
-                      <p className="text-xs text-secondary-500">Əlaqə Şəxsi</p>
+                      <p className="text-xs text-secondary-500">Veli</p>
                       <p className="font-medium text-secondary-900">
                         {scannedStudent.parentName || '-'}
                       </p>
@@ -733,14 +733,14 @@ export const BoardingPage = () => {
                     <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
                       <CheckCircle className="h-5 w-5 text-emerald-600" />
                       <span className="text-sm font-medium text-emerald-800">
-                        Bu şagird bugünkü planda var
+                        Bu öğrenci bugünkü planda var
                       </span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3">
                       <AlertCircle className="h-5 w-5 text-amber-600" />
                       <span className="text-sm font-medium text-amber-800">
-                        Bu şagird bugünkü planda yoxdur
+                        Bu öğrenci bugünkü planda yok
                       </span>
                     </div>
                   )}
@@ -750,7 +750,7 @@ export const BoardingPage = () => {
                     <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-3">
                       <XCircle className="h-5 w-5 text-red-600" />
                       <span className="text-sm font-medium text-red-800">
-                        Bu şagird artıq bugün minib!
+                        Bu öğrenci bugün zaten bindi!
                       </span>
                     </div>
                   )}
