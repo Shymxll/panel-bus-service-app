@@ -157,7 +157,7 @@ export const BusManagement = () => {
   };
 
   if (isLoading || isDriversLoading) {
-    return <Loading size="lg" text="Yüklənir..." className="py-20" />;
+    return <Loading size="lg" text="Yükleniyor..." className="py-20" />;
   }
 
   return (
@@ -165,9 +165,9 @@ export const BusManagement = () => {
       {/* Baslik ve ana aksiyon butonlari */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-secondary-900">Avtobuslar</h1>
+          <h1 className="text-3xl font-bold text-secondary-900">Otobüsler</h1>
           <p className="mt-1 text-secondary-600">
-            Avtobus parkınızı idarə edin, tutumları izləyin və şoför təyinatlarını qurun
+            Otobüs filonuzu yönetin, kapasiteleri takip edin ve sürücü atamalarını yapılandırın
           </p>
         </div>
         <div className="flex gap-2">
@@ -176,10 +176,10 @@ export const BusManagement = () => {
             leftIcon={<RefreshCw className="h-4 w-4" />}
             onClick={() => refetch()}
           >
-            Yenilə
+            Yenile
           </Button>
           <Button leftIcon={<Plus className="h-4 w-4" />} onClick={handleAddBus}>
-            Yeni Avtobus
+            Yeni Otobüs
           </Button>
         </div>
       </div>
@@ -189,7 +189,7 @@ export const BusManagement = () => {
         <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-blue-600">Cəmi</p>
+              <p className="text-sm text-blue-600">Toplam</p>
               <p className="text-3xl font-bold text-blue-900">{stats.total}</p>
             </div>
             <div className="rounded-full bg-blue-500 p-3 text-white">
@@ -200,7 +200,7 @@ export const BusManagement = () => {
         <Card className="border-green-200 bg-gradient-to-br from-green-50 to-green-100">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-green-600">Aktiv</p>
+              <p className="text-sm text-green-600">Aktif</p>
               <p className="text-3xl font-bold text-green-900">{stats.active}</p>
             </div>
             <div className="rounded-full bg-green-500 p-3 text-white">
@@ -211,7 +211,7 @@ export const BusManagement = () => {
         <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-purple-100">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-purple-600">Sürücü təyin edilmiş</p>
+              <p className="text-sm text-purple-600">Sürücü atanmış</p>
               <p className="text-3xl font-bold text-purple-900">{stats.assigned}</p>
             </div>
             <div className="rounded-full bg-purple-500 p-3 text-white">
@@ -222,7 +222,7 @@ export const BusManagement = () => {
         <Card className="border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-orange-600">Boş avtobus</p>
+              <p className="text-sm text-orange-600">Sürücüsüz otobüs</p>
               <p className="text-3xl font-bold text-orange-900">{stats.unassigned}</p>
             </div>
             <div className="rounded-full bg-orange-500 p-3 text-white">
@@ -237,7 +237,7 @@ export const BusManagement = () => {
         <CardBody className="flex flex-col gap-4 lg:flex-row lg:items-center">
           <div className="flex-1">
             <Input
-              placeholder="Plaka, marka və ya model ilə axtar..."
+              placeholder="Plaka, marka veya model ile ara..."
               leftIcon={<Search className="h-5 w-5" />}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -249,9 +249,9 @@ export const BusManagement = () => {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
             >
-              <option value="all">Bütün statuslar</option>
-              <option value="active">Aktiv</option>
-              <option value="inactive">Deaktiv</option>
+              <option value="all">Tüm durumlar</option>
+              <option value="active">Aktif</option>
+              <option value="inactive">Pasif</option>
             </select>
             <select
               className="rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
@@ -268,9 +268,9 @@ export const BusManagement = () => {
                 )
               }
             >
-              <option value="all">Bütün sürücülər</option>
-              <option value="assigned">Sürücü təyin edilmiş</option>
-              <option value="unassigned">Sürücü təyin edilməmiş</option>
+              <option value="all">Tüm sürücüler</option>
+              <option value="assigned">Sürücü atanmış</option>
+              <option value="unassigned">Sürücü atanmamış</option>
               {drivers.map((driver) => (
                 <option key={driver.id} value={driver.id}>
                   {driver.name}
@@ -284,8 +284,8 @@ export const BusManagement = () => {
             >
               <option value="plate-asc">Plaka (A-Z)</option>
               <option value="plate-desc">Plaka (Z-A)</option>
-              <option value="capacity-desc">Tutum (Çoxdan aza)</option>
-              <option value="capacity-asc">Tutum (Azdan çoxa)</option>
+              <option value="capacity-desc">Kapasite (Büyükten küçüğe)</option>
+              <option value="capacity-asc">Kapasite (Küçükten büyüğe)</option>
             </select>
           </div>
         </CardBody>
@@ -294,14 +294,14 @@ export const BusManagement = () => {
       {/* Detay tablo gorunumu */}
       <Card>
         <CardHeader className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Avtobuslar ({filteredBuses.length})</h2>
+          <h2 className="text-lg font-semibold">Otobüsler ({filteredBuses.length})</h2>
         </CardHeader>
         <CardBody className="p-0">
           {filteredBuses.length === 0 ? (
             <div className="py-12 text-center text-secondary-500">
               {buses.length === 0
-                ? 'Hələ ki avtobus əlavə edilməyib.'
-                : 'Axtarış kriteriyalarına uyğun avtobus tapılmadı.'}
+                ? 'Henüz otobüs eklenmemiş.'
+                : 'Arama kriterlerine uygun otobüs bulunamadı.'}
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -309,22 +309,22 @@ export const BusManagement = () => {
                 <thead className="border-b border-secondary-200 bg-secondary-50">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Avtobus
+                      Otobüs
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Tutum
+                      Kapasite
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
                       Sürücü
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Status
+                      Durum
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Qeyd tarixi
+                      Kayıt tarihi
                     </th>
                     <th className="px-4 py-3 text-right text-sm font-semibold text-secondary-700">
-                      Əməliyyatlar
+                      İşlemler
                     </th>
                   </tr>
                 </thead>
@@ -354,7 +354,7 @@ export const BusManagement = () => {
                         {bus.driverId ? (
                           <div className="space-y-1 text-sm">
                             <p className="font-medium text-secondary-900">
-                              {driverMap.get(bus.driverId)?.name || 'Sürücü tapılmadı'}
+                              {driverMap.get(bus.driverId)?.name || 'Sürücü bulunamadı'}
                             </p>
                             {driverMap.get(bus.driverId)?.email && (
                               <div className="flex items-center gap-2 text-xs text-secondary-600">
@@ -383,8 +383,8 @@ export const BusManagement = () => {
                           }`}
                           title={
                             bus.isActive
-                              ? 'Deaktiv etmək üçün klikləyin'
-                              : 'Aktiv etmək üçün klikləyin'
+                              ? 'Pasif etmek için tıklayın'
+                              : 'Aktif etmek için tıklayın'
                           }
                         >
                           {bus.isActive ? (
@@ -392,7 +392,7 @@ export const BusManagement = () => {
                           ) : (
                             <ToggleLeft className="h-3.5 w-3.5" />
                           )}
-                          {bus.isActive ? 'Aktiv' : 'Deaktiv'}
+                          {bus.isActive ? 'Aktif' : 'Pasif'}
                         </button>
                       </td>
                       <td className="px-4 py-3">
@@ -407,7 +407,7 @@ export const BusManagement = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEditBus(bus)}
-                            title="Redaktə et"
+                            title="Düzenle"
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
@@ -452,10 +452,10 @@ export const BusManagement = () => {
         }}
         onConfirm={confirmDelete}
         isLoading={isDeleting && deletingId === selectedBus?.id}
-        title="Avtobusu sil"
+        title="Otobüsü sil"
         message={
           selectedBus
-            ? `${selectedBus.plateNumber} plakalı avtobusu silmək istədiyinizə əminsiniz?`
+            ? `${selectedBus.plateNumber} plakalı otobüsü silmek istediğinize emin misiniz?`
             : ''
         }
       />

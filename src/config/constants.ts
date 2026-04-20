@@ -1,6 +1,6 @@
 // Uygulama genelinde tekrar eden tanimlar tek merkezde toplaniyor.
 export const APP_NAME = 'Servis Takip Sistemi';
-export const APP_DESCRIPTION = 'Məktəb Servisi Şagird İzləmə Sistemi';
+export const APP_DESCRIPTION = 'Okul Servisi Öğrenci Takip Sistemi';
 
 // Kimliklendirmede kullanilan sabit rol etiketleri.
 export const ROLES = {

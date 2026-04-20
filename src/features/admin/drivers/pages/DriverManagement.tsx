@@ -136,7 +136,7 @@ export const DriverManagement = () => {
   };
 
   if (isLoading) {
-    return <Loading size="lg" text="Yüklənir..." className="py-20" />;
+    return <Loading size="lg" text="Yükleniyor..." className="py-20" />;
   }
 
   return (
@@ -144,9 +144,9 @@ export const DriverManagement = () => {
       {/* Baslik ve hizli aksiyonlar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-secondary-900">Sürücülər</h1>
+          <h1 className="text-3xl font-bold text-secondary-900">Sürücüler</h1>
           <p className="mt-1 text-secondary-600">
-            Sürücü heyətini idarə edin, statuslarını dəyişin və yeni sürücülər əlavə edin
+            Sürücü kadronuzu yönetin, durumlarını değiştirin ve yeni sürücüler ekleyin
           </p>
         </div>
         <div className="flex gap-2">
@@ -155,7 +155,7 @@ export const DriverManagement = () => {
             leftIcon={<RefreshCw className="h-4 w-4" />}
             onClick={() => refetch()}
           >
-            Yenilə
+            Yenile
           </Button>
           <Button leftIcon={<Plus className="h-4 w-4" />} onClick={handleAddDriver}>
             Yeni Sürücü
@@ -168,7 +168,7 @@ export const DriverManagement = () => {
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-blue-600">Cəmi Sürücü</p>
+              <p className="text-sm text-blue-600">Toplam Sürücü</p>
               <p className="text-3xl font-bold text-blue-900">{stats.total}</p>
             </div>
             <div className="rounded-full bg-blue-500 p-3 text-white">
@@ -179,7 +179,7 @@ export const DriverManagement = () => {
         <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-green-600">Aktiv</p>
+              <p className="text-sm text-green-600">Aktif</p>
               <p className="text-3xl font-bold text-green-900">{stats.active}</p>
             </div>
             <div className="rounded-full bg-green-500 p-3 text-white">
@@ -190,7 +190,7 @@ export const DriverManagement = () => {
         <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200">
           <CardBody className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-red-600">Deaktiv</p>
+              <p className="text-sm text-red-600">Pasif</p>
               <p className="text-3xl font-bold text-red-900">{stats.inactive}</p>
             </div>
             <div className="rounded-full bg-red-500 p-3 text-white">
@@ -205,7 +205,7 @@ export const DriverManagement = () => {
         <CardBody className="flex flex-col gap-4 lg:flex-row lg:items-center">
           <div className="flex-1">
             <Input
-              placeholder="Ad, email və ya telefon ilə axtar..."
+              placeholder="Ad, e-posta veya telefon ile ara..."
               leftIcon={<Search className="h-5 w-5" />}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -217,9 +217,9 @@ export const DriverManagement = () => {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
             >
-              <option value="all">Bütün statuslar</option>
-              <option value="active">Aktiv</option>
-              <option value="inactive">Deaktiv</option>
+              <option value="all">Tüm durumlar</option>
+              <option value="active">Aktif</option>
+              <option value="inactive">Pasif</option>
             </select>
             <select
               className="rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
@@ -228,8 +228,8 @@ export const DriverManagement = () => {
             >
               <option value="name-asc">Ad (A-Z)</option>
               <option value="name-desc">Ad (Z-A)</option>
-              <option value="date-desc">Ən yeni</option>
-              <option value="date-asc">Ən köhnə</option>
+              <option value="date-desc">En yeni</option>
+              <option value="date-asc">En eski</option>
             </select>
           </div>
         </CardBody>
@@ -238,14 +238,14 @@ export const DriverManagement = () => {
       {/* Sürücü tablo görünümü */}
       <Card>
         <CardHeader className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Sürücülər ({filteredDrivers.length})</h2>
+          <h2 className="text-lg font-semibold">Sürücüler ({filteredDrivers.length})</h2>
         </CardHeader>
         <CardBody className="p-0">
           {filteredDrivers.length === 0 ? (
             <div className="text-center py-12 text-secondary-500">
               {drivers.length === 0
-                ? 'Hələ ki sürücü əlavə edilməyib.'
-                : 'Axtarış kriteriyalarına uyğun sürücü tapılmadı.'}
+                ? 'Henüz sürücü eklenmemiş.'
+                : 'Arama kriterlerine uygun sürücü bulunamadı.'}
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -256,16 +256,16 @@ export const DriverManagement = () => {
                       Sürücü
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Əlaqə
+                      İletişim
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Status
+                      Durum
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Qeyd tarixi
+                      Kayıt tarihi
                     </th>
                     <th className="px-4 py-3 text-right text-sm font-semibold text-secondary-700">
-                      Əməliyyatlar
+                      İşlemler
                     </th>
                   </tr>
                 </thead>
@@ -303,14 +303,14 @@ export const DriverManagement = () => {
                               ? 'bg-green-100 text-green-800 hover:bg-green-200'
                               : 'bg-red-100 text-red-800 hover:bg-red-200'
                           }`}
-                          title={driver.isActive ? 'Deaktiv etmək üçün klikləyin' : 'Aktiv etmək üçün klikləyin'}
+                          title={driver.isActive ? 'Pasif etmek için tıklayın' : 'Aktif etmek için tıklayın'}
                         >
                           {driver.isActive ? (
                             <ToggleRight className="h-3.5 w-3.5" />
                           ) : (
                             <ToggleLeft className="h-3.5 w-3.5" />
                           )}
-                          {driver.isActive ? 'Aktiv' : 'Deaktiv'}
+                          {driver.isActive ? 'Aktif' : 'Pasif'}
                         </button>
                       </td>
                       <td className="px-4 py-3 text-sm text-secondary-600">
@@ -325,7 +325,7 @@ export const DriverManagement = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEditDriver(driver)}
-                            title="Redaktə et"
+                            title="Düzenle"
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
@@ -369,10 +369,10 @@ export const DriverManagement = () => {
         }}
         onConfirm={handleConfirmDelete}
         isLoading={isDeleting && deletingId === selectedDriver?.id}
-        title="Sürücünü sil"
+        title="Sürücüyü sil"
         message={
           selectedDriver
-            ? `${selectedDriver.name} adlı şoförü silmək istədiyinizə əminsiniz?`
+            ? `${selectedDriver.name} adlı sürücüyü silmek istediğinize emin misiniz?`
             : ''
         }
       />

@@ -101,7 +101,7 @@ export const AdminDashboard = () => {
       .slice(0, 3)
       .forEach(student => {
         items.push({
-          type: 'Şagird',
+          type: 'Öğrenci',
           title: `${student.firstName} ${student.lastName}`,
           subtitle: student.school,
           icon: Users,
@@ -118,6 +118,7 @@ export const AdminDashboard = () => {
       .forEach(driver => {
         items.push({
           type: 'Sürücü',
+
           title: driver.name,
           subtitle: driver.email,
           icon: UserCircle,
@@ -154,7 +155,7 @@ export const AdminDashboard = () => {
 
   if (isLoading) {
     // Tum sorgular tamamlanana kadar merkezi yukleme gostergesi cikar.
-    return <Loading size="lg" text="Yüklənir..." className="py-20" />;
+    return <Loading size="lg" text="Yükleniyor..." className="py-20" />;
   }
 
   return (
@@ -162,9 +163,9 @@ export const AdminDashboard = () => {
       {/* Sayfa basligi ve manuel yenileme butonu */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-secondary-900">İdarə Paneli</h1>
+          <h1 className="text-3xl font-bold text-secondary-900">Yönetim Paneli</h1>
           <p className="mt-1 text-secondary-600">
-            Sisteminizin ümumi görünüşü və statistikaları
+            Sisteminizin genel görünümü ve istatistikleri
           </p>
         </div>
         <Button
@@ -172,7 +173,7 @@ export const AdminDashboard = () => {
           leftIcon={<RefreshCw className="h-4 w-4" />}
           onClick={() => window.location.reload()}
         >
-          Yenilə
+          Yenile
         </Button>
       </div>
 
@@ -182,12 +183,12 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-cyan-600">Cəmi Məktəb</p>
+                <p className="text-sm font-medium text-cyan-600">Toplam Okul</p>
                 <p className="mt-1 text-2xl font-bold text-cyan-900">
                   {stats.totalSchools}
                 </p>
                 <p className="text-xs text-cyan-700 mt-1">
-                  {stats.activeSchools} aktiv
+                  {stats.activeSchools} aktif
                 </p>
               </div>
               <div className="rounded-lg bg-cyan-500 p-3">
@@ -201,12 +202,12 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600">Cəmi Şagird</p>
+                <p className="text-sm font-medium text-blue-600">Toplam Öğrenci</p>
                 <p className="mt-1 text-2xl font-bold text-blue-900">
                   {stats.totalStudents}
                 </p>
                 <p className="text-xs text-blue-700 mt-1">
-                  {stats.activeStudents} aktiv
+                  {stats.activeStudents} aktif
                 </p>
               </div>
               <div className="rounded-lg bg-blue-500 p-3">
@@ -220,12 +221,12 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-600">Cəmi Sürücü</p>
+                <p className="text-sm font-medium text-green-600">Toplam Sürücü</p>
                 <p className="mt-1 text-2xl font-bold text-green-900">
                   {stats.totalDrivers}
                 </p>
                 <p className="text-xs text-green-700 mt-1">
-                  {stats.activeDrivers} aktiv
+                  {stats.activeDrivers} aktif
                 </p>
               </div>
               <div className="rounded-lg bg-green-500 p-3">
@@ -239,12 +240,12 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-purple-600">Cəmi Avtobus</p>
+                <p className="text-sm font-medium text-purple-600">Toplam Otobüs</p>
                 <p className="mt-1 text-2xl font-bold text-purple-900">
                   {stats.totalBuses}
                 </p>
                 <p className="text-xs text-purple-700 mt-1">
-                  {stats.activeBuses} aktiv
+                  {stats.activeBuses} aktif
                 </p>
               </div>
               <div className="rounded-lg bg-purple-500 p-3">
@@ -258,12 +259,12 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-orange-600">Aktiv Marşrut</p>
+                <p className="text-sm font-medium text-orange-600">Aktif Güzergah</p>
                 <p className="mt-1 text-2xl font-bold text-orange-900">
                   {stats.activeRoutes}
                 </p>
                 <p className="text-xs text-orange-700 mt-1">
-                  {stats.totalRoutes} cəmi
+                  {stats.totalRoutes} toplam
                 </p>
               </div>
               <div className="rounded-lg bg-orange-500 p-3">
@@ -280,11 +281,11 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-secondary-600">Səfərlər</p>
+                <p className="text-sm font-medium text-secondary-600">Seferler</p>
                 <p className="mt-1 text-xl font-bold text-secondary-900">
                   {stats.activeTrips}
                 </p>
-                <p className="text-xs text-secondary-500 mt-1">Aktiv səfərlər</p>
+                <p className="text-xs text-secondary-500 mt-1">Aktif seferler</p>
               </div>
               <div className="rounded-lg bg-secondary-100 p-3">
                 <Clock className="h-5 w-5 text-secondary-600" />
@@ -297,11 +298,11 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-secondary-600">Dayanacaqlar</p>
+                <p className="text-sm font-medium text-secondary-600">Duraklar</p>
                 <p className="mt-1 text-xl font-bold text-secondary-900">
                   {stats.activeStops}
                 </p>
-                <p className="text-xs text-secondary-500 mt-1">Aktiv dayanacaqlar</p>
+                <p className="text-xs text-secondary-500 mt-1">Aktif duraklar</p>
               </div>
               <div className="rounded-lg bg-secondary-100 p-3">
                 <MapPin className="h-5 w-5 text-secondary-600" />
@@ -315,11 +316,12 @@ export const AdminDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-indigo-600">Bugünkü Planlar</p>
+
                 <p className="mt-1 text-xl font-bold text-indigo-900">
                   {stats.todayPlans}
                 </p>
                 <p className="text-xs text-indigo-700 mt-1">
-                  {stats.todayBoarding} minmə, {stats.todayDropoff} düşmə
+                  {stats.todayBoarding} biniş, {stats.todayDropoff} iniş
                 </p>
               </div>
               <div className="rounded-lg bg-indigo-500 p-3">
@@ -333,12 +335,12 @@ export const AdminDashboard = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-secondary-600">Bugünkü Avtobuslar</p>
+                <p className="text-sm font-medium text-secondary-600">Bugünkü Otobüsler</p>
                 <p className="mt-1 text-xl font-bold text-secondary-900">
                   {todayPlansSummary.uniqueBuses}
                 </p>
                 <p className="text-xs text-secondary-500 mt-1">
-                  {todayPlansSummary.uniqueRoutes} marşrut
+                  {todayPlansSummary.uniqueRoutes} güzergah
                 </p>
               </div>
               <div className="rounded-lg bg-secondary-100 p-3">
@@ -364,7 +366,7 @@ export const AdminDashboard = () => {
               size="sm"
               onClick={() => navigate('/admin/planning')}
             >
-              Hamısını gör
+              Tümünü gör
             </Button>
           </CardHeader>
           <CardBody>
@@ -374,7 +376,7 @@ export const AdminDashboard = () => {
                   <ArrowUp className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-green-700">Minmə Planları</p>
+                  <p className="text-sm font-medium text-green-700">Biniş Planları</p>
                   <p className="text-lg font-bold text-green-900">
                     {stats.todayBoarding}
                   </p>
@@ -385,7 +387,7 @@ export const AdminDashboard = () => {
                   <ArrowDown className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-orange-700">Düşmə Planları</p>
+                  <p className="text-sm font-medium text-orange-700">İniş Planları</p>
                   <p className="text-lg font-bold text-orange-900">
                     {stats.todayDropoff}
                   </p>
@@ -396,7 +398,7 @@ export const AdminDashboard = () => {
                   <Users className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-blue-700">Şagirdlər</p>
+                  <p className="text-sm font-medium text-blue-700">Öğrenciler</p>
                   <p className="text-lg font-bold text-blue-900">
                     {todayPlansSummary.uniqueStudents}
                   </p>
@@ -412,13 +414,13 @@ export const AdminDashboard = () => {
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold text-secondary-900">
-              Son Əlavə Edilənlər
+              Son Eklenenler
             </h2>
           </CardHeader>
           <CardBody>
             {recentItems.length === 0 ? (
               <div className="text-center py-8 text-secondary-500">
-                Hələ ki əlavə edilən yoxdur
+                Henüz eklenen yok
               </div>
             ) : (
               <div className="space-y-3">
@@ -461,7 +463,7 @@ export const AdminDashboard = () => {
         <Card>
           <CardHeader>
             <h2 className="text-lg font-semibold text-secondary-900">
-              Sürətli Əməliyyatlar
+              Hızlı İşlemler
             </h2>
           </CardHeader>
           <CardBody>
@@ -473,8 +475,8 @@ export const AdminDashboard = () => {
                 <div className="rounded-full bg-cyan-100 p-3">
                   <Building2 className="h-6 w-6 text-cyan-600" />
                 </div>
-                <p className="text-sm font-medium text-secondary-900">Məktəblər</p>
-                <p className="text-xs text-secondary-500">İdarə et</p>
+                <p className="text-sm font-medium text-secondary-900">Okullar</p>
+                <p className="text-xs text-secondary-500">Yönet</p>
               </button>
               <button
                 onClick={() => navigate('/admin/students')}
@@ -483,8 +485,8 @@ export const AdminDashboard = () => {
                 <div className="rounded-full bg-blue-100 p-3">
                   <Users className="h-6 w-6 text-blue-600" />
                 </div>
-                <p className="text-sm font-medium text-secondary-900">Şagirdlər</p>
-                <p className="text-xs text-secondary-500">İdarə et</p>
+                <p className="text-sm font-medium text-secondary-900">Öğrenciler</p>
+                <p className="text-xs text-secondary-500">Yönet</p>
               </button>
               <button
                 onClick={() => navigate('/admin/drivers')}
@@ -493,8 +495,8 @@ export const AdminDashboard = () => {
                 <div className="rounded-full bg-green-100 p-3">
                   <UserCircle className="h-6 w-6 text-green-600" />
                 </div>
-                <p className="text-sm font-medium text-secondary-900">Sürücülər</p>
-                <p className="text-xs text-secondary-500">İdarə et</p>
+                <p className="text-sm font-medium text-secondary-900">Sürücüler</p>
+                <p className="text-xs text-secondary-500">Yönet</p>
               </button>
               <button
                 onClick={() => navigate('/admin/buses')}
@@ -503,8 +505,8 @@ export const AdminDashboard = () => {
                 <div className="rounded-full bg-purple-100 p-3">
                   <Bus className="h-6 w-6 text-purple-600" />
                 </div>
-                <p className="text-sm font-medium text-secondary-900">Avtobuslar</p>
-                <p className="text-xs text-secondary-500">İdarə et</p>
+                <p className="text-sm font-medium text-secondary-900">Otobüsler</p>
+                <p className="text-xs text-secondary-500">Yönet</p>
               </button>
               <button
                 onClick={() => navigate('/admin/routes')}
@@ -513,8 +515,8 @@ export const AdminDashboard = () => {
                 <div className="rounded-full bg-orange-100 p-3">
                   <RouteIcon className="h-6 w-6 text-orange-600" />
                 </div>
-                <p className="text-sm font-medium text-secondary-900">Marşrutlar</p>
-                <p className="text-xs text-secondary-500">İdarə et</p>
+                <p className="text-sm font-medium text-secondary-900">Güzergahlar</p>
+                <p className="text-xs text-secondary-500">Yönet</p>
               </button>
               <button
                 onClick={() => navigate('/admin/planning')}
@@ -525,6 +527,7 @@ export const AdminDashboard = () => {
                 </div>
                 <p className="text-sm font-medium text-secondary-900">Planlama</p>
                 <p className="text-xs text-secondary-500">Günlük planlar</p>
+
               </button>
               <button
                 onClick={() => navigate('/admin/planning')}
@@ -534,7 +537,7 @@ export const AdminDashboard = () => {
                   <Plus className="h-6 w-6 text-primary-600" />
                 </div>
                 <p className="text-sm font-medium text-primary-900">Yeni Plan</p>
-                <p className="text-xs text-primary-600">Əlavə et</p>
+                <p className="text-xs text-primary-600">Ekle</p>
               </button>
             </div>
           </CardBody>

@@ -147,14 +147,14 @@ export const SchoolManagement = () => {
         <div>
           <h1 className="text-3xl font-bold text-secondary-900 flex items-center gap-3">
             <Building2 className="h-8 w-8 text-primary-600" />
-            Məktəb İdarəçiliyi
+            Okul Yönetimi
           </h1>
           <p className="mt-2 text-secondary-600">
-            Məktəbləri idarə edin və yenilərini əlavə edin
+            Okulları yönetin ve yenilerini ekleyin
           </p>
         </div>
         <Button onClick={handleAddClick} leftIcon={<Plus className="h-5 w-5" />}>
-          Yeni Məktəb
+          Yeni Okul
         </Button>
       </div>
 
@@ -164,7 +164,7 @@ export const SchoolManagement = () => {
           <CardBody className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600">Ümumi</p>
+                <p className="text-sm font-medium text-blue-600">Toplam</p>
                 <p className="text-3xl font-bold text-blue-900 mt-2">{stats.total}</p>
               </div>
               <div className="h-12 w-12 bg-blue-200 rounded-xl flex items-center justify-center">
@@ -178,7 +178,7 @@ export const SchoolManagement = () => {
           <CardBody className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-600">Aktiv</p>
+                <p className="text-sm font-medium text-green-600">Aktif</p>
                 <p className="text-3xl font-bold text-green-900 mt-2">{stats.active}</p>
               </div>
               <div className="h-12 w-12 bg-green-200 rounded-xl flex items-center justify-center">
@@ -192,7 +192,7 @@ export const SchoolManagement = () => {
           <CardBody className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-red-600">Deaktiv</p>
+                <p className="text-sm font-medium text-red-600">Pasif</p>
                 <p className="text-3xl font-bold text-red-900 mt-2">{stats.inactive}</p>
               </div>
               <div className="h-12 w-12 bg-red-200 rounded-xl flex items-center justify-center">
@@ -210,7 +210,7 @@ export const SchoolManagement = () => {
             {/* Arama */}
             <div className="flex-1">
               <Input
-                placeholder="Məktəb adı, ünvan, telefon və ya email ilə axtar..."
+                placeholder="Okul adı, adres, telefon veya e-posta ile ara..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 leftIcon={<Search className="h-5 w-5" />}
@@ -223,9 +223,9 @@ export const SchoolManagement = () => {
               onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
               className="px-4 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             >
-              <option value="all">Bütün Məktəblər</option>
-              <option value="active">Aktiv</option>
-              <option value="inactive">Deaktiv</option>
+              <option value="all">Tüm Okullar</option>
+              <option value="active">Aktif</option>
+              <option value="inactive">Pasif</option>
             </select>
 
             {/* Yenilə Butonu */}
@@ -234,13 +234,13 @@ export const SchoolManagement = () => {
               onClick={() => refetch()}
               leftIcon={<RefreshCw className="h-5 w-5" />}
             >
-              Yenilə
+              Yenile
             </Button>
 
             {/* Filtreleri Temizle */}
             {(searchQuery || statusFilter !== 'all') && (
               <Button variant="ghost" onClick={handleClearFilters}>
-                Filtreyi Təmizlə
+                Filtreleri Temizle
               </Button>
             )}
           </div>
@@ -256,14 +256,14 @@ export const SchoolManagement = () => {
               {schools.length === 0 ? (
                 <>
                   <Building2 className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                  <p>Hələ ki məktəb əlavə edilməyib.</p>
-                  <p className="text-sm mt-1">Yeni məktəb əlavə etmək üçün yuxarıdakı düyməyə basın.</p>
+                  <p>Henüz okul eklenmemiş.</p>
+                  <p className="text-sm mt-1">Yeni okul eklemek için yukarıdaki düğmeye basın.</p>
                 </>
               ) : (
                 <>
                   <Search className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                  <p>Axtarış nəticəsi tapılmadı.</p>
-                  <p className="text-sm mt-1">Filtirləri dəyişdirməyi yoxlayın.</p>
+                  <p>Arama sonucu bulunamadı.</p>
+                  <p className="text-sm mt-1">Filtreleri değiştirmeyi deneyin.</p>
                 </>
               )}
             </div>
@@ -277,20 +277,20 @@ export const SchoolManagement = () => {
                       onClick={() => handleSort('name')}
                     >
                       <div className="flex items-center gap-1">
-                        Məktəb Adı
+                        Okul Adı
                         {sortField === 'name' && (
                           sortDirection === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
                         )}
                       </div>
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Əlaqə
+                      İletişim
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-secondary-700">
-                      Status
+                      Durum
                     </th>
                     <th className="px-4 py-3 text-right text-sm font-semibold text-secondary-700">
-                      Əməliyyatlar
+                      İşlemler
                     </th>
                   </tr>
                 </thead>
@@ -347,7 +347,7 @@ export const SchoolManagement = () => {
                           ) : (
                             <ToggleLeft className="h-4 w-4" />
                           )}
-                          {school.isActive ? 'Aktiv' : 'Deaktiv'}
+                          {school.isActive ? 'Aktif' : 'Pasif'}
                         </button>
                       </td>
                       <td className="px-4 py-3">
@@ -358,7 +358,7 @@ export const SchoolManagement = () => {
                             onClick={() => handleEditClick(school)}
                             leftIcon={<Edit2 className="h-4 w-4" />}
                           >
-                            Redaktə
+                            Düzenle
                           </Button>
                           <Button
                             variant="ghost"
@@ -397,8 +397,8 @@ export const SchoolManagement = () => {
           setSelectedSchool(null);
         }}
         onConfirm={handleDeleteConfirm}
-        title="Məktəbi Sil"
-        message={`"${selectedSchool?.name}" məktəbini silmək istədiyinizə əminsiniz? Bu əməliyyat geri alına bilməz.`}
+        title="Okulu Sil"
+        message={`"${selectedSchool?.name}" okulunu silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`}
         isLoading={isDeleting}
       />
     </div>

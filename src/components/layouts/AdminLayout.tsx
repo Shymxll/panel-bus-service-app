@@ -20,15 +20,15 @@ import { Button } from '@/components/common/Button';
 
 // Panel menusu icin baslik, rota ve ikon bilgisini tek noktada tutar.
 const navigation = [
-  { name: 'İdarə Paneli', href: '/admin/dashboard', icon: LayoutDashboard },
-  { name: 'Məktəblər', href: '/admin/schools', icon: Building2 },
-  { name: 'Şagirdlər', href: '/admin/students', icon: Users },
-  { name: 'Sürücülər', href: '/admin/drivers', icon: UserCircle },
-  { name: 'Avtobuslar', href: '/admin/buses', icon: Bus },
-  { name: 'Marşrutlar', href: '/admin/routes', icon: RouteIcon },
-  { name: 'Dayanacaqlar', href: '/admin/stops', icon: MapPin },
-  { name: 'Planlaşdırma', href: '/admin/planning', icon: Calendar },
-  { name: 'Hesabatlar', href: '/admin/reports', icon: BarChart3 },
+  { name: 'Yönetim Paneli', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Okullar', href: '/admin/schools', icon: Building2 },
+  { name: 'Öğrenciler', href: '/admin/students', icon: Users },
+  { name: 'Sürücüler', href: '/admin/drivers', icon: UserCircle },
+  { name: 'Otobüsler', href: '/admin/buses', icon: Bus },
+  { name: 'Güzergahlar', href: '/admin/routes', icon: RouteIcon },
+  { name: 'Duraklar', href: '/admin/stops', icon: MapPin },
+  { name: 'Planlama', href: '/admin/planning', icon: Calendar },
+  { name: 'Raporlar', href: '/admin/reports', icon: BarChart3 },
 ];
 
 // Tum yonetici ekranlarini yan menu, ust bar ve icerik alanina oturtur.
@@ -58,7 +58,7 @@ export const AdminLayout = () => {
           {/* Logo ve mobil kapama tusu */}
           <div className="flex h-16 items-center justify-between border-b border-secondary-200 px-6">
             <h1 className="text-xl font-bold text-primary-600">
-              Admin Panel
+              Yönetim Paneli
             </h1>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -108,7 +108,7 @@ export const AdminLayout = () => {
               leftIcon={<LogOut className="h-4 w-4" />}
               className="w-full"
             >
-              Çıxış
+              Çıkış
             </Button>
           </div>
         </div>
@@ -126,7 +126,7 @@ export const AdminLayout = () => {
           </button>
           <div className="flex-1 lg:hidden" />
           <div className="text-sm text-secondary-600">
-            {new Date().toLocaleDateString('az-AZ', {
+            {new Date().toLocaleDateString('tr-TR', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',

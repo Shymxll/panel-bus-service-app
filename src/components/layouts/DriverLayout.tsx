@@ -13,9 +13,9 @@ import { Button } from '@/components/common/Button';
 
 // Suruculer icin sinirli sayfa setini merkezi olarak tanimlar.
 const navigation = [
-  { name: 'İdarə Paneli', href: '/driver/dashboard', icon: LayoutDashboard },
-  { name: 'Minənlər', href: '/driver/boarding', icon: LogIn },
-  { name: 'Düşənlər', href: '/driver/alighting', icon: LogOutIcon },
+  { name: 'Yönetim Paneli', href: '/driver/dashboard', icon: LayoutDashboard },
+  { name: 'Binenler', href: '/driver/boarding', icon: LogIn },
+  { name: 'İnenler', href: '/driver/alighting', icon: LogOutIcon },
 ];
 
 // Surucu arayuzlerini mobil uyumlu yan menu ve icerik alaniyla sarmalar.
@@ -47,6 +47,7 @@ export const DriverLayout = () => {
             <h1 className="text-xl font-bold text-primary-600">
               Sürücü Paneli
             </h1>
+
             <button
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden"
@@ -95,7 +96,7 @@ export const DriverLayout = () => {
               leftIcon={<LogOutIcon className="h-4 w-4" />}
               className="w-full"
             >
-              Çıxış
+              Çıkış
             </Button>
           </div>
         </div>
@@ -113,7 +114,7 @@ export const DriverLayout = () => {
           </button>
           <div className="flex-1 lg:hidden" />
           <div className="text-sm text-secondary-600">
-            {new Date().toLocaleDateString('az-AZ', {
+            {new Date().toLocaleDateString('tr-TR', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',

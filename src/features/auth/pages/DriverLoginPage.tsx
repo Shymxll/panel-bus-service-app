@@ -56,24 +56,24 @@ export const DriverLoginPage = () => {
             </div>
             
             <h1 className="text-4xl xl:text-5xl font-bold mb-6 leading-tight">
-              Məktəb Servisi
+              Okul Servisi
               <br />
-              <span className="text-emerald-200">İdarəetmə Sistemi</span>
+              <span className="text-emerald-200">Yönetim Sistemi</span>
             </h1>
             
             <p className="text-lg text-white/80 leading-relaxed max-w-md">
-              QR kod texnologiyası ilə şagirdlərin minmə və düşmə proseslərini 
-              asanlıqla qeydə alın və izləyin.
+              QR kod teknolojisi ile öğrencilerin biniş ve iniş süreçlerini 
+              kolayca kaydedin ve takip edin.
             </p>
           </div>
 
           {/* Özellikler listesi */}
           <div className="space-y-4 mt-8">
             {[
-              'QR kod ilə sürətli şagird tanıma',
-              'Real vaxtda minmə/düşmə qeydi',
-              'Gündəlik plan görüntüləmə',
-              'Offline dəstək',
+              'QR kod ile hızlı öğrenci tanıma',
+              'Gerçek zamanlı biniş/iniş kaydı',
+              'Günlük plan görüntüleme',
+              'Çevrimdışı destek',
             ].map((feature, index) => (
               <div key={index} className="flex items-center gap-3 text-white/90">
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
@@ -94,7 +94,7 @@ export const DriverLoginPage = () => {
               </div>
               <div>
                 <p className="font-semibold">Panel Bus</p>
-                <p className="text-sm text-white/70">Təhlükəsiz və Sürətli</p>
+                <p className="text-sm text-white/70">Güvenli ve Hızlı</p>
               </div>
             </div>
           </div>
@@ -110,19 +110,20 @@ export const DriverLoginPage = () => {
               <Bus className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900">Sürücü Girişi</h1>
+
           </div>
 
           {/* Desktop başlık */}
           <div className="hidden lg:block mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Xoş gəlmisiniz!</h2>
-            <p className="text-gray-600">Hesabınıza daxil olun və işə başlayın</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Hoş geldiniz!</h2>
+            <p className="text-gray-600">Hesabınıza giriş yapın ve işe başlayın</p>
           </div>
 
           {/* Giriş formu */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <Input
-                label="Email"
+                label="E-posta"
                 type="email"
                 placeholder="sofor@example.com"
                 leftIcon={<Mail className="h-5 w-5" />}
@@ -132,7 +133,7 @@ export const DriverLoginPage = () => {
 
               <div className="relative">
                 <Input
-                  label="Şifrə"
+                  label="Şifre"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   leftIcon={<Lock className="h-5 w-5" />}
@@ -159,7 +160,7 @@ export const DriverLoginPage = () => {
               isLoading={isLoggingIn}
               className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              {isLoggingIn ? 'Daxil olunur...' : 'Daxil ol'}
+              {isLoggingIn ? 'Giriş yapılıyor...' : 'Giriş Yap'}
             </Button>
           </form>
 
@@ -170,7 +171,7 @@ export const DriverLoginPage = () => {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-4 bg-gradient-to-br from-slate-50 to-gray-100 text-gray-500">
-                və ya
+                veya
               </span>
             </div>
           </div>
@@ -184,7 +185,7 @@ export const DriverLoginPage = () => {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              Admin girişi
+              Yönetici girişi
             </Link>
           </div>
 
@@ -194,14 +195,14 @@ export const DriverLoginPage = () => {
               to="/"
               className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
             >
-              ← Ana səhifəyə qayıt
+              ← Ana sayfaya dön
             </Link>
           </div>
 
           {/* Footer bilgi */}
           <div className="mt-12 pt-6 border-t border-gray-200 text-center">
             <p className="text-xs text-gray-400">
-              © 2025 Panel Bus. Bütün hüquqlar qorunur.
+              © 2025 Panel Bus. Tüm hakları saklıdır.
             </p>
           </div>
         </div>

@@ -53,14 +53,14 @@ export const DeleteConfirmModal = ({
         <div className="p-6">
           <p className="text-secondary-600">{message}</p>
           <p className="mt-2 text-sm text-secondary-500">
-            Bu əməliyyat geri alına bilməz.
+            Bu işlem geri alınamaz.
           </p>
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-secondary-200 bg-secondary-50">
           <Button variant="outline" onClick={onClose} disabled={isLoading}>
-            Ləğv et
+            İptal
           </Button>
           <Button
             variant="danger"

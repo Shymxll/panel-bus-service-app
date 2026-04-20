@@ -10,10 +10,10 @@ import type { UseMutateFunction } from '@tanstack/react-query';
 
 // Otobus formunun tum validasyonlarini toplar.
 const busSchema = z.object({
-  plateNumber: z.string().min(3, 'Plaka ən azı 3 simvol olmalıdır'),
+  plateNumber: z.string().min(3, 'Plaka en az 3 karakter olmalıdır'),
   brand: z.string().optional(),
   model: z.string().optional(),
-  capacity: z.coerce.number().min(1, 'Tutum 1-dən böyük olmalıdır').max(100, 'Tutum çox böyükdür'),
+  capacity: z.coerce.number().min(1, 'Kapasite 1\'den büyük olmalıdır').max(100, 'Kapasite çok büyük'),
   driverId: z.union([z.coerce.number(), z.nan()]).optional(),
   isActive: z.boolean().default(true),
 });
@@ -138,11 +138,11 @@ export const BusFormModal = ({
         <div className="flex items-center justify-between border-b border-secondary-200 px-6 py-4">
           <div>
             <p className="text-sm text-secondary-500">
-              {isEditing ? 'Avtobus məlumatlarını yenilə' : 'Yeni avtobus əlavə et'}
+              {isEditing ? 'Otobüs bilgilerini güncelle' : 'Yeni otobüs ekle'}
             </p>
             <h2 className="flex items-center gap-2 text-xl font-semibold text-secondary-900">
               <Bus className="h-5 w-5 text-primary-600" />
-              {isEditing ? bus?.plateNumber : 'Avtobus formu'}
+              {isEditing ? bus?.plateNumber : 'Otobüs formu'}
             </h2>
           </div>
           <button
@@ -167,7 +167,7 @@ export const BusFormModal = ({
               {...register('plateNumber')}
             />
             <Input
-              label="Tutum"
+              label="Kapasite"
               type="number"
               min={1}
               placeholder="20"
@@ -200,7 +200,7 @@ export const BusFormModal = ({
                 value={selectedDriverId ?? ''}
                 onChange={(e) => handleDriverChange(e.target.value)}
               >
-                <option value="">Sürücü seçilməyib</option>
+                <option value="">Sürücü seçilmedi</option>
                 {drivers.map((driver) => (
                   <option key={driver.id} value={driver.id}>
                     {driver.name} ({driver.email})
@@ -219,7 +219,7 @@ export const BusFormModal = ({
               {...register('isActive')}
             />
             <label htmlFor="bus-is-active" className="text-sm text-secondary-700">
-              Aktiv avtobus
+              Aktif otobüs
             </label>
           </div>
         </form>
@@ -227,14 +227,14 @@ export const BusFormModal = ({
         {/* Alt aksiyonlar */}
         <div className="flex items-center justify-end gap-3 border-t border-secondary-200 bg-secondary-50 px-6 py-4">
           <Button variant="outline" onClick={onClose}>
-            Ləğv et
+            İptal
           </Button>
           <Button
             type="submit"
             onClick={handleSubmit(onSubmit)}
             isLoading={isEditing ? isUpdating : isCreating}
           >
-            {isEditing ? 'Yadda saxla' : 'Əlavə et'}
+            {isEditing ? 'Kaydet' : 'Ekle'}
           </Button>
         </div>
       </div>

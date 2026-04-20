@@ -6,138 +6,132 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 
-// Uygulamanin halka acik tanitim sayfasi.
 export const LandingPage = () => {
-  // Kartlarda gosterilecek ozellik tanimlari.
   const features = [
     {
       icon: QrCode,
-      title: 'QR Kod İzləmə',
-      description: 'Şagirdlərin minmə və düşmə proseslərini QR kod ilə asanlıqla izləyin. Hər şagird üçün unikal QR kod yaradın və anında təqib edin.',
+      title: 'QR Kod Takibi',
+      description: 'Öğrencilerin biniş ve iniş süreçlerini QR kod ile kolayca takip edin. Her öğrenci için benzersiz QR kod oluşturun ve anında takip edin.',
       gradient: 'from-blue-500 to-cyan-500',
       bgGradient: 'from-blue-50 to-cyan-50',
     },
     {
       icon: Bus,
-      title: 'Avtobus İdarəçiliyi',
-      description: 'Bütün avtobusları, sürücüləri və marşrutları vahid platformadan idarə edin. Real vaxtda GPS izləmə və marşrut planlaması.',
+      title: 'Otobüs Yönetimi',
+      description: 'Tüm otobüsleri, sürücüleri ve güzergahları tek platformdan yönetin. Gerçek zamanlı GPS takibi ve güzergah planlaması.',
       gradient: 'from-green-500 to-emerald-500',
       bgGradient: 'from-green-50 to-emerald-50',
     },
     {
       icon: Shield,
-      title: 'Maksimum Təhlükəsizlik',
-      description: 'JWT autentifikasiya, SSL şifrələmə və rol əsaslı giriş ilə məlumatlarınız tam qorunur.',
+      title: 'Maksimum Güvenlik',
+      description: 'JWT kimlik doğrulama, SSL şifreleme ve rol tabanlı erişim ile verileriniz tam olarak korunur.',
       gradient: 'from-purple-500 to-pink-500',
       bgGradient: 'from-purple-50 to-pink-50',
     },
     {
       icon: BarChart3,
-      title: 'Təfərrüatlı Hesabatlar',
-      description: 'Günlük, həftəlik və aylıq hesabatlarla məlumatları təhlil edin. Excel və PDF olaraq ixrac edin.',
+      title: 'Ayrıntılı Raporlar',
+      description: 'Günlük, haftalık ve aylık raporlarla verileri analiz edin. Excel ve PDF olarak dışa aktarın.',
       gradient: 'from-orange-500 to-red-500',
       bgGradient: 'from-orange-50 to-red-50',
     },
     {
       icon: Clock,
-      title: 'Real Vaxt İzləmə',
-      description: 'Hər bir avtobusun və şagirdin real vaxtda harada olduğunu görün.',
+      title: 'Gerçek Zamanlı Takip',
+      description: 'Her otobüsün ve öğrencinin gerçek zamanlı olarak nerede olduğunu görün.',
       gradient: 'from-indigo-500 to-purple-500',
       bgGradient: 'from-indigo-50 to-purple-50',
     },
     {
       icon: Users,
-      title: 'İstifadəçi İdarəçiliyi',
-      description: 'Adminlər və sürücülər üçün ayrı-ayrı panel və səlahiyyətlər. Rol əsaslı giriş sistemi.',
+      title: 'Kullanıcı Yönetimi',
+      description: 'Yöneticiler ve sürücüler için ayrı panel ve yetkiler. Rol tabanlı erişim sistemi.',
       gradient: 'from-pink-500 to-rose-500',
       bgGradient: 'from-pink-50 to-rose-50',
     },
     {
       icon: MapPin,
-      title: 'Marşrut Planlaması',
-      description: 'Ən optimal marşrutları yaradın və duracaqları asanlıqla idarə edin.',
+      title: 'Güzergah Planlaması',
+      description: 'En optimal güzergahları oluşturun ve durakları kolayca yönetin.',
       gradient: 'from-cyan-500 to-blue-500',
       bgGradient: 'from-cyan-50 to-blue-50',
     },
     {
       icon: Smartphone,
-      title: 'Mobil Uyğunluq',
-      description: 'İstənilən cihazdan - telefon, planşet və ya kompüterdən istifadə edin.',
+      title: 'Mobil Uyumluluk',
+      description: 'İstediğiniz cihazdan - telefon, tablet veya bilgisayardan kullanın.',
       gradient: 'from-emerald-500 to-teal-500',
       bgGradient: 'from-emerald-50 to-teal-50',
     },
   ];
 
-  // Servisin avantajlarini listeleyen metinler.
   const benefits = [
-    'Real vaxtda izləmə və bildirişlər',
-    'QR kod texnologiyası ilə sürətli qeydiyyat',
-    'Bank səviyyəsində təhlükəsiz məlumat saxlanması',
-    'İntuitiv və asan istifadə interfeysi',
-    'Bütün cihazlarda mükəmməl işləyir',
-    'Təfərrüatlı hesabat və analitika',
+    'Gerçek zamanlı takip ve bildirimler',
+    'QR kod teknolojisi ile hızlı kayıt',
+    'Banka seviyesinde güvenli veri depolama',
+    'Sezgisel ve kullanımı kolay arayüz',
+    'Tüm cihazlarda mükemmel çalışır',
+    'Ayrıntılı rapor ve analitik',
   ];
 
-  // İstatistikler
   const stats = [
-    { value: '1000+', label: 'Aktiv Şagird', icon: Users },
-    { value: '50+', label: 'Avtobus', icon: Bus },
-    { value: '99.9%', label: 'Əlçatanlıq', icon: TrendingUp },
-    { value: '24/7', label: 'Dəstək', icon: Shield },
+    { value: '1000+', label: 'Aktif Öğrenci', icon: Users },
+    { value: '50+', label: 'Otobüs', icon: Bus },
+    { value: '99.9%', label: 'Erişilebilirlik', icon: TrendingUp },
+    { value: '24/7', label: 'Destek', icon: Shield },
   ];
 
-  // Müştəri rəyləri
   const testimonials = [
     {
-      name: 'Leyla Məmmədova',
-      role: 'Məktəb Direktoru',
-      company: '151 nömrəli Məktəb',
-      content: 'Bu sistem bizim məktəbin servis idarəçiliyini tamamilə dəyişdirdi. İndi valideynlər də uşaqlarının hara olduğunu görə bilirlər.',
+      name: 'Leyla Mammadova',
+      role: 'Okul Müdürü',
+      company: '151 No\'lu Okul',
+      content: 'Bu sistem okulumuzun servis yönetimini tamamen değiştirdi. Artık veliler de çocuklarının nerede olduğunu görebiliyor.',
       rating: 5,
       avatar: 'LM'
     },
     {
-      name: 'Rəşad Əliyev',
-      role: 'Servis Müdiri',
-      company: 'Təhsil Mərkəzi',
-      content: 'Real vaxt izləmə funksiyası əla işləyir. Bütün avtobusları eyni ekranda görmək böyük rahatlıqdır.',
+      name: 'Raşad Aliyev',
+      role: 'Servis Müdürü',
+      company: 'Eğitim Merkezi',
+      content: 'Gerçek zamanlı takip özelliği harika çalışıyor. Tüm otobüsleri aynı ekranda görmek büyük bir kolaylık.',
       rating: 5,
-      avatar: 'RƏ'
+      avatar: 'RA'
     },
     {
-      name: 'Əli Quliyev',
+      name: 'Ali Guliyev',
       role: 'Sürücü',
-      company: 'Məktəb Servisi',
-      content: 'QR kod oxuma sistemi çox sürətli işləyir. Şagirdləri qeydə almaq artıq saniyələr ərzində baş verir.',
+      company: 'Okul Servisi',
+      content: 'QR kod okuma sistemi çok hızlı çalışıyor. Öğrencileri kaydetmek artık saniyeler içinde gerçekleşiyor.',
       rating: 5,
-      avatar: 'ƏQ'
+      avatar: 'AG'
     },
   ];
 
-  // Necə işləyir addımları
   const howItWorks = [
     {
       step: '01',
-      title: 'Qeydiyyat',
-      description: 'Sistemə daxil olun və şagird, avtobus və marşrut məlumatlarını daxil edin',
+      title: 'Kayıt',
+      description: 'Sisteme giriş yapın ve öğrenci, otobüs ve güzergah bilgilerini girin',
       icon: Calendar,
     },
     {
       step: '02',
-      title: 'QR Kod Yaradın',
-      description: 'Hər şagird üçün avtomatik unikal QR kod yaradılır və çap edilir',
+      title: 'QR Kod Oluşturun',
+      description: 'Her öğrenci için otomatik benzersiz QR kod oluşturulur ve yazdırılır',
       icon: QrCode,
     },
     {
       step: '03',
-      title: 'İzləmə',
-      description: 'Sürücülər QR kodu skan edərək şagirdlərin minib-düşməsini qeyd edir',
+      title: 'Takip',
+      description: 'Sürücüler QR kodu tarayarak öğrencilerin biniş-inişini kaydeder',
       icon: Smartphone,
     },
     {
       step: '04',
-      title: 'Hesabatlar',
-      description: 'Real vaxtda hesabat və bildirişlər alın. Bütün məlumatları təhlil edin',
+      title: 'Raporlar',
+      description: 'Gerçek zamanlı rapor ve bildirimler alın. Tüm verileri analiz edin',
       icon: BarChart3,
     },
   ];
@@ -157,7 +151,7 @@ export const LandingPage = () => {
             <div className="flex items-center gap-2">
               <Link to="/admin/login">
                 <Button variant="outline" size="sm">
-                  Admin
+                  Yönetici
                 </Button>
               </Link>
               <Link to="/driver/login">
@@ -170,9 +164,8 @@ export const LandingPage = () => {
         </div>
       </nav>
 
-      {/* Hero bolumu */}
+      {/* Hero */}
       <div className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 pt-24">
-        {/* Animasyonlu arka plan objeleri */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-primary-500/20 blur-3xl animate-pulse" />
           <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-primary-400/20 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
@@ -182,24 +175,23 @@ export const LandingPage = () => {
         <div className="relative container-custom py-24 sm:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-left">
-              {/* Baslik uzerindeki rozet */}
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 mb-8">
                 <Sparkles className="h-4 w-4 text-yellow-300" />
-                <span className="text-sm font-medium text-white">2025-ci ilin ən yaxşı həlləri</span>
+                <span className="text-sm font-medium text-white">2025 yılının en iyi çözümleri</span>
                 <Award className="h-4 w-4 text-yellow-300" />
               </div>
 
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight">
-                Məktəb Servisi
+                Okul Servisi
                 <br />
                 <span className="bg-gradient-to-r from-yellow-300 to-yellow-100 bg-clip-text text-transparent">
-                  İdarəetmə Sistemi
+                  Yönetim Sistemi
                 </span>
               </h1>
               <p className="mt-6 text-xl sm:text-2xl text-primary-100 leading-relaxed">
-                QR kod texnologiyası ilə şagirdlərin servis hərəkətlərini{' '}
-                <span className="font-semibold text-white">real vaxtda</span> izləyin və idarə edin.
-                Məktəb servisi idarəetməsində yeni standart.
+                QR kod teknolojisi ile öğrencilerin servis hareketlerini{' '}
+                <span className="font-semibold text-white">gerçek zamanlı</span> takip edin ve yönetin.
+                Okul servisi yönetiminde yeni standart.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link to="/admin/login">
@@ -208,7 +200,7 @@ export const LandingPage = () => {
                     className="group bg-white text-primary-600 hover:bg-white/90 hover:scale-105 transition-all duration-200 shadow-xl hover:shadow-2xl px-8 py-4 text-lg font-semibold"
                     rightIcon={<ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />}
                   >
-                    Admin Girişi
+                    Yönetici Girişi
                   </Button>
                 </Link>
                 <Link to="/driver/login">
@@ -226,15 +218,15 @@ export const LandingPage = () => {
               <div className="mt-12 flex flex-wrap items-center gap-6">
                 <div className="flex items-center gap-2 text-white/80">
                   <CheckCircle className="h-5 w-5" />
-                  <span className="text-sm">SSL Təhlükəsiz</span>
+                  <span className="text-sm">SSL Güvenli</span>
                 </div>
                 <div className="flex items-center gap-2 text-white/80">
                   <CheckCircle className="h-5 w-5" />
-                  <span className="text-sm">99.9% Əlçatanlıq</span>
+                  <span className="text-sm">%99.9 Erişilebilirlik</span>
                 </div>
                 <div className="flex items-center gap-2 text-white/80">
                   <CheckCircle className="h-5 w-5" />
-                  <span className="text-sm">24/7 Dəstək</span>
+                  <span className="text-sm">7/24 Destek</span>
                 </div>
               </div>
             </div>
@@ -250,8 +242,8 @@ export const LandingPage = () => {
                         <Bus className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <div className="font-bold text-secondary-900">Dashboard</div>
-                        <div className="text-sm text-secondary-600">Real vaxt izləmə</div>
+                        <div className="font-bold text-secondary-900">Panel</div>
+                        <div className="text-sm text-secondary-600">Gerçek zamanlı takip</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-1">
@@ -264,10 +256,10 @@ export const LandingPage = () => {
                   {/* Stats */}
                   <div className="grid grid-cols-2 gap-4">
                     {[
-                      { label: 'Aktiv Şagird', value: '847', color: 'from-blue-500 to-cyan-500' },
-                      { label: 'Avtobus', value: '42', color: 'from-green-500 to-emerald-500' },
-                      { label: 'Marşrut', value: '28', color: 'from-purple-500 to-pink-500' },
-                      { label: 'Şofər', value: '38', color: 'from-orange-500 to-red-500' },
+                      { label: 'Aktif Öğrenci', value: '847', color: 'from-blue-500 to-cyan-500' },
+                      { label: 'Otobüs', value: '42', color: 'from-green-500 to-emerald-500' },
+                      { label: 'Güzergah', value: '28', color: 'from-purple-500 to-pink-500' },
+                      { label: 'Sürücü', value: '38', color: 'from-orange-500 to-red-500' },
                     ].map((stat, idx) => (
                       <div key={idx} className="bg-secondary-50 rounded-xl p-4">
                         <div className={`text-2xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
@@ -281,9 +273,9 @@ export const LandingPage = () => {
                   {/* Activity */}
                   <div className="space-y-3">
                     {[
-                      { name: 'Əli Məmmədov', action: 'Avtobusa mindi', time: '2 dəq əvvəl', status: 'success' },
-                      { name: 'Leyla Həsənova', action: 'Avtobusdan düşdü', time: '5 dəq əvvəl', status: 'success' },
-                      { name: 'Rəşad Əliyev', action: 'Avtobusa mindi', time: '8 dəq əvvəl', status: 'success' },
+                      { name: 'Ali Mammadov', action: 'Otobüse bindi', time: '2 dk önce', status: 'success' },
+                      { name: 'Leyla Hasanova', action: 'Otobüsten indi', time: '5 dk önce', status: 'success' },
+                      { name: 'Raşad Aliyev', action: 'Otobüse bindi', time: '8 dk önce', status: 'success' },
                     ].map((activity, idx) => (
                       <div key={idx} className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
                         <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
@@ -322,18 +314,18 @@ export const LandingPage = () => {
         </div>
       </div>
 
-      {/* Ozellikler bolumu */}
+      {/* Özellikler */}
       <div className="container-custom py-24">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 text-primary-600 font-semibold mb-4">
             <Zap className="h-5 w-5" />
-            <span>Xüsusiyyətlər</span>
+            <span>Özellikler</span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-bold text-secondary-900 mb-4">
-            Güclü və Modern Həllər
+            Güçlü ve Modern Çözümler
           </h2>
           <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
-            Modern texnologiya ilə gücləndirilmiş idarəetmə sistemi. Məktəb servisi idarəçiliyində ehtiyac duyacağınız hər şey bir yerdə.
+            Modern teknoloji ile güçlendirilmiş yönetim sistemi. Okul servisi yönetiminde ihtiyacınız olan her şey tek yerde.
           </p>
         </div>
 
@@ -345,7 +337,6 @@ export const LandingPage = () => {
                 key={index}
                 className="group relative overflow-hidden rounded-2xl border border-secondary-200 bg-white p-8 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
               >
-                {/* Hover durumunda gradient katman */}
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${feature.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
                 />
@@ -368,19 +359,19 @@ export const LandingPage = () => {
         </div>
       </div>
 
-      {/* Necə işləyir */}
+      {/* Nasıl Çalışır */}
       <div className="bg-gradient-to-br from-secondary-50 to-white py-24">
         <div className="container-custom">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 text-primary-600 font-semibold mb-4">
               <Layers className="h-5 w-5" />
-              <span>Proses</span>
+              <span>Süreç</span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-secondary-900 mb-4">
-              Necə İşləyir?
+              Nasıl Çalışır?
             </h2>
             <p className="text-xl text-secondary-600 max-w-2xl mx-auto">
-              Sadə 4 addımda sistemə başlayın və servis idarəçiliyinizi fərqli səviyyəyə çıxarın
+              Basit 4 adımda sisteme başlayın ve servis yönetiminizi farklı bir seviyeye taşıyın
             </p>
           </div>
 
@@ -389,7 +380,6 @@ export const LandingPage = () => {
               const Icon = item.icon;
               return (
                 <div key={idx} className="relative">
-                  {/* Connecting line */}
                   {idx < howItWorks.length - 1 && (
                     <div className="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-gradient-to-r from-primary-300 to-transparent -translate-x-8" />
                   )}
@@ -409,7 +399,7 @@ export const LandingPage = () => {
         </div>
       </div>
 
-      {/* Avantajlar bolumu */}
+      {/* Avantajlar */}
       <div className="bg-white py-24">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -422,15 +412,15 @@ export const LandingPage = () => {
                       <Bus className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <div className="text-white font-bold text-lg">Real vaxtda izləmə</div>
-                      <div className="text-primary-100 text-sm">Hər addımı görün</div>
+                      <div className="text-white font-bold text-lg">Gerçek zamanlı takip</div>
+                      <div className="text-primary-100 text-sm">Her adımı görün</div>
                     </div>
                   </div>
                   <div className="space-y-4">
                     {[
-                      { id: 1, name: 'Şagird #847', status: 'Marşrutda', progress: 85 },
-                      { id: 2, name: 'Şagird #523', status: 'Mindi', progress: 95 },
-                      { id: 3, name: 'Şagird #234', status: 'Düşdü', progress: 100 },
+                      { id: 1, name: 'Öğrenci #847', status: 'Güzergahta', progress: 85 },
+                      { id: 2, name: 'Öğrenci #523', status: 'Bindi', progress: 95 },
+                      { id: 3, name: 'Öğrenci #234', status: 'İndi', progress: 100 },
                     ].map((student) => (
                       <div key={student.id} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                         <div className="flex items-center justify-between mb-2">
@@ -453,13 +443,13 @@ export const LandingPage = () => {
             <div className="order-1 lg:order-2">
               <div className="inline-flex items-center gap-2 text-primary-600 font-semibold mb-4">
                 <CheckCircle2 className="h-5 w-5" />
-                <span>Üstünlüklər</span>
+                <span>Avantajlar</span>
               </div>
               <h2 className="text-4xl sm:text-5xl font-bold text-secondary-900 mb-6">
-                Niyə Panel Bus?
+                Neden Panel Bus?
               </h2>
               <p className="text-lg text-secondary-600 mb-8">
-                Məktəb servisi idarəetməsini sadələşdirən, təhlükəsizliyi təmin edən və şagird təhlükəsizliyini artıran ən müasir həll
+                Okul servisi yönetimini basitleştiren, güvenliği sağlayan ve öğrenci güvenliğini artıran en modern çözüm
               </p>
               <div className="space-y-4">
                 {benefits.map((benefit, idx) => (
@@ -476,19 +466,19 @@ export const LandingPage = () => {
         </div>
       </div>
 
-      {/* Müştəri rəyləri */}
+      {/* Müşteri Yorumları */}
       <div className="bg-gradient-to-br from-secondary-50 to-white py-24">
         <div className="container-custom">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 text-primary-600 font-semibold mb-4">
               <Star className="h-5 w-5 fill-primary-600" />
-              <span>Müştəri Rəyləri</span>
+              <span>Müşteri Yorumları</span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-secondary-900 mb-4">
-              Müştərilərimiz Nə Deyir?
+              Müşterilerimiz Ne Diyor?
             </h2>
             <p className="text-xl text-secondary-600 max-w-2xl mx-auto">
-              Minlərlə istifadəçi artıq Panel Bus-a güvənir
+              Binlerce kullanıcı artık Panel Bus'a güveniyor
             </p>
           </div>
 
@@ -532,44 +522,44 @@ export const LandingPage = () => {
                 <span className="text-xl font-bold">Panel Bus</span>
               </div>
               <p className="text-secondary-400 leading-relaxed">
-                Məktəb servisi idarəetməsi üçün ən müasir və təhlükəsiz həll
+                Okul servisi yönetimi için en modern ve güvenli çözüm
               </p>
             </div>
             
             <div>
-              <h3 className="font-bold text-lg mb-4">Məhsul</h3>
+              <h3 className="font-bold text-lg mb-4">Ürün</h3>
               <ul className="space-y-2 text-secondary-400">
-                <li><a href="#" className="hover:text-white transition-colors">Xüsusiyyətlər</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Qiymətlər</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Özellikler</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Fiyatlar</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Demo</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">API</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-bold text-lg mb-4">Şirkət</h3>
+              <h3 className="font-bold text-lg mb-4">Şirket</h3>
               <ul className="space-y-2 text-secondary-400">
-                <li><a href="#" className="hover:text-white transition-colors">Haqqımızda</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Bloq</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Karyera</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Tərəfdaşlar</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Hakkımızda</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Kariyer</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">İş Ortakları</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-bold text-lg mb-4">Əlaqə</h3>
+              <h3 className="font-bold text-lg mb-4">İletişim</h3>
               <ul className="space-y-3 text-secondary-400">
                 <li className="flex items-center gap-2">
                   <PhoneCall className="h-4 w-4" />
-                  <span>+994 XX XXX XX XX</span>
+                  <span>+90 XXX XXX XX XX</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="h-4 w-4" />
-                  <span>info@panelbus.az</span>
+                  <span>info@panelbus.com.tr</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Building2 className="h-4 w-4" />
-                  <span>Bakı, Azərbaycan</span>
+                  <span>Türkiye</span>
                 </li>
               </ul>
             </div>
@@ -578,12 +568,12 @@ export const LandingPage = () => {
           <div className="border-t border-secondary-800 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-secondary-400 text-sm">
-                © 2025 Panel Bus. Bütün hüquqlar qorunur.
+                © 2025 Panel Bus. Tüm hakları saklıdır.
               </p>
               <div className="flex gap-6 text-secondary-400 text-sm">
-                <a href="#" className="hover:text-white transition-colors">Məxfilik Siyasəti</a>
-                <a href="#" className="hover:text-white transition-colors">İstifadə Şərtləri</a>
-                <a href="#" className="hover:text-white transition-colors">Çerez Siyasəti</a>
+                <a href="#" className="hover:text-white transition-colors">Gizlilik Politikası</a>
+                <a href="#" className="hover:text-white transition-colors">Kullanım Şartları</a>
+                <a href="#" className="hover:text-white transition-colors">Çerez Politikası</a>
               </div>
             </div>
           </div>
@@ -592,4 +582,3 @@ export const LandingPage = () => {
     </div>
   );
 };
-

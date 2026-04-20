@@ -32,8 +32,8 @@ export const AdminLoginPage = () => {
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary-600">
             <Shield className="h-8 w-8 text-white" />
           </div>
-          <h1 className="mt-4 text-3xl font-bold text-secondary-900">Admin Girişi</h1>
-          <p className="mt-2 text-sm text-secondary-600">İdarəetmə panelinə daxil olun</p>
+          <h1 className="mt-4 text-3xl font-bold text-secondary-900">Yönetici Girişi</h1>
+          <p className="mt-2 text-sm text-secondary-600">Yönetim paneline giriş yapın</p>
         </div>
 
         {/* Giris formu */}
@@ -41,7 +41,7 @@ export const AdminLoginPage = () => {
           <CardBody>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <Input
-                label="Email"
+                label="E-posta"
                 type="email"
                 placeholder="admin@example.com"
                 leftIcon={<Mail className="h-5 w-5" />}
@@ -50,7 +50,7 @@ export const AdminLoginPage = () => {
               />
 
               <Input
-                label="Şifrə"
+                label="Şifre"
                 type="password"
                 placeholder="••••••••"
                 leftIcon={<Lock className="h-5 w-5" />}
@@ -65,7 +65,7 @@ export const AdminLoginPage = () => {
                 isLoading={isLoggingIn}
                 className="w-full"
               >
-                Daxil ol
+                Giriş Yap
               </Button>
             </form>
 
@@ -75,7 +75,7 @@ export const AdminLoginPage = () => {
         {/* Ana sayfaya donus baglantisi */}
         <div className="mt-4 text-center">
           <Link to="/" className="text-sm text-secondary-600 hover:text-secondary-900">
-            ← Ana səhifəyə qayıt
+            ← Ana sayfaya dön
           </Link>
         </div>
       </div>

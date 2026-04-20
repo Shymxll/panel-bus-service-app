@@ -10,8 +10,8 @@ import type { UseMutateFunction } from '@tanstack/react-query';
 
 // Sürücü formu için geçerli alanları tanımlar.
 const driverSchema = z.object({
-  name: z.string().min(2, 'Ad ən az 2 simvol olmalıdır'),
-  email: z.string().email('Düzgün email daxil edin'),
+  name: z.string().min(2, 'Ad en az 2 karakter olmalıdır'),
+  email: z.string().email('Geçerli bir e-posta girin'),
   phone: z.string().optional(),
   password: z.string().optional(),
   isActive: z.boolean().default(true),
@@ -91,7 +91,7 @@ export const DriverFormModal = ({
     if (!isEditing && !data.password) {
       setError('password', {
         type: 'required',
-        message: 'Şifrə tələb olunur',
+        message: 'Şifre gereklidir',
       });
       return;
     }
@@ -145,7 +145,7 @@ export const DriverFormModal = ({
         <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-200">
           <div>
             <p className="text-sm text-secondary-500">
-              {isEditing ? 'Sürücü məlumatlarını yenilə' : 'Yeni sürücü əlavə et'}
+              {isEditing ? 'Sürücü bilgilerini güncelle' : 'Yeni sürücü ekle'}
             </p>
             <h2 className="text-xl font-semibold text-secondary-900">
               {isEditing ? driver?.name : 'Sürücü formu'}
@@ -166,13 +166,13 @@ export const DriverFormModal = ({
         >
           <Input
             label="Ad Soyad"
-            placeholder="Sürücünün tam adı"
+            placeholder="Sürücünün tam adı (Ad Soyad)"
             error={errors.name?.message}
             {...register('name')}
           />
 
           <Input
-            label="Email"
+            label="E-posta"
             placeholder="driver@example.com"
             leftIcon={<Mail className="h-5 w-5" />}
             error={errors.email?.message}
@@ -181,7 +181,7 @@ export const DriverFormModal = ({
 
           <Input
             label="Telefon"
-            placeholder="+994 XX XXX XX XX"
+            placeholder="+90 XXX XXX XX XX"
             leftIcon={<Phone className="h-5 w-5" />}
             error={errors.phone?.message}
             {...register('phone')}
@@ -189,9 +189,9 @@ export const DriverFormModal = ({
 
           {!isEditing && (
             <Input
-              label="Şifrə"
+              label="Şifre"
               type="password"
-              placeholder="Ən azı 6 simvol"
+              placeholder="En az 6 karakter"
               error={errors.password?.message}
               {...register('password')}
             />
@@ -209,7 +209,7 @@ export const DriverFormModal = ({
               className="text-sm text-secondary-700 flex items-center gap-2"
             >
               <ShieldCheck className="h-4 w-4 text-secondary-400" />
-              Aktiv şoför
+              Aktif sürücü
             </label>
           </div>
         </form>
@@ -217,14 +217,14 @@ export const DriverFormModal = ({
         {/* Alt aksiyon butonlari */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-secondary-200 bg-secondary-50">
           <Button variant="outline" onClick={onClose}>
-            Ləğv et
+            İptal
           </Button>
           <Button
             type="submit"
             onClick={handleSubmit(onSubmit)}
             isLoading={isSubmitting}
           >
-            {isEditing ? 'Yadda saxla' : 'Əlavə et'}
+            {isEditing ? 'Kaydet' : 'Ekle'}
           </Button>
         </div>
       </div>

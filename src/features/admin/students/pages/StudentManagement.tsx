@@ -176,9 +176,9 @@ export const StudentManagement = () => {
       {/* Sayfa başlığı ve üst aksiyonlar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-secondary-900">Şagirdlər</h1>
+          <h1 className="text-3xl font-bold text-secondary-900">Öğrenciler</h1>
           <p className="mt-1 text-secondary-600">
-            Şagird məlumatlarını idarə edin və QR kodlarını yaradın
+            Öğrenci bilgilerini yönetin ve QR kodlarını oluşturun
           </p>
         </div>
         <div className="flex gap-2">
@@ -188,13 +188,13 @@ export const StudentManagement = () => {
             onClick={() => refetch()}
             disabled={isLoading}
           >
-            Yenilə
+            Yenile
           </Button>
           <Button 
             leftIcon={<Plus className="h-4 w-4" />}
             onClick={() => setIsFormModalOpen(true)}
           >
-            Yeni Şagird
+            Yeni Öğrenci
           </Button>
         </div>
       </div>
@@ -208,7 +208,7 @@ export const StudentManagement = () => {
                 <Users className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-blue-600">Cəmi</p>
+                <p className="text-sm text-blue-600">Toplam</p>
                 <p className="text-2xl font-bold text-blue-900">{stats.total}</p>
               </div>
             </div>
@@ -222,7 +222,7 @@ export const StudentManagement = () => {
                 <UserCheck className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-green-600">Aktiv</p>
+                <p className="text-sm text-green-600">Aktif</p>
                 <p className="text-2xl font-bold text-green-900">{stats.active}</p>
               </div>
             </div>
@@ -236,7 +236,7 @@ export const StudentManagement = () => {
                 <UserX className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-red-600">Deaktiv</p>
+                <p className="text-sm text-red-600">Pasif</p>
                 <p className="text-2xl font-bold text-red-900">{stats.inactive}</p>
               </div>
             </div>
@@ -250,7 +250,7 @@ export const StudentManagement = () => {
                 <GraduationCap className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-purple-600">Məktəblər</p>
+                <p className="text-sm text-purple-600">Okullar</p>
                 <p className="text-2xl font-bold text-purple-900">{stats.schools}</p>
               </div>
             </div>
@@ -265,7 +265,7 @@ export const StudentManagement = () => {
             {/* Metin bazlı arama alanı */}
             <div className="flex-1">
               <Input
-                placeholder="Ad, soyad, QR kod, məktəb və ya telefon ilə axtar..."
+                placeholder="Ad, soyad, QR kod, okul veya telefon ile ara..."
                 leftIcon={<Search className="h-5 w-5" />}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -279,9 +279,9 @@ export const StudentManagement = () => {
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')}
               >
-                <option key="all" value="all">Bütün statuslar</option>
-                <option key="active" value="active">Aktiv</option>
-                <option key="inactive" value="inactive">Deaktiv</option>
+                <option key="all" value="all">Tüm durumlar</option>
+                <option key="active" value="active">Aktif</option>
+                <option key="inactive" value="inactive">Pasif</option>
               </select>
 
               <select
@@ -289,7 +289,7 @@ export const StudentManagement = () => {
                 value={schoolFilter}
                 onChange={(e) => setSchoolFilter(e.target.value)}
               >
-                <option key="all" value="all">Bütün məktəblər</option>
+                <option key="all" value="all">Tüm okullar</option>
                 {schools.map(school => (
                   <option key={school} value={school}>{school}</option>
                 ))}
@@ -300,7 +300,7 @@ export const StudentManagement = () => {
                 value={gradeFilter}
                 onChange={(e) => setGradeFilter(e.target.value)}
               >
-                <option key="all" value="all">Bütün siniflər</option>
+                <option key="all" value="all">Tüm sınıflar</option>
                 {grades.map(grade => (
                   <option key={grade} value={grade}>{grade}</option>
                 ))}
@@ -314,7 +314,7 @@ export const StudentManagement = () => {
       <Card>
         <CardHeader className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">
-            Şagirdlər ({filteredStudents.length})
+                  Öğrenciler ({filteredStudents.length})
           </h2>
         </CardHeader>
         <CardBody className="p-0">
@@ -327,14 +327,14 @@ export const StudentManagement = () => {
               {students.length === 0 ? (
                 <>
                   <Users className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                  <p>Hələ ki şagird əlavə edilməyib.</p>
-                  <p className="text-sm mt-1">Yeni şagird əlavə etmək üçün yuxarıdakı düyməyə basın.</p>
+                  <p>Henüz öğrenci eklenmemiş.</p>
+                  <p className="text-sm mt-1">Yeni öğrenci eklemek için yukarıdaki düğmeye basın.</p>
                 </>
               ) : (
                 <>
                   <Search className="h-12 w-12 mx-auto mb-4 text-secondary-300" />
-                  <p>Axtarış nəticəsi tapılmadı.</p>
-                  <p className="text-sm mt-1">Filtirləri dəyişdirməyi yoxlayın.</p>
+                  <p>Arama sonucu bulunamadı.</p>
+                  <p className="text-sm mt-1">Filtreleri değiştirmeyi deneyin.</p>
                 </>
               )}
             </div>
@@ -349,6 +349,7 @@ export const StudentManagement = () => {
                     >
                       <div className="flex items-center gap-1">
                         Ad Soyad
+
                         <SortIcon field="firstName" />
                       </div>
                     </th>
