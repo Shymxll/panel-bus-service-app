@@ -60,20 +60,20 @@ export const StopManagement = () => {
   };
 
   if (isLoading) {
-    return <Loading size="lg" text="Dayanacaqlar yüklənir..." className="py-20" />;
+    return <Loading size="lg" text="Duraklar yükleniyor..." className="py-20" />;
   }
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-secondary-900">Dayanacaqlar</h1>
+          <h1 className="text-3xl font-bold text-secondary-900">Duraklar</h1>
           <p className="mt-1 text-secondary-600">
-            Marşrutlarda istifadə olunan bütün dayanacaqları idarə edin
+            Güzergahlarda kullanılan tüm durakları yönetin
           </p>
         </div>
         <Button leftIcon={<Plus className="h-4 w-4" />} onClick={handleCreate}>
-          Yeni dayanacaq
+          Yeni durak
         </Button>
       </div>
 
@@ -83,7 +83,7 @@ export const StopManagement = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600">Ümumi Dayanacaqlar</p>
+                <p className="text-sm font-medium text-blue-600">Toplam Durak</p>
                 <p className="mt-1 text-2xl font-bold text-blue-900">{stats.total}</p>
               </div>
               <div className="rounded-lg bg-blue-500 p-3">
@@ -97,7 +97,7 @@ export const StopManagement = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-600">Aktiv Dayanacaqlar</p>
+                <p className="text-sm font-medium text-green-600">Aktif Durak</p>
                 <p className="mt-1 text-2xl font-bold text-green-900">{stats.active}</p>
               </div>
               <div className="rounded-lg bg-green-500 p-3">
@@ -111,7 +111,7 @@ export const StopManagement = () => {
           <CardBody className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Deaktiv Dayanacaqlar</p>
+                <p className="text-sm font-medium text-gray-600">Pasif Durak</p>
                 <p className="mt-1 text-2xl font-bold text-gray-900">{stats.inactive}</p>
               </div>
               <div className="rounded-lg bg-gray-500 p-3">
@@ -126,7 +126,7 @@ export const StopManagement = () => {
         <CardBody className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Input
-              placeholder="Dayanacaq axtar (ad, ünvan, koordinat)..."
+              placeholder="Durak ara (ad, adres, koordinat)..."
               leftIcon={<Search className="h-4 w-4" />}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -142,7 +142,7 @@ export const StopManagement = () => {
               ) : (
                 <ToggleLeft className="h-5 w-5 text-secondary-400" />
               )}
-              Yalnız aktiv dayanacaqlar
+              Yalnızca aktif duraklar
             </button>
           </div>
 
@@ -151,10 +151,10 @@ export const StopManagement = () => {
               <thead className="bg-secondary-50">
                 <tr>
                   <th className="px-4 py-2 text-left font-medium text-secondary-700">Ad</th>
-                  <th className="px-4 py-2 text-left font-medium text-secondary-700">Ünvan</th>
+                  <th className="px-4 py-2 text-left font-medium text-secondary-700">Adres</th>
                   <th className="px-4 py-2 text-left font-medium text-secondary-700">Koordinat</th>
-                  <th className="px-4 py-2 text-left font-medium text-secondary-700">Status</th>
-                  <th className="px-4 py-2 text-right font-medium text-secondary-700">Əməliyyatlar</th>
+                  <th className="px-4 py-2 text-left font-medium text-secondary-700">Durum</th>
+                  <th className="px-4 py-2 text-right font-medium text-secondary-700">İşlemler</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-secondary-100 bg-white">
