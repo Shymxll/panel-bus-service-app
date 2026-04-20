@@ -16,10 +16,10 @@ import type { DailyPlan } from '@/types';
 
 // Günlük plan kayıtları için doğrulama şeması.
 const dailyPlanSchema = z.object({
-  planDate: z.string().min(1, 'Tarix tələb olunur'),
-  studentId: z.number().min(1, 'Şagird seçilməlidir'),
-  tripId: z.number().min(1, 'Səfər seçilməlidir'),
-  busId: z.number().min(1, 'Avtobus seçilməlidir'),
+  planDate: z.string().min(1, 'Tarih gereklidir'),
+  studentId: z.number().min(1, 'Öğrenci seçilmelidir'),
+  tripId: z.number().min(1, 'Sefer seçilmelidir'),
+  busId: z.number().min(1, 'Otobüs seçilmelidir'),
   stopId: z.number().optional(),
   isBoarding: z.boolean().default(true),
   notes: z.string().optional(),
@@ -203,7 +203,7 @@ export const DailyPlanFormModal = ({
         {/* Başlık */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-200">
           <h2 className="text-xl font-semibold text-secondary-900">
-            {isEditing ? 'Planı Redaktə Et' : 'Yeni Plan Əlavə Et'}
+            {isEditing ? 'Planı Düzenle' : 'Yeni Plan Ekle'}
           </h2>
           <button
             onClick={onClose}
@@ -218,7 +218,7 @@ export const DailyPlanFormModal = ({
           <div className="space-y-4">
             {/* Plan tarihi */}
             <Input
-              label="Plan Tarixi"
+              label="Plan Tarihi"
               type="date"
               {...register('planDate')}
               error={errors.planDate?.message}
@@ -227,7 +227,7 @@ export const DailyPlanFormModal = ({
             {/* Öğrenci seçimi */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
-                Şagird <span className="text-red-500">*</span>
+                Öğrenci <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('studentId', { valueAsNumber: true })}
@@ -235,7 +235,7 @@ export const DailyPlanFormModal = ({
                   errors.studentId ? 'border-red-500' : 'border-secondary-300'
                 } bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500`}
               >
-                <option value={0}>Şagird seçin</option>
+                <option value={0}>Öğrenci seçin</option>
                 {students
                   .filter(s => s.isActive)
                   .map(student => (
