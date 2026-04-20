@@ -10,10 +10,10 @@ import type { School } from '@/types';
 
 // Form validation şeması
 const schoolSchema = z.object({
-  name: z.string().min(2, 'Məktəb adı ən azı 2 simvol olmalıdır'),
+  name: z.string().min(2, 'Okul adı en az 2 karakter olmalıdır'),
   address: z.string().optional(),
   phone: z.string().optional(),
-  email: z.string().email('Düzgün email daxil edin').optional().or(z.literal('')),
+  email: z.string().email('Geçerli bir e-posta girin').optional().or(z.literal('')),
   isActive: z.boolean().default(true),
 });
 
@@ -88,32 +88,32 @@ export const SchoolFormModal = ({ isOpen, onClose, school }: SchoolFormModalProp
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={isEditing ? 'Məktəbi Redaktə Et' : 'Yeni Məktəb'}
+      title={isEditing ? 'Okulu Düzenle' : 'Yeni Okul'}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Məktəb Adı */}
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-secondary-700 mb-2">
-            Məktəb Adı <span className="text-red-500">*</span>
+            Okul Adı <span className="text-red-500">*</span>
           </label>
           <Input
             id="name"
             {...register('name')}
             error={errors.name?.message}
-            placeholder="Məktəb adını daxil edin"
+            placeholder="Okul adını girin"
           />
         </div>
 
         {/* Ünvan */}
         <div>
           <label htmlFor="address" className="block text-sm font-medium text-secondary-700 mb-2">
-            Ünvan
+            Adres
           </label>
           <Input
             id="address"
             {...register('address')}
             error={errors.address?.message}
-            placeholder="Məktəbin ünvanını daxil edin"
+            placeholder="Okulun adresini girin"
           />
         </div>
 
@@ -127,14 +127,14 @@ export const SchoolFormModal = ({ isOpen, onClose, school }: SchoolFormModalProp
             type="tel"
             {...register('phone')}
             error={errors.phone?.message}
-            placeholder="+994 XX XXX XX XX"
+            placeholder="+90 XXX XXX XX XX"
           />
         </div>
 
         {/* Email */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-secondary-700 mb-2">
-            Email
+            E-posta
           </label>
           <Input
             id="email"
@@ -154,17 +154,17 @@ export const SchoolFormModal = ({ isOpen, onClose, school }: SchoolFormModalProp
             className="h-4 w-4 rounded border-secondary-300 text-primary-600 focus:ring-primary-600"
           />
           <label htmlFor="isActive" className="text-sm font-medium text-secondary-700">
-            Aktiv
+            Aktif
           </label>
         </div>
 
         {/* Actions */}
         <div className="flex justify-end gap-3 pt-6">
           <Button type="button" variant="outline" onClick={onClose}>
-            Ləğv et
+            İptal
           </Button>
           <Button type="submit" isLoading={isCreating || isUpdating}>
-            {isEditing ? 'Yenilə' : 'Yarat'}
+            {isEditing ? 'Güncelle' : 'Oluştur'}
           </Button>
         </div>
       </form>

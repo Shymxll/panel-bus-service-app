@@ -86,7 +86,7 @@ export const StudentQrModal = ({ isOpen, onClose, student }: StudentQrModalProps
             <div class="card">
               <div class="name">${student.firstName} ${student.lastName}</div>
               <div class="info">${student.school}</div>
-              <div class="info">Sinif: ${student.grade}</div>
+              <div class="info">Sınıf: ${student.grade}</div>
               <div class="qr-code">
                 <img src="${generateQrSvg(student.qrCode, 200)}" alt="QR Kod" />
               </div>
@@ -143,7 +143,7 @@ export const StudentQrModal = ({ isOpen, onClose, student }: StudentQrModalProps
               {student.firstName} {student.lastName}
             </h3>
             <p className="text-secondary-600">{student.school}</p>
-            <p className="text-sm text-secondary-500">Sinif: {student.grade}</p>
+            <p className="text-sm text-secondary-500">Sınıf: {student.grade}</p>
 
             {/* QR Code */}
             <div className="my-6 flex justify-center">
@@ -170,13 +170,13 @@ export const StudentQrModal = ({ isOpen, onClose, student }: StudentQrModalProps
             leftIcon={<Download className="h-4 w-4" />}
             onClick={handleDownload}
           >
-            Yüklə
+            İndir
           </Button>
           <Button
             leftIcon={<Printer className="h-4 w-4" />}
             onClick={handlePrint}
           >
-            Çap et
+            Yazdır
           </Button>
         </div>
       </div>

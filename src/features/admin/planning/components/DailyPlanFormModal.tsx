@@ -252,7 +252,7 @@ export const DailyPlanFormModal = ({
             {/* Sefere göre rota seçimi */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
-                Səfər <span className="text-red-500">*</span>
+                Sefer <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('tripId', { valueAsNumber: true })}
@@ -263,18 +263,18 @@ export const DailyPlanFormModal = ({
               >
                 <option value={0}>
                   {isTripsLoading
-                    ? 'Yüklənir...'
+                    ? 'Yükleniyor...'
                     : tripsError
-                      ? 'Xəta: Səfərlər yüklənə bilmədi'
+                      ? 'Hata: Seferler yüklenemedi'
                       : trips.length === 0
-                        ? 'Səfər tapılmadı (əvvəlcə səfər yaradın)'
-                        : 'Səfər seçin'}
+                        ? 'Sefer bulunamadı (önce sefer oluşturun)'
+                        : 'Sefer seçin'}
                 </option>
                 {trips.map((trip) => {
                   const route = routes.find(r => r.id === trip.routeId);
                   return (
                     <option key={trip.id} value={trip.id}>
-                      {route?.name || `Marşrut #${trip.routeId}`} - {trip.departureTime}
+                      {route?.name || `Güzergah #${trip.routeId}`} - {trip.departureTime}
                     </option>
                   );
                 })}
@@ -284,12 +284,12 @@ export const DailyPlanFormModal = ({
               )}
               {tripsError && (
                 <p className="mt-1 text-sm text-red-500">
-                  ⚠️ Səfərlər yüklənə bilmədi: {tripsError instanceof Error ? tripsError.message : 'Naməlum xəta'}
+                  ⚠️ Seferler yüklenemedi: {tripsError instanceof Error ? tripsError.message : 'Bilinmeyen hata'}
                 </p>
               )}
               {!isTripsLoading && !tripsError && trips.length === 0 && (
                 <p className="mt-1 text-sm text-amber-600">
-                  ℹ️ Heç bir səfər tapılmadı. Əvvəlcə marşrut üçün səfər yaratmalısınız.
+                  ℹ️ Hiç sefer bulunamadı. Önce güzergah için sefer oluşturmalısınız.
                 </p>
               )}
             </div>
@@ -297,7 +297,7 @@ export const DailyPlanFormModal = ({
             {/* Otobus seçimi */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
-                Avtobus <span className="text-red-500">*</span>
+                Otobüs <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('busId', { valueAsNumber: true })}
@@ -305,13 +305,13 @@ export const DailyPlanFormModal = ({
                   errors.busId ? 'border-red-500' : 'border-secondary-300'
                 } bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500`}
               >
-                <option value={0}>Avtobus seçin</option>
+                <option value={0}>Otobüs seçin</option>
                 {buses
                   .filter(b => b.isActive)
                   .map(bus => {
                     // Sürücü bilgisini driverId'ye göre bul
                     const driver = bus.driverId ? driverMap.get(bus.driverId) : null;
-                    const driverName = driver?.name || 'Sürücü yoxdur';
+                    const driverName = driver?.name || 'Sürücü yok';
                     return (
                       <option key={bus.id} value={bus.id}>
                         {bus.plateNumber} - {driverName}
@@ -327,7 +327,7 @@ export const DailyPlanFormModal = ({
             {/* Durak bilgisi */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
-                Dayanacaq <span className="text-secondary-400 text-xs">(istəyə bağlı)</span>
+                Durak <span className="text-secondary-400 text-xs">(isteğe bağlı)</span>
               </label>
               <select
                 {...register('stopId', {
@@ -339,7 +339,7 @@ export const DailyPlanFormModal = ({
                 })}
                 className="w-full rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
               >
-                <option value="">Dayanacaq seçin (istəyə bağlı)</option>
+                <option value="">Durak seçin (isteğe bağlı)</option>
                 {availableStops
                   .filter(s => s.isActive)
                   .map(stop => (
@@ -359,7 +359,7 @@ export const DailyPlanFormModal = ({
                   className="rounded border-secondary-300 text-primary-600 focus:ring-primary-500"
                 />
                 <span className="text-sm font-medium text-secondary-700">
-                  Minmə planı (işarələnməzsə düşmə planı)
+                  Biniş planı (işaretlenmezse iniş planı)
                 </span>
               </label>
             </div>
@@ -367,13 +367,13 @@ export const DailyPlanFormModal = ({
             {/* Ilave notlar */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
-                Qeydlər
+                Notlar
               </label>
               <textarea
                 {...register('notes')}
                 rows={3}
                 className="w-full rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
-                placeholder="Əlavə qeydlər..."
+                placeholder="Ek notlar..."
               />
             </div>
           </div>
@@ -381,14 +381,14 @@ export const DailyPlanFormModal = ({
           {/* Alt aksiyonlar */}
           <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-secondary-200">
             <Button variant="secondary" onClick={onClose} type="button">
-              Ləğv et
+              İptal
             </Button>
             <Button
               type="submit"
               isLoading={isCreating || isUpdating}
               disabled={isCreating || isUpdating}
             >
-              {isEditing ? 'Yenilə' : 'Əlavə et'}
+              {isEditing ? 'Güncelle' : 'Ekle'}
             </Button>
           </div>
         </form>

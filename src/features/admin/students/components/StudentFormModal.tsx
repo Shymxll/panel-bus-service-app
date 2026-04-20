@@ -12,11 +12,11 @@ import type { Student } from '@/types';
 
 // Form validasyonunu merkezileştiren Zod şeması.
 const studentSchema = z.object({
-  firstName: z.string().min(2, 'Ad ən az 2 simvol olmalıdır'),
-  lastName: z.string().min(2, 'Soyad ən az 2 simvol olmalıdır'),
-  qrCode: z.string().min(5, 'QR kod ən az 5 simvol olmalıdır'),
-  schoolId: z.coerce.number().min(1, 'Məktəb seçilməlidir'),
-  grade: z.string().min(1, 'Sinif tələb olunur'),
+  firstName: z.string().min(2, 'Ad en az 2 karakter olmalıdır'),
+  lastName: z.string().min(2, 'Soyad en az 2 karakter olmalıdır'),
+  qrCode: z.string().min(5, 'QR kod en az 5 karakter olmalıdır'),
+  schoolId: z.coerce.number().min(1, 'Okul seçilmelidir'),
+  grade: z.string().min(1, 'Sınıf gereklidir'),
   parentName: z.string().optional(),
   parentPhone: z.string().optional(),
   address: z.string().optional(),
@@ -145,7 +145,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-200">
           <h2 className="text-xl font-semibold text-secondary-900">
-            {isEditing ? 'Şagirdi redaktə et' : 'Yeni şagird əlavə et'}
+            {isEditing ? 'Öğrenciyi düzenle' : 'Yeni öğrenci ekle'}
           </h2>
           <button
             onClick={onClose}
@@ -161,13 +161,13 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Ad"
-              placeholder="Şagirdin adı"
+              placeholder="Öğrencinin adı"
               error={errors.firstName?.message}
               {...register('firstName')}
             />
             <Input
               label="Soyad"
-              placeholder="Şagirdin soyadı"
+              placeholder="Öğrencinin soyadı"
               error={errors.lastName?.message}
               {...register('lastName')}
             />
@@ -191,7 +191,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
                 type="button"
                 variant="outline"
                 onClick={handleGenerateQrCode}
-                title="Yeni QR kod yarat"
+                title="Yeni QR kod oluştur"
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -203,7 +203,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
             {/* Okul Seçimi - Dropdown */}
             <div>
               <label className="block text-sm font-medium text-secondary-700 mb-1">
-                Məktəb <span className="text-red-500">*</span>
+                Okul <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary-400 pointer-events-none" />
@@ -216,10 +216,10 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
                       : 'border-secondary-300 focus:border-primary-500 focus:ring-primary-500'
                   } text-sm focus:outline-none focus:ring-1 disabled:bg-secondary-50 disabled:text-secondary-500`}
                 >
-                  <option value="">Məktəb seçin...</option>
+                  <option value="">Okul seçin...</option>
                   {schools
                     .filter(school => school.isActive)
-                    .sort((a, b) => a.name.localeCompare(b.name, 'az'))
+                    .sort((a, b) => a.name.localeCompare(b.name, 'tr'))
                     .map((school) => (
                       <option key={school.id} value={school.id}>
                         {school.name}
@@ -231,13 +231,13 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
                 <p className="mt-1 text-xs text-red-600">{errors.schoolId.message}</p>
               )}
               {isSchoolsLoading && (
-                <p className="mt-1 text-xs text-secondary-500">Məktəblər yüklənir...</p>
+                <p className="mt-1 text-xs text-secondary-500">Okullar yükleniyor...</p>
               )}
             </div>
             
             <Input
-              label="Sinif"
-              placeholder="Sinif (məs: 5-A)"
+              label="Sınıf"
+              placeholder="Sınıf (örn: 5-A)"
               error={errors.grade?.message}
               {...register('grade')}
             />
@@ -246,14 +246,14 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
           {/* Velilere ait isteğe bağlı bilgiler */}
           <div className="grid grid-cols-2 gap-4">
             <Input
-              label="Valideyn adı"
-              placeholder="Valideynin adı (ixtiyari)"
+              label="Veli adı"
+              placeholder="Velinin adı (isteğe bağlı)"
               error={errors.parentName?.message}
               {...register('parentName')}
             />
             <Input
-              label="Valideyn telefonu"
-              placeholder="+994 XX XXX XX XX"
+              label="Veli telefonu"
+              placeholder="+90 XXX XXX XX XX"
               error={errors.parentPhone?.message}
               {...register('parentPhone')}
             />
@@ -262,12 +262,12 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
           {/* Adres açıklaması */}
           <div>
             <label className="block text-sm font-medium text-secondary-700 mb-1">
-              Ünvan
+              Adres
             </label>
             <textarea
               className="w-full rounded-lg border border-secondary-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 resize-none"
               rows={2}
-              placeholder="Şagirdin ünvanı (ixtiyari)"
+              placeholder="Öğrencinin adresi (isteğe bağlı)"
               {...register('address')}
             />
           </div>
@@ -281,7 +281,7 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
               {...register('isActive')}
             />
             <label htmlFor="isActive" className="text-sm text-secondary-700">
-              Aktiv şagird
+              Aktif öğrenci
             </label>
           </div>
         </form>
@@ -289,14 +289,14 @@ export const StudentFormModal = ({ isOpen, onClose, student }: StudentFormModalP
         {/* Footer: kaydet veya vazgeç aksiyonları */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-secondary-200 bg-secondary-50">
           <Button variant="outline" onClick={onClose}>
-            Ləğv et
+            İptal
           </Button>
           <Button
             type="submit"
             onClick={handleSubmit(onSubmit)}
             isLoading={isCreating || isUpdating}
           >
-            {isEditing ? 'Yadda saxla' : 'Əlavə et'}
+            {isEditing ? 'Kaydet' : 'Ekle'}
           </Button>
         </div>
       </div>
