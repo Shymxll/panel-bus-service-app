@@ -441,7 +441,7 @@ export const BoardingPage = () => {
   // Biniş kaydı oluştur
   const handleCreateBoarding = async () => {
     if (!scannedStudent || !selectedTripId || !myBus) {
-      toast.error('Şagird, sefer və ya avtobus seçilməyib');
+      toast.error('Öğrenci, sefer veya otobüs seçilmedi');
       return;
     }
 
@@ -455,7 +455,7 @@ export const BoardingPage = () => {
       if (scannedStudent.qrCode) {
         processedQrCodesRef.current.add(scannedStudent.qrCode);
       }
-      toast.error('Bu şagird artıq bugün minib!');
+      toast.error('Bu öğrenci bugün zaten bindi!');
       setScannedStudent(null);
       return;
     }
@@ -515,9 +515,9 @@ export const BoardingPage = () => {
       {/* Başlık */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-secondary-900 sm:text-3xl">Minənlər</h1>
+          <h1 className="text-2xl font-bold text-secondary-900 sm:text-3xl">Biniş</h1>
           <p className="mt-1 text-secondary-600">
-            QR kod oxuyaraq şagirdlərin minmə qeydini yaradın
+            QR kod okuyarak öğrencilerin biniş kaydını oluşturun
           </p>
         </div>
 
@@ -538,7 +538,7 @@ export const BoardingPage = () => {
             }
             disabled={isLoadingBoarding || isLoadingBuses}
           >
-            Yenilə
+            Yenile
           </Button>
         </div>
       </div>
