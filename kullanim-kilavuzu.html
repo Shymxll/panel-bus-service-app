@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servis Takip Sistemi – Kullanım Kılavuzu</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:    #1a56db;
+      --primary-dk: #1e429f;
+      --accent:     #f59e0b;
+      --accent-lt:  #fef3c7;
+      --green:      #059669;
+      --green-lt:   #d1fae5;
+      --red:        #dc2626;
+      --red-lt:     #fee2e2;
+      --purple:     #7c3aed;
+      --purple-lt:  #ede9fe;
+      --gray-50:    #f9fafb;
+      --gray-100:   #f3f4f6;
+      --gray-200:   #e5e7eb;
+      --gray-300:   #d1d5db;
+      --gray-600:   #4b5563;
+      --gray-700:   #374151;
+      --gray-800:   #1f2937;
+      --gray-900:   #111827;
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.12);
+      --shadow:     0 4px 16px rgba(0,0,0,.12);
+      --shadow-lg:  0 10px 40px rgba(0,0,0,.16);
+      --radius:     12px;
+      --radius-lg:  20px;
+    }
+
+    html { font-size: 15px; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--gray-800);
+      background: #fff;
+      line-height: 1.65;
+    }
+
+    /* ===== COVER PAGE ===== */
+    .cover {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a56db 0%, #1e429f 40%, #312e81 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -120px; left: -120px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.05);
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; right: -80px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: rgba(245,158,11,.12);
+    }
+
+    .cover-badge {
+      display: inline-block;
+      background: rgba(245,158,11,.2);
+      border: 1px solid rgba(245,158,11,.5);
+      color: #fbbf24;
+      border-radius: 999px;
+      padding: .35rem 1.2rem;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      position: relative; z-index: 1;
+    }
+
+    .cover-bus-icon {
+      font-size: 6rem;
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,.3));
+    }
+
+    .cover h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      margin-bottom: 1rem;
+      position: relative; z-index: 1;
+    }
+
+    .cover h1 span {
+      color: #fbbf24;
+    }
+
+    .cover .subtitle {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,.75);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      position: relative; z-index: 1;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative; z-index: 1;
+    }
+
+    .cover-meta-item {
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--radius);
+      padding: .8rem 1.5rem;
+      color: #fff;
+      font-size: .9rem;
+    }
+
+    .cover-meta-item strong {
+      display: block;
+      font-size: 1.1rem;
+      color: #fbbf24;
+    }
+
+    .cover-divider {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      border-radius: 2px;
+      margin: 2rem auto;
+      position: relative; z-index: 1;
+    }
+
+    /* ===== TABLE OF CONTENTS ===== */
+    .toc-page {
+      padding: 4rem 3rem;
+      page-break-after: always;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: .75rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 20px; height: 2px;
+      background: var(--primary);
+      border-radius: 1px;
+    }
+
+    .page-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      margin-bottom: .5rem;
+    }
+
+    .page-title span { color: var(--primary); }
+
+    .page-desc {
+      color: var(--gray-600);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: grid;
+      gap: .6rem;
+    }
+
+    .toc-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: .9rem 1.2rem;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--gray-200);
+      transition: background .15s;
+    }
+
+    .toc-item:hover { background: var(--gray-50); }
+
+    .toc-num {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toc-item.green .toc-num { background: var(--green); }
+    .toc-item.purple .toc-num { background: var(--purple); }
+    .toc-item.amber .toc-num { background: var(--accent); }
+    .toc-item.red .toc-num { background: var(--red); }
+
+    .toc-text { flex: 1; }
+    .toc-text strong { display: block; font-size: .95rem; color: var(--gray-800); }
+    .toc-text span { font-size: .8rem; color: var(--gray-600); }
+
+    .toc-dots {
+      flex: 1;
+      height: 1px;
+      border-bottom: 2px dotted var(--gray-200);
+      margin: 0 .5rem;
+    }
+
+    /* ===== MAIN CONTENT PAGES ===== */
+    .content-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 3rem;
+      page-break-after: always;
+    }
+
+    .content-page:last-child { page-break-after: auto; }
+
+    /* ===== CHAPTER HEADER ===== */
+    .chapter-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 2.5rem;
+    }
+
+    .chapter-header.blue  { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-left: 5px solid var(--primary); }
+    .chapter-header.green { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-left: 5px solid var(--green); }
+    .chapter-header.amber { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-left: 5px solid var(--accent); }
+    .chapter-header.purple { background: linear-gradient(135deg, #faf5ff, #ede9fe); border-left: 5px solid var(--purple); }
+
+    .chapter-icon {
+      font-size: 3rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .chapter-header h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -.01em;
+      margin-bottom: .3rem;
+    }
+
+    .chapter-header p {
+      color: var(--gray-600);
+      font-size: .95rem;
+      max-width: 500px;
+    }
+
+    /* ===== CARDS ===== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: .75rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: .4rem;
+    }
+
+    .card p {
+      font-size: .85rem;
+      color: var(--gray-600);
+      line-height: 1.5;
+    }
+
+    .card.blue   { border-top: 3px solid var(--primary); }
+    .card.green  { border-top: 3px solid var(--green); }
+    .card.amber  { border-top: 3px solid var(--accent); }
+    .card.purple { border-top: 3px solid var(--purple); }
+    .card.red    { border-top: 3px solid var(--red); }
+
+    /* ===== STEPS ===== */
+    .steps {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding: 1.2rem 1.4rem;
+      border-radius: var(--radius);
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+    }
+
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: .9rem;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(26,86,219,.3);
+    }
+
+    .step.green .step-num  { background: var(--green); box-shadow: 0 2px 8px rgba(5,150,105,.3); }
+    .step.amber .step-num  { background: var(--accent); box-shadow: 0 2px 8px rgba(245,158,11,.3); }
+    .step.purple .step-num { background: var(--purple); box-shadow: 0 2px 8px rgba(124,58,237,.3); }
+    .step.red .step-num    { background: var(--red); box-shadow: 0 2px 8px rgba(220,38,38,.3); }
+
+    .step-body h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: .25rem;
+    }
+
+    .step-body p {
+      font-size: .85rem;
+      color: var(--gray-600);
+    }
+
+    .step-body code {
+      background: var(--gray-200);
+      padding: .1rem .4rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: .82rem;
+      color: var(--gray-800);
+    }
+
+    /* ===== ALERTS / CALLOUTS ===== */
+    .callout {
+      display: flex;
+      gap: 1rem;
+      padding: 1.1rem 1.4rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      font-size: .9rem;
+    }
+
+    .callout-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+    .callout h4 { font-size: .9rem; font-weight: 700; margin-bottom: .2rem; }
+    .callout p  { line-height: 1.5; }
+
+    .callout.info   { background: #eff6ff; border: 1.5px solid #bfdbfe; color: #1e3a8a; }
+    .callout.warn   { background: var(--accent-lt); border: 1.5px solid #fcd34d; color: #78350f; }
+    .callout.tip    { background: var(--green-lt); border: 1.5px solid #6ee7b7; color: #064e3b; }
+    .callout.danger { background: var(--red-lt); border: 1.5px solid #fca5a5; color: #7f1d1d; }
+
+    /* ===== TABLE ===== */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      font-size: .88rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .data-table thead tr {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .data-table thead th {
+      padding: .85rem 1.1rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: .82rem;
+      letter-spacing: .04em;
+    }
+
+    .data-table tbody tr:nth-child(even) { background: var(--gray-50); }
+    .data-table tbody tr:hover { background: #eff6ff; }
+
+    .data-table tbody td {
+      padding: .8rem 1.1rem;
+      border-bottom: 1px solid var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .data-table tbody td:first-child {
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    /* ===== BADGES ===== */
+    .badge {
+      display: inline-block;
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    .badge.blue   { background: #dbeafe; color: #1e40af; }
+    .badge.green  { background: var(--green-lt); color: #065f46; }
+    .badge.amber  { background: var(--accent-lt); color: #92400e; }
+    .badge.purple { background: var(--purple-lt); color: #5b21b6; }
+    .badge.red    { background: var(--red-lt); color: #991b1b; }
+    .badge.gray   { background: var(--gray-200); color: var(--gray-700); }
+
+    /* ===== SECTION DIVIDER ===== */
+    .divider {
+      border: none;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      margin: 2rem 0;
+      border-radius: 1px;
+    }
+
+    /* ===== FEATURE SHOWCASE ===== */
+    .feature-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-box {
+      padding: 1.4rem;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--gray-200);
+    }
+
+    .feature-box .fbox-head {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: .75rem;
+    }
+
+    .feature-box .fbox-icon {
+      font-size: 1.3rem;
+    }
+
+    .feature-box ul {
+      list-style: none;
+      display: grid;
+      gap: .4rem;
+    }
+
+    .feature-box ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: .5rem;
+      font-size: .85rem;
+      color: var(--gray-700);
+    }
+
+    .feature-box ul li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: .05rem;
+    }
+
+    /* ===== WORKFLOW TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: .75rem;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--primary), var(--green));
+      border-radius: 1px;
+    }
+
+    .tl-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .tl-item:last-child { padding-bottom: 0; }
+
+    .tl-dot {
+      position: absolute;
+      left: -2.05rem;
+      top: .2rem;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--primary);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .tl-dot span { font-size: .65rem; color: #fff; font-weight: 700; }
+    .tl-dot.green  { background: var(--green); box-shadow: 0 0 0 2px var(--green); }
+    .tl-dot.amber  { background: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+    .tl-dot.purple { background: var(--purple); box-shadow: 0 0 0 2px var(--purple); }
+
+    .tl-content h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: .2rem;
+    }
+
+    .tl-content p {
+      font-size: .85rem;
+      color: var(--gray-600);
+    }
+
+    /* ===== SCREEN MOCKUP ===== */
+    .screen-mock {
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 2rem;
+    }
+
+    .screen-mock .mock-topbar {
+      background: var(--primary);
+      padding: .6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .mock-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .mock-dot.red   { background: #ff5f57; }
+    .mock-dot.amber { background: #ffbe2e; }
+    .mock-dot.green { background: #27c840; }
+
+    .mock-topbar .mock-url {
+      flex: 1;
+      background: rgba(255,255,255,.15);
+      border-radius: 6px;
+      padding: .25rem .75rem;
+      font-size: .75rem;
+      color: rgba(255,255,255,.85);
+      margin-left: .5rem;
+    }
+
+    .mock-body {
+      background: var(--gray-50);
+      padding: 1.5rem;
+    }
+
+    /* ===== ROLE PILL ===== */
+    .role-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .35rem 1rem;
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 700;
+      margin-right: .5rem;
+      margin-bottom: .5rem;
+    }
+
+    .role-pill.admin  { background: #dbeafe; color: #1e40af; }
+    .role-pill.driver { background: var(--green-lt); color: #065f46; }
+
+    /* ===== HIGHLIGHT BOX ===== */
+    .highlight-box {
+      background: linear-gradient(135deg, #1a56db, #1e429f);
+      color: #fff;
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .highlight-box::after {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+
+    .highlight-box h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: .5rem;
+    }
+
+    .highlight-box p {
+      opacity: .85;
+      font-size: .9rem;
+    }
+
+    .highlight-box .hb-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hb-stat { text-align: center; }
+    .hb-stat .num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fbbf24;
+      display: block;
+    }
+    .hb-stat .lbl { font-size: .75rem; opacity: .8; }
+
+    /* ===== QR SECTION ===== */
+    .qr-section {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 1.5rem;
+      align-items: start;
+      margin-bottom: 2rem;
+    }
+
+    .qr-placeholder {
+      width: 200px;
+      height: 200px;
+      border: 3px dashed var(--gray-300);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+      font-size: .8rem;
+      text-align: center;
+      gap: .5rem;
+      background: var(--gray-50);
+    }
+
+    .qr-placeholder span { font-size: 3rem; }
+
+    /* ===== TIPS GRID ===== */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .tip-card {
+      padding: 1.2rem;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--gray-200);
+      background: #fff;
+    }
+
+    .tip-card .tip-icon { font-size: 1.8rem; margin-bottom: .6rem; }
+    .tip-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: .3rem; color: var(--gray-900); }
+    .tip-card p  { font-size: .82rem; color: var(--gray-600); line-height: 1.5; }
+
+    /* ===== FOOTER STRIP ===== */
+    .footer-strip {
+      background: var(--gray-900);
+      color: rgba(255,255,255,.7);
+      padding: 2rem 3rem;
+      font-size: .82rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-strip strong { color: #fbbf24; }
+
+    .page-num {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 2rem;
+      font-size: .75rem;
+      color: var(--gray-400);
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      html { font-size: 13px; }
+      body { background: #fff; }
+      .cover { min-height: 100vh; }
+      .content-page, .toc-page { max-width: 100%; padding: 2rem 2.5rem; }
+      .page-num { display: none; }
+      .footer-strip { display: none; }
+      a { color: inherit; text-decoration: none; }
+      .screen-mock { box-shadow: none; }
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== KAPAK ==================== -->
+<div class="cover">
+  <div class="cover-badge">v1.0 — Nisan 2026</div>
+  <div class="cover-bus-icon">🚌</div>
+  <h1>Servis Takip Sistemi<br><span>Kullanım Kılavuzu</span></h1>
+  <p class="subtitle">Okul servisi öğrenci takibini kolaylaştıran akıllı platform — Yönetici ve Sürücü rehberi</p>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <strong>👤 Yönetici</strong>
+      Tüm yönetim paneli
+    </div>
+    <div class="cover-meta-item">
+      <strong>🚗 Sürücü</strong>
+      Günlük operasyon
+    </div>
+    <div class="cover-meta-item">
+      <strong>📱 QR Takip</strong>
+      Biniş &amp; iniş kaydı
+    </div>
+    <div class="cover-meta-item">
+      <strong>📊 Raporlama</strong>
+      Günlük analizler
+    </div>
+  </div>
+</div>
+
+<!-- ==================== İÇİNDEKİLER ==================== -->
+<div class="toc-page">
+  <div class="section-label">Kılavuz</div>
+  <h1 class="page-title">İ<span>çindekiler</span></h1>
+  <p class="page-desc">Bu kılavuz, Servis Takip Sistemi'nin tüm özelliklerini ve kullanım adımlarını kapsamaktadır.</p>
+
+  <ul class="toc-list">
+    <li class="toc-item">
+      <div class="toc-num">1</div>
+      <div class="toc-text"><strong>Sisteme Giriş ve Genel Bakış</strong><span>Platformun amacı, roller ve temel kavramlar</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--primary);">5</span>
+    </li>
+    <li class="toc-item blue">
+      <div class="toc-num">2</div>
+      <div class="toc-text"><strong>Giriş Yapma (Login)</strong><span>Yönetici ve Sürücü giriş ekranları</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--primary);">6</span>
+    </li>
+    <li class="toc-item blue">
+      <div class="toc-num">3</div>
+      <div class="toc-text"><strong>Yönetici Paneli</strong><span>Dashboard, okullar, öğrenciler, sürücüler, otobüsler</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--primary);">7</span>
+    </li>
+    <li class="toc-item blue">
+      <div class="toc-num">4</div>
+      <div class="toc-text"><strong>Güzergah ve Durak Yönetimi</strong><span>Rota oluşturma, duraklar ve sefer tanımları</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--primary);">9</span>
+    </li>
+    <li class="toc-item blue">
+      <div class="toc-num">5</div>
+      <div class="toc-text"><strong>Günlük Planlama</strong><span>Tarih bazlı plan oluşturma ve yönetimi</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--primary);">11</span>
+    </li>
+    <li class="toc-item blue">
+      <div class="toc-num">6</div>
+      <div class="toc-text"><strong>Raporlama</strong><span>Biniş/iniş raporları ve filtreler</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--primary);">12</span>
+    </li>
+    <li class="toc-item green">
+      <div class="toc-num" style="background:var(--green);">7</div>
+      <div class="toc-text"><strong>Sürücü Paneli</strong><span>Dashboard ve günlük istatistikler</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--green);">13</span>
+    </li>
+    <li class="toc-item green">
+      <div class="toc-num" style="background:var(--green);">8</div>
+      <div class="toc-text"><strong>Biniş İşlemi (QR Tarama)</strong><span>Öğrenci biniş kaydı oluşturma</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--green);">14</span>
+    </li>
+    <li class="toc-item green">
+      <div class="toc-num" style="background:var(--green);">9</div>
+      <div class="toc-text"><strong>İniş İşlemi (QR Tarama)</strong><span>Öğrenci iniş kaydı oluşturma</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--green);">15</span>
+    </li>
+    <li class="toc-item amber">
+      <div class="toc-num" style="background:var(--accent);">10</div>
+      <div class="toc-text"><strong>Sık Sorulan Sorular ve İpuçları</strong><span>SSS, hata çözümleri ve öneriler</span></div>
+      <div class="toc-dots"></div>
+      <span style="font-weight:700;color:var(--accent);">16</span>
+    </li>
+  </ul>
+</div>
+
+<!-- ==================== BÖLÜM 1: Genel Bakış ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 1</div>
+  <h1 class="page-title">Sisteme Giriş ve <span>Genel Bakış</span></h1>
+  <p class="page-desc">Platform hakkında temel bilgiler, kullanıcı rolleri ve ana kavramlar.</p>
+
+  <div class="highlight-box">
+    <h3>🚌 Servis Takip Sistemi Nedir?</h3>
+    <p>Okul servisi öğrenci takibini dijitalleştiren, QR kod teknolojisi ile biniş/iniş kayıtlarını anlık olarak izleyen ve yöneticilere kapsamlı raporlama imkânı sunan akıllı bir platformdur.</p>
+    <div class="hb-stats">
+      <div class="hb-stat"><span class="num">2</span><span class="lbl">Kullanıcı Rolü</span></div>
+      <div class="hb-stat"><span class="num">10+</span><span class="lbl">Yönetim Ekranı</span></div>
+      <div class="hb-stat"><span class="num">QR</span><span class="lbl">Hızlı Tarama</span></div>
+      <div class="hb-stat"><span class="num">📊</span><span class="lbl">Günlük Rapor</span></div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;color:var(--gray-900);">Kullanıcı Rolleri</h3>
+
+  <div class="card-grid">
+    <div class="card blue">
+      <div class="card-icon">👤</div>
+      <h3>Yönetici (Admin)</h3>
+      <p>Okullar, öğrenciler, sürücüler, otobüsler, güzergahlar, duraklar, günlük planlar ve raporları yöneten tam yetkili kullanıcı.</p>
+      <br/>
+      <span class="badge blue">Admin Paneli</span>
+    </div>
+    <div class="card green">
+      <div class="card-icon">🚗</div>
+      <h3>Sürücü (Driver)</h3>
+      <p>Günlük operasyonel görevleri yürüten; biniş ve iniş kayıtlarını QR kod veya manuel giriş ile oluşturan sürücü kullanıcı.</p>
+      <br/>
+      <span class="badge green">Sürücü Paneli</span>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;color:var(--gray-900);">Temel Kavramlar</h3>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Kavram</th>
+        <th>Açıklama</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>📍 Durak</td><td>Servis aracının öğrenci aldığı/bıraktığı coğrafi noktalar.</td></tr>
+      <tr><td>🗺️ Güzergah</td><td>Birden fazla durağı birbirine bağlayan servis rotası.</td></tr>
+      <tr><td>🚌 Sefer</td><td>Belirli bir güzergah ve otobüse ait tek yönlü yolculuk.</td></tr>
+      <tr><td>📅 Günlük Plan</td><td>Belirli bir tarihe ait öğrenci–sefer atama planı.</td></tr>
+      <tr><td>📲 QR Kod</td><td>Her öğrenciye özel, biniş/iniş takibi için kullanılan kod.</td></tr>
+      <tr><td>📋 Biniş/İniş</td><td>Sürücünün oluşturduğu gerçek zamanlı hareket kaydı.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== BÖLÜM 2: Giriş ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 2</div>
+  <h1 class="page-title">Giriş Yapma <span>(Login)</span></h1>
+  <p class="page-desc">Sisteme iki farklı giriş noktası mevcuttur: Yönetici ve Sürücü.</p>
+
+  <div class="chapter-header blue">
+    <div class="chapter-icon">🔐</div>
+    <div>
+      <h2>Giriş Ekranları</h2>
+      <p>Yönetici ve Sürücü ayrı URL'lerden giriş yapar. Yanlış rolle giriş yapılması durumunda sistem uyarı verir.</p>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-box">
+      <div class="fbox-head"><span class="fbox-icon">👤</span> Yönetici Girişi</div>
+      <ul>
+        <li>Adres: <strong>/admin/login</strong></li>
+        <li>E-posta ve şifre ile giriş</li>
+        <li>Başarılı girişte Admin Dashboard'a yönlenir</li>
+        <li>Yanlış rol girişinde uyarı mesajı gösterilir</li>
+      </ul>
+    </div>
+    <div class="feature-box">
+      <div class="fbox-head"><span class="fbox-icon">🚗</span> Sürücü Girişi</div>
+      <ul>
+        <li>Adres: <strong>/driver/login</strong></li>
+        <li>E-posta ve şifre ile giriş</li>
+        <li>Başarılı girişte Sürücü Dashboard'a yönlenir</li>
+        <li>Admin /admin/login'e yönlendirilir</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div><h4>Eski URL Yönlendirmesi</h4><p><code>/login</code> adresine gidildiğinde sistem otomatik olarak <code>/admin/login</code> adresine yönlendirir.</p></div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Giriş sayfasını açın</h4>
+        <p>Tarayıcınızda <code>/admin/login</code> veya <code>/driver/login</code> adresine gidin.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Kimlik bilgilerini girin</h4>
+        <p>E-posta adresinizi ve şifrenizi ilgili alanlara yazın.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Giriş Yap butonuna basın</h4>
+        <p>Kimlik doğrulaması başarılı ise rolünüze göre ilgili panele yönlendirilirsiniz.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Oturum korunur</h4>
+        <p>Oturumunuz tarayıcı kapanana dek aktif kalır. Çıkış için kenar çubuğundaki "Çıkış" seçeneğini kullanın.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div><h4>Güvenlik Uyarısı</h4><p>Şifrenizi başkalarıyla paylaşmayın. Oturum bilgileri tarayıcıda saklanır; ortak bilgisayarda çıkış yapmayı unutmayın.</p></div>
+  </div>
+</div>
+
+<!-- ==================== BÖLÜM 3: Yönetici Paneli ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 3</div>
+  <h1 class="page-title">Yönetici <span>Paneli</span></h1>
+  <p class="page-desc">Sistemin yönetimsel kalbi; tüm varlıkları ekleme, düzenleme ve silme işlemleri bu panelden yapılır.</p>
+
+  <div class="chapter-header blue">
+    <div class="chapter-icon">🏠</div>
+    <div>
+      <h2>Admin Dashboard</h2>
+      <p>Sisteme genel bakış: Toplam okul, öğrenci, sürücü, otobüs, güzergah, durak, sefer ve günlük plan sayıları özet halinde gösterilir.</p>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card blue">
+      <div class="card-icon">🏫</div>
+      <h3>Okullar</h3>
+      <p>Sistemde kayıtlı okulları listeler, yeni okul ekler, mevcut okul bilgilerini düzenler veya siler.</p>
+    </div>
+    <div class="card amber">
+      <div class="card-icon">👨‍🎓</div>
+      <h3>Öğrenciler</h3>
+      <p>Öğrenci ekleme/düzenleme, okul ataması ve QR kod oluşturma/görüntüleme işlemleri yapılır.</p>
+    </div>
+    <div class="card green">
+      <div class="card-icon">🚗</div>
+      <h3>Sürücüler</h3>
+      <p>Sürücü hesabı oluşturma, bilgi güncelleme ve sisteme erişim yetkisi yönetimi.</p>
+    </div>
+    <div class="card purple">
+      <div class="card-icon">🚌</div>
+      <h3>Otobüsler</h3>
+      <p>Araç ekleme, plaka ve kapasite bilgileri düzenleme, araç havuzu yönetimi.</p>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Okul Ekleme Adımları</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>Okullar menüsüne gidin</h4><p>Sol menüden "Okullar" seçeneğine tıklayın.</p></div>
+    </div>
+    <div class="step green">
+      <div class="step-num green">2</div>
+      <div class="step-body"><h4>"Yeni Okul Ekle" butonuna basın</h4><p>Sağ üstteki yeşil butona tıklayarak form modalını açın.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>Okul bilgilerini doldurun</h4><p>Ad, adres ve gerekli diğer alanları doldurun.</p></div>
+    </div>
+    <div class="step green">
+      <div class="step-num green">4</div>
+      <div class="step-body"><h4>Kaydet butonuna tıklayın</h4><p>Okul sisteme kaydedilir ve liste güncellenir.</p></div>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div><h4>İpucu — Öğrenci QR Kodu</h4><p>Öğrenciler sayfasındaki "QR" simgesine tıklayarak her öğrenciye ait QR kodu görüntüleyebilir ve yazdırabilirsiniz. Bu kodu öğrencinin kimlik kartına yapıştırmanız tarama hızını artırır.</p></div>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Yönetici Menü Yapısı</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>Menü</th><th>URL</th><th>Açıklama</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>🏠 Yönetim Paneli</td><td><code>/admin/dashboard</code></td><td>Özet istatistikler ve hızlı erişim</td></tr>
+      <tr><td>🏫 Okullar</td><td><code>/admin/schools</code></td><td>Okul ekleme/düzenleme/silme</td></tr>
+      <tr><td>👨‍🎓 Öğrenciler</td><td><code>/admin/students</code></td><td>Öğrenci yönetimi ve QR kodlar</td></tr>
+      <tr><td>🚗 Sürücüler</td><td><code>/admin/drivers</code></td><td>Sürücü hesap yönetimi</td></tr>
+      <tr><td>🚌 Otobüsler</td><td><code>/admin/buses</code></td><td>Araç yönetimi</td></tr>
+      <tr><td>🗺️ Güzergahlar</td><td><code>/admin/routes</code></td><td>Rota, durak ve sefer yönetimi</td></tr>
+      <tr><td>📍 Duraklar</td><td><code>/admin/stops</code></td><td>Durak noktası yönetimi</td></tr>
+      <tr><td>📅 Planlama</td><td><code>/admin/planning</code></td><td>Günlük plan oluşturma</td></tr>
+      <tr><td>📊 Raporlar</td><td><code>/admin/reports</code></td><td>Biniş/iniş raporları</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== BÖLÜM 4: Güzergah ve Durak ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 4</div>
+  <h1 class="page-title">Güzergah ve <span>Durak Yönetimi</span></h1>
+  <p class="page-desc">Servis rotaları, duraklar ve seferler bu bölümden oluşturulur.</p>
+
+  <div class="chapter-header purple">
+    <div class="chapter-icon">🗺️</div>
+    <div>
+      <h2>Güzergah Yönetimi</h2>
+      <p>Her güzergah, birden fazla duraktan ve seferden oluşur. Güzergah-durak sıralaması ve sefer bilgileri modal pencerelerden düzenlenebilir.</p>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-box">
+      <div class="fbox-head"><span class="fbox-icon">📍</span> Durak Ekleme</div>
+      <ul>
+        <li>Sol menüden "Duraklar"a gidin</li>
+        <li>Durak adı ve konum bilgisi girin</li>
+        <li>Kaydet ile sisteme ekleyin</li>
+        <li>Düzenle/Sil işlemleri tabloda</li>
+      </ul>
+    </div>
+    <div class="feature-box">
+      <div class="fbox-head"><span class="fbox-icon">🗺️</span> Güzergah Oluşturma</div>
+      <ul>
+        <li>"Güzergahlar" menüsünden ekle</li>
+        <li>Güzergah adı ve açıklamasını girin</li>
+        <li>"Durakları Düzenle" modalıyla sıralama yapın</li>
+        <li>"Seferleri Düzenle" modalıyla sefer ekleyin</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Güzergah Oluşturma Akışı</h3>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"><span>1</span></div>
+      <div class="tl-content">
+        <h4>Durakları oluşturun</h4>
+        <p><code>/admin/stops</code> sayfasında tüm durak noktalarını ekleyin. Her durağa anlamlı bir isim verin (ör. "Merkez Durağı", "Okul Kapısı").</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot green"><span>2</span></div>
+      <div class="tl-content">
+        <h4>Yeni güzergah ekleyin</h4>
+        <p><code>/admin/routes</code> sayfasından "Yeni Güzergah Ekle" butonuna basın, isim ve açıklama girin.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot amber"><span>3</span></div>
+      <div class="tl-content">
+        <h4>Durakları güzergaha atayın</h4>
+        <p>Güzergah satırındaki "Duraklar" butonuna tıklayın. Açılan modaldan durakları sıralı şekilde ekleyin.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot purple"><span>4</span></div>
+      <div class="tl-content">
+        <h4>Sefer tanımlayın</h4>
+        <p>"Seferler" butonuna tıklayın. Sabah/öğleden sonra gibi sefer tiplerini, otobüs ve sürücü atamalarını yapın.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot green"><span>5</span></div>
+      <div class="tl-content">
+        <h4>Günlük Planlamaya geçin</h4>
+        <p>Güzergah ve sefer hazır olduktan sonra <code>/admin/planning</code> sayfasından günlük planları oluşturabilirsiniz.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div><h4>Durak Sıralama</h4><p>Güzergah-durak modalında durakları doğru sırayla eklemek önemlidir. Sıralamanın değiştirilmesi mevcut seferler üzerinde herhangi bir etkisi olmaz ancak yeni planlamalarda dikkate alınır.</p></div>
+  </div>
+</div>
+
+<!-- ==================== BÖLÜM 5: Günlük Planlama ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 5</div>
+  <h1 class="page-title">Günlük <span>Planlama</span></h1>
+  <p class="page-desc">Her güne ait öğrenci–sefer atamaları yapılır; biniş/iniş tiplerine göre planlar oluşturulur.</p>
+
+  <div class="chapter-header amber">
+    <div class="chapter-icon">📅</div>
+    <div>
+      <h2>Planlama Sayfası</h2>
+      <p>Tarihe göre filtreleme yapılarak planlama listesi görüntülenir. Yeni plan eklenebilir, mevcut planlar düzenlenebilir veya silinebilir.</p>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Planlama sayfasına gidin</h4>
+        <p>Sol menüden "Planlama" seçeneğine tıklayın (<code>/admin/planning</code>).</p>
+      </div>
+    </div>
+    <div class="step amber">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Tarihi seçin</h4>
+        <p>Tarih filtresi ile istediğiniz güne ait planları görüntüleyin.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>"Yeni Plan Ekle" butonuna basın</h4>
+        <p>Modal pencerede öğrenci, sefer ve plan tipini (Biniş / İniş) seçin.</p>
+      </div>
+    </div>
+    <div class="step green">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Planı kaydedin</h4>
+        <p>Plan oluşturulur ve sürücü o gün ilgili öğrenciyi listesinde görebilir.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-box">
+      <div class="fbox-head"><span class="fbox-icon">🟢</span> Biniş Planı</div>
+      <ul>
+        <li>Öğrencinin sabah servise binmesi için plan</li>
+        <li>Sürücü biniş ekranında listede görünür</li>
+        <li>QR tarandığında plan ile eşleştirilir</li>
+        <li>Gerçekleşmezse "Bekleyen" olarak raporlanır</li>
+      </ul>
+    </div>
+    <div class="feature-box">
+      <div class="fbox-head"><span class="fbox-icon">🔴</span> İniş Planı</div>
+      <ul>
+        <li>Öğrencinin öğleden sonra inişi için plan</li>
+        <li>Sürücü iniş ekranında listede görünür</li>
+        <li>QR ile iniş kaydı oluşturulur</li>
+        <li>Gerçekleşmezse "Bekleyen" olarak raporlanır</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div><h4>Önemli — Plan Olmadan Kayıt</h4><p>Sürücü, günlük planında olmayan bir öğrencinin QR kodunu taradığında sistem uyarı verir. Bu durumda yöneticinin ilgili güne plan eklemesi gerekir.</p></div>
+  </div>
+</div>
+
+<!-- ==================== BÖLÜM 6: Raporlama ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 6</div>
+  <h1 class="page-title"><span>Raporlama</span> Sayfası</h1>
+  <p class="page-desc">Seçilen tarih için biniş/iniş gerçekleşme durumu, planlanan ile karşılaştırmalı olarak görüntülenir.</p>
+
+  <div class="chapter-header blue">
+    <div class="chapter-icon">📊</div>
+    <div>
+      <h2>Raporlar</h2>
+      <p>Tarihe göre biniş ve iniş kayıtları, planlar ile karşılaştırılarak eksik/tamamlanan öğrenciler raporlanır.</p>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card green">
+      <div class="card-icon">✅</div>
+      <h3>Gerçekleşen Biniş</h3>
+      <p>Sürücünün QR ile kaydettiği başarılı biniş işlemleri listelenir.</p>
+    </div>
+    <div class="card red">
+      <div class="card-icon">❌</div>
+      <h3>Gerçekleşmeyen Biniş</h3>
+      <p>Planı olduğu halde servise binmeyen öğrenciler görüntülenir.</p>
+    </div>
+    <div class="card blue">
+      <div class="card-icon">🔽</div>
+      <h3>Gerçekleşen İniş</h3>
+      <p>Servis güzergahında inen öğrencilerin kayıtları listelenir.</p>
+    </div>
+    <div class="card amber">
+      <div class="card-icon">⏳</div>
+      <h3>Bekleyen İniş</h3>
+      <p>Bindi ancak hâlâ inişi kaydedilmemiş öğrenciler gösterilir.</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Rapor Kullanım Adımları</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>Raporlar sayfasına gidin</h4><p>Sol menüden "Raporlar"a tıklayın.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>Tarih seçin</h4><p>Tarih seçici ile rapor almak istediğiniz günü seçin.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>Filtreler uygulayın</h4><p>Öğrenci veya sefer bazlı filtreleme yaparak listeyi daraltın.</p></div>
+    </div>
+    <div class="step green">
+      <div class="step-num">4</div>
+      <div class="step-body"><h4>Dışa aktarın</h4><p>Belge/indirme simgesine tıklayarak raporu dışa aktarabilirsiniz.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== BÖLÜM 7: Sürücü Paneli ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 7</div>
+  <h1 class="page-title">Sürücü <span>Paneli</span></h1>
+  <p class="page-desc">Sürücülerin günlük operasyonlarını yürüttüğü mobil dostu ekran.</p>
+
+  <div class="chapter-header green">
+    <div class="chapter-icon">🚗</div>
+    <div>
+      <h2>Sürücü Dashboard</h2>
+      <p>Bugünkü biniş/iniş sayıları, bekleyen öğrenciler, araç bilgisi ve hızlı erişim bağlantıları gösterilir.</p>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card green">
+      <div class="card-icon">📈</div>
+      <h3>Bugünkü Biniş</h3>
+      <p>Bugün kaç öğrencinin servise bindiğinin anlık sayısı.</p>
+    </div>
+    <div class="card blue">
+      <div class="card-icon">📉</div>
+      <h3>Bugünkü İniş</h3>
+      <p>Bugün kaç öğrencinin servis güzergahında indiğinin sayısı.</p>
+    </div>
+    <div class="card amber">
+      <div class="card-icon">⏳</div>
+      <h3>Bekleyen Öğrenciler</h3>
+      <p>Planı olduğu halde henüz biniş/iniş kaydı oluşturulmamış öğrenciler.</p>
+    </div>
+    <div class="card purple">
+      <div class="card-icon">🚌</div>
+      <h3>Araç Bilgisi</h3>
+      <p>Atandığı otobüse ait plaka ve kapasite bilgisi görüntülenir.</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Sürücü Menüsü</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>Menü</th><th>URL</th><th>Açıklama</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>🏠 Yönetim Paneli</td><td><code>/driver/dashboard</code></td><td>Günlük özet ve istatistikler</td></tr>
+      <tr><td>🟢 Binenler</td><td><code>/driver/boarding</code></td><td>QR ile biniş kaydı oluşturma</td></tr>
+      <tr><td>🔴 İnenler</td><td><code>/driver/alighting</code></td><td>QR ile iniş kaydı oluşturma</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div><h4>Sürücü İçin Öneri</h4><p>Güne başlamadan önce Dashboard'u kontrol edin. Bekleyen öğrenci sayısını görmek, sefer planlamasına yardımcı olur. Sayfayı yenilemek için "Yenile" butonunu kullanın.</p></div>
+  </div>
+</div>
+
+<!-- ==================== BÖLÜM 8: Biniş ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 8</div>
+  <h1 class="page-title">Biniş İşlemi <span>(QR Tarama)</span></h1>
+  <p class="page-desc">Öğrencilerin servise biniş kaydını QR kod veya manuel giriş ile oluşturma.</p>
+
+  <div class="chapter-header green">
+    <div class="chapter-icon">📲</div>
+    <div>
+      <h2>Binenler Sayfası</h2>
+      <p>Kamera ile QR tarama veya manuel QR girişi yapılabilir. Mükerrer tarama ve hata durumları sesli/görsel bildirimle uyarılır.</p>
+    </div>
+  </div>
+
+  <div class="qr-section">
+    <div class="steps">
+      <div class="step green">
+        <div class="step-num green">1</div>
+        <div class="step-body"><h4>Binenler sayfasını açın</h4><p>Sol menüden "Binenler" seçeneğine tıklayın.</p></div>
+      </div>
+      <div class="step green">
+        <div class="step-num green">2</div>
+        <div class="step-body"><h4>Seferi seçin (gerekiyorsa)</h4><p>Birden fazla sefer varsa ilgili seferi seçin. Bu adım QR taramanın doğru plana eşlenmesini sağlar.</p></div>
+      </div>
+      <div class="step green">
+        <div class="step-num green">3</div>
+        <div class="step-body"><h4>Kamerayı başlatın</h4><p>QR Tarayıcı alanında "Kamerayı Başlat" butonuna basın. Kamera erişim izni verin.</p></div>
+      </div>
+      <div class="step green">
+        <div class="step-num green">4</div>
+        <div class="step-body"><h4>Öğrencinin QR kodunu tarayın</h4><p>Kamerayı öğrencinin kartındaki QR koduna doğrultun. Kod otomatik okunur.</p></div>
+      </div>
+      <div class="step green">
+        <div class="step-num green">5</div>
+        <div class="step-body"><h4>Kayıt oluşturulur</h4><p>Başarılı taramada ses çalar ve öğrenci adı ekranda gösterilir. Biniş kaydı sisteme işlenir.</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="qr-placeholder">
+        <span>📱</span>
+        <strong>QR Tarayıcı</strong>
+        Kamera alanı burada görünür. Öğrencinin kartını bu alana doğrultun.
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature-box">
+      <div class="fbox-head"><span class="fbox-icon">⌨️</span> Manuel QR Girişi</div>
+      <ul>
+        <li>Kamera kullanılamıyorsa manuel giriş yapın</li>
+        <li>QR kod metnini metin kutusuna yazın/yapıştırın</li>
+        <li>Enter veya "Ara" butonuyla sorgulayın</li>
+        <li>Öğrenci bulunursa biniş kaydı oluşturulur</li>
+      </ul>
+    </div>
+    <div class="feature-box">
+      <div class="fbox-head"><span class="fbox-icon">🔊</span> Sesli Geri Bildirim</div>
+      <ul>
+        <li>Başarılı tarama: Onay sesi çalar</li>
+        <li>Mükerrer tarama: Uyarı sesi çalar</li>
+        <li>Hatalı QR: Hata sesi ve ekran bildirimi</li>
+        <li>Planı olmayan öğrenci: Özel uyarı mesajı</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <div class="callout-icon">🚫</div>
+    <div><h4>Mükerrer Tarama Koruması</h4><p>Aynı öğrencinin QR kodu aynı seferden birden fazla kez taranırsa sistem "Zaten kaydedildi" uyarısı verir ve yeni kayıt oluşturmaz. Bu özellik veri bütünlüğünü korur.</p></div>
+  </div>
+</div>
+
+<!-- ==================== BÖLÜM 9: İniş ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 9</div>
+  <h1 class="page-title">İniş İşlemi <span>(QR Tarama)</span></h1>
+  <p class="page-desc">Öğrencilerin servisten iniş kaydını QR kod ile oluşturma işlemi.</p>
+
+  <div class="chapter-header">
+    <div class="chapter-icon" style="font-size:3rem;">🔽</div>
+    <div>
+      <h2 style="font-size:1.8rem;font-weight:800;color:var(--gray-900);margin-bottom:.3rem;">İnenler Sayfası</h2>
+      <p style="color:var(--gray-600);">Biniş ekranıyla aynı mantıkta çalışır; ancak iniş (disembarking) kaydı oluşturur. Sadece binmiş öğrenciler için iniş kaydı yapılabilir.</p>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step red">
+      <div class="step-num" style="background:var(--red);">1</div>
+      <div class="step-body"><h4>İnenler sayfasını açın</h4><p>Sol menüden "İnenler" seçeneğine tıklayın (<code>/driver/alighting</code>).</p></div>
+    </div>
+    <div class="step red">
+      <div class="step-num" style="background:var(--red);">2</div>
+      <div class="step-body"><h4>Sefer seçin</h4><p>İniş kaydının hangi sefere ait olacağını seçin.</p></div>
+    </div>
+    <div class="step red">
+      <div class="step-num" style="background:var(--red);">3</div>
+      <div class="step-body"><h4>QR kodu tarayın</h4><p>Kamera ile ya da manuel giriş ile öğrencinin QR kodunu okutun.</p></div>
+    </div>
+    <div class="step red">
+      <div class="step-num" style="background:var(--red);">4</div>
+      <div class="step-body"><h4>İniş kaydı oluşturulur</h4><p>Başarılı taramada iniş kaydı sisteme işlenir. Yönetici bunu raporlarda görebilir.</p></div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div><h4>Biniş Kaydı Zorunluluğu</h4><p>İniş kaydı oluşturulabilmesi için öğrencinin o gün aynı seferde biniş kaydı bulunması gerekir. Daha önce biniş kaydı yapılmamış öğrenciler için iniş kaydı oluşturulamaz.</p></div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div><h4>İpucu — Hızlı İşlem</h4><p>Hem biniş hem iniş sayfaları mobilden de rahatlıkla kullanılabilir. Sürücü, telefonu ile kamerayı açarak öğrenci QR'larını çok hızlı şekilde tarayabilir. Sayfanın mobil görünümü bu işlem için optimize edilmiştir.</p></div>
+  </div>
+</div>
+
+<!-- ==================== BÖLÜM 10: SSS ==================== -->
+<div class="content-page">
+  <div class="section-label">Bölüm 10</div>
+  <h1 class="page-title">SSS ve <span>İpuçları</span></h1>
+  <p class="page-desc">Sık karşılaşılan sorular, hata çözümleri ve verimlilik önerileri.</p>
+
+  <div class="chapter-header amber">
+    <div class="chapter-icon">❓</div>
+    <div>
+      <h2>Sık Sorulan Sorular</h2>
+      <p>Kullanıcıların en çok merak ettiği konuların yanıtları aşağıda listelenmiştir.</p>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>#</th><th>Soru</th><th>Yanıt</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>QR kod kamera ile okunmuyor?</td><td>Işık seviyesini artırın veya manuel QR metin girişini kullanın.</td></tr>
+      <tr><td>2</td><td>Öğrenci listede görünmüyor?</td><td>İlgili gün için Planlama sayfasından plan oluşturulduğundan emin olun.</td></tr>
+      <tr><td>3</td><td>Yanlış biniş kaydı oluşturuldu?</td><td>Yönetici, Raporlar sayfasından kaydı inceleyebilir; düzeltme için yönetici müdahalesine ihtiyaç duyulur.</td></tr>
+      <tr><td>4</td><td>Sürücü paneline admin girişi yapılamıyor?</td><td>Adminin <code>/admin/login</code> adresini kullanması gerekir. Sürücü giriş sayfası farklıdır.</td></tr>
+      <tr><td>5</td><td>Güzergah durağı silinirse ne olur?</td><td>Mevcut planlar etkilenmez ancak yeni planlamalarda durak listelenmez.</td></tr>
+      <tr><td>6</td><td>Raporu PDF olarak nasıl alırım?</td><td>Tarayıcının "Yazdır" (Ctrl+P) özelliği ile PDF olarak kaydedebilirsiniz.</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="divider" />
+
+  <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Verimlilik İpuçları</h3>
+
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">🏷️</div>
+      <h4>QR Kart Hazırlayın</h4>
+      <p>Her öğrencinin QR kodunu küçük lamineli kart veya rozet şeklinde hazırlayarak servis operasyonunu hızlandırın.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📅</div>
+      <h4>Planlamayı Önceden Yapın</h4>
+      <p>Haftalık planları hafta başında toplu olarak oluşturun; günlük müdahaleyi minimuma indirin.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📱</div>
+      <h4>Mobil Uyumluluk</h4>
+      <p>Sürücü paneli mobil cihazlar için optimize edilmiştir. Telefon ile kamerayı açıp QR taramak en hızlı yöntemdir.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔔</div>
+      <h4>Bekleyen Öğrencileri İzleyin</h4>
+      <p>Dashboard'daki "Bekleyen" sayısına dikkat edin. Sıfır ise tüm planlar tamamlanmış demektir.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📊</div>
+      <h4>Günlük Rapor Alın</h4>
+      <p>Her gün sonunda Raporlar sayfasından gün özeti alarak kayıtları arşivleyin.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔒</div>
+      <h4>Güvenlik</h4>
+      <p>Sürücüler sadece kendi seferlerini görür. Yönetici yetkilerini yalnızca güvenilir personelle paylaşın.</p>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">🎯</div>
+    <div><h4>Tavsiye Edilen Günlük Rutin — Yönetici</h4><p>1) Sabah planları kontrol edin → 2) Biniş tamamlandıktan sonra Dashboard istatistiklerini inceleyin → 3) Gün sonunda Raporlar sayfasından günlük özet alın → 4) Eksik iniş kayıtlarını takip edin.</p></div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">🚗</div>
+    <div><h4>Tavsiye Edilen Günlük Rutin — Sürücü</h4><p>1) Sürücü Dashboard'u kontrol edin (bekleyen öğrenci sayısı) → 2) Sefer başlamadan önce doğru seferi seçin → 3) Her öğrenci bindiğinde QR tarayın → 4) Durağa ulaşıldığında iniş QR'larını tarayın.</p></div>
+  </div>
+</div>
+
+<!-- ==================== KAPANIŞ ==================== -->
+<div class="footer-strip">
+  <div>
+    <strong>Servis Takip Sistemi</strong> — Kullanım Kılavuzu v1.0<br />
+    Bu belge yazdırılarak PDF formatında saklanabilir.
+  </div>
+  <div style="text-align:right;">
+    Nisan 2026<br />
+    <span style="color:rgba(255,255,255,.4);font-size:.75rem;">Bu kılavuzu tarayıcıda açıp Ctrl+P ile PDF olarak kaydedin.</span>
+  </div>
+</div>
+
+</body>
+</html>
